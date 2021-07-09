@@ -37,7 +37,8 @@ export class AuthService {
         const fullName = signatureData.subject.subject.commonName.split(' ');
 
         user = await this.userService.createUser({
-          lastName: signatureData.subject.subject.lastName as string,
+          middleName: signatureData.subject.subject.lastName as string,
+          lastName: fullName[0] as string,
           firstName: fullName[1] as string,
           idn: signatureData.subject.subject.iin,
         });
