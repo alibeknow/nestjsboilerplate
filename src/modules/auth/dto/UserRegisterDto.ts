@@ -23,22 +23,9 @@ export class UserRegisterDto {
   @IsNotEmpty()
   @Trim()
   readonly lastName: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsEmail()
-  @IsNotEmpty()
-  @Trim()
-  readonly email: string;
-
-  @ApiProperty({ minLength: 6 })
-  @IsString()
-  @MinLength(6)
-  readonly password: string;
-
   @ApiProperty()
   @Column()
   @IsPhoneNumber()
   @IsOptional()
-  phone: string;
+  idn: string;
 }

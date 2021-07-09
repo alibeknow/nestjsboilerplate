@@ -37,6 +37,14 @@ export class AuthService {
       const user = await this.userService.findOne({
         idn: signatureData.subject.iin,
       });
+      if (!user) {
+        const fullName = signatureData.subject.commonName.split(' ');
+        await this.userService.createUser({
+          lastName: signatureData.subject.lastName as string,
+          firstName: fullName[1] as string,
+          idn: signatureData.subject.iin,
+        });
+      }
       return user;
     } else {
       throw new NotValidCertException();
