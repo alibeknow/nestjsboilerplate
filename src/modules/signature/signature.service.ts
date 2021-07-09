@@ -5,7 +5,7 @@ import type { SignatureDto } from './dto/signatureDto';
 
 @Injectable()
 export class SignatureService {
-  async sendSignature(signatureData: SignatureDto) {
+  async verifySignature(signatureData: SignatureDto) {
     const headers = {
       'Content-Type': 'application/json',
     };

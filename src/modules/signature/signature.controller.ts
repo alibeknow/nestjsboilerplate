@@ -16,7 +16,7 @@ export class SignatureController {
     type: SignatureDto,
   })
   async verifySignature(@Body() signatureData: SignatureDto) {
-    const result = await this.signatureService.sendSignature(signatureData);
+    const result = await this.signatureService.verifySignature(signatureData);
     return result;
   }
 }

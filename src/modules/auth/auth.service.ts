@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { NotValidCertException } from '../../exceptions/not-valid-cert.eception';
-import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
-import { UtilsProvider } from '../../providers/utils.provider';
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import type { SignatureDto } from '../signature/dto/signatureDto';
 import { SignatureService } from '../signature/signature.service';
@@ -11,8 +9,6 @@ import type { UserDto } from '../user/dto/user-dto';
 import type { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { TokenPayloadDto } from './dto/TokenPayloadDto';
-import type { UserLoginDto } from './dto/UserLoginDto';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -30,7 +26,7 @@ export class AuthService {
   }
 
   async validateUser(signatureDto: SignatureDto): Promise<UserEntity> {
-    const signatureData = await this.signatureService.sendSignature(
+    const signatureData = await this.signatureService.verifySignature(
       signatureDto,
     );
     if (signatureData.valid) {
