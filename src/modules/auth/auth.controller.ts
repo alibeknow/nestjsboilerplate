@@ -16,12 +16,12 @@ import { ApiFile } from '../../decorators/swagger.schema';
 import { AuthGuard } from '../../guards/auth.guard';
 import { AuthUserInterceptor } from '../../interceptors/auth-user-interceptor.service';
 import { IFile } from '../../interfaces';
+import { SignatureDto } from '../signature/dto/signatureDto';
 import { UserDto } from '../user/dto/user-dto';
 import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginPayloadDto } from './dto/LoginPayloadDto';
-import { UserLoginDto } from './dto/UserLoginDto';
 import { UserRegisterDto } from './dto/UserRegisterDto';
 
 @Controller('auth')
@@ -39,10 +39,9 @@ export class AuthController {
     description: 'User info with access token',
   })
   async userLogin(
-    @Body() userLoginDto: UserLoginDto,
+    @Body() signatureDto: SignatureDto,
   ): Promise<LoginPayloadDto> {
-    const userEntity = await this.authService.validateUser(userLoginDto);
-
+    const userEntity = await this.authService.validateUser(signatureDto);
     const token = await this.authService.createToken(userEntity);
     return new LoginPayloadDto(userEntity.toDto(), token);
   }
