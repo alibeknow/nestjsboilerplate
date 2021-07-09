@@ -34,15 +34,16 @@ export class AuthService {
       signatureDto,
     );
     if (signatureData.valid) {
-      const user = await this.userService.findOne({
-        idn: signatureData.subject.iin,
+      let user = await this.userService.findOne({
+        idn: signatureData.subject.subject.iin,
       });
       if (!user) {
-        const fullName = signatureData.subject.commonName.split(' ');
-        await this.userService.createUser({
-          lastName: signatureData.subject.lastName as string,
+        const fullName = signatureData.subject.subject.commonName.split(' ');
+
+        user = await this.userService.createUser({
+          lastName: signatureData.subject.subject.lastName as string,
           firstName: fullName[1] as string,
-          idn: signatureData.subject.iin,
+          idn: signatureData.subject.subject.iin,
         });
       }
       return user;
