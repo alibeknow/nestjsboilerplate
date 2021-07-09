@@ -18,13 +18,7 @@ export class UserDto extends AbstractDto {
   role: RoleType;
 
   @ApiPropertyOptional()
-  email: string;
-
-  @ApiPropertyOptional()
-  avatar: string;
-
-  @ApiPropertyOptional()
-  phone: string;
+  idn: string;
 
   @ApiPropertyOptional()
   isActive: boolean;
@@ -34,6 +28,7 @@ export class UserDto extends AbstractDto {
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.role = user.role;
+    this.idn = user.idn;
     this.isActive = options?.isActive;
   }
 }
