@@ -16,17 +16,7 @@ export class SignatureController {
     type: SignatureDto,
   })
   async verifySignature(@Body() signatureData: SignatureDto) {
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-    const {
-      data: { result },
-    } = await axios.post('http://10.0.85.60:14579', signatureData, {
-      headers,
-    });
-    return {
-      valid: result.valid,
-      subject: result.cert.chain[0],
-    };
+    const result = await this.signatureService.sendSignature(signatureData);
+    return result;
   }
 }

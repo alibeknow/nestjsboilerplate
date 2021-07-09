@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
 import { UtilsProvider } from '../../providers/utils.provider';
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import { SignatureService } from '../signature/signature.service';
 import type { UserDto } from '../user/dto/user-dto';
 import type { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
@@ -16,6 +17,7 @@ export class AuthService {
     public readonly jwtService: JwtService,
     public readonly configService: ApiConfigService,
     public readonly userService: UserService,
+    public readonly signatureService: SignatureService,
   ) {}
 
   async createToken(user: UserEntity | UserDto): Promise<TokenPayloadDto> {
