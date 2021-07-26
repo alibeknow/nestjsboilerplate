@@ -20,6 +20,6 @@ export class DocumentController {
     description: 'Document info with access token',
   })
   getDocuments() {
-    this.documentService.getDocuments();
+    return this.documentService.getDocuments();
   }
 }
