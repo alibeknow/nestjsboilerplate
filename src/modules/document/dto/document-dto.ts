@@ -25,12 +25,15 @@ export class DocumentDto extends AbstractDto {
   @IsBoolean()
   isActive: boolean;
 
-  constructor(user: DocumentEntity, options?: Partial<{ isActive: boolean }>) {
-    super(user);
-    this.uid = user.uid;
-    this.name = user.name;
-    this.status = user.status;
-    this.dateCreate = user.dateCreate;
+  constructor(
+    document: DocumentEntity,
+    options?: Partial<{ isActive: boolean }>,
+  ) {
+    super(document);
+
+    this.name = document.name;
+    this.status = document.status;
+    this.dateCreate = document.dateCreate;
     this.isActive = options?.isActive;
   }
 }

@@ -4,7 +4,7 @@ import { AbstractEntity } from '../../common/abstract.entity';
 import { VirtualColumn } from '../../decorators/virtual-column.decorator';
 import { DocumentDto } from './dto/document-dto';
 
-@Entity({ name: 'users' })
+@Entity({ name: 'documents' })
 export class DocumentEntity extends AbstractEntity<DocumentDto> {
   @Column({ nullable: true })
   name: string;
