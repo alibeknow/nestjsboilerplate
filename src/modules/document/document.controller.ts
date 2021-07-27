@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
 import { Auth } from '../../decorators/http.decorators';
@@ -13,7 +13,7 @@ export class DocumentController {
     public readonly authService: AuthService,
   ) {}
   @Auth()
-  @Get()
+  @Post()
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
     type: DocumentDto,
