@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';
-import { VirtualColumn } from '../../decorators/virtual-column.decorator';
+import { Status } from '../../common/constants/status';
 import { UserEntity } from '../user/user.entity';
 import { DocumentDto } from './dto/document-dto';
 
@@ -10,9 +10,8 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
   @Column({ nullable: true })
   name: string;
 
-  @Column({ nullable: true })
-  status: string;
-
+  @Column({ type: 'enum', enum: Status, default: Status.PENDING })
+  status: Status;
   @Column({ nullable: true })
   isActive: boolean;
   @Column({ type: 'text', nullable: false })
