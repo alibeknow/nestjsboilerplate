@@ -18,6 +18,10 @@ export class DocumentDto extends AbstractDto {
   status: string;
 
   @ApiPropertyOptional()
+  @IsString()
+  body: string;
+
+  @ApiPropertyOptional()
   @IsDate()
   dateCreate: Date;
 
@@ -33,7 +37,7 @@ export class DocumentDto extends AbstractDto {
 
     this.name = document.name;
     this.status = document.status;
-    this.dateCreate = document.dateCreate;
+    this.body = document.body;
     this.isActive = options?.isActive;
   }
 }
