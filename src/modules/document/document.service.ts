@@ -39,9 +39,13 @@ export class DocumentService {
     return documents.toDtos();
   }
   changeStatus(status: Status, author) {
-    return this.documentRepository.save({
-      author,
-      status,
-    });
+    return this.documentRepository.update(
+      {
+        author,
+      },
+      {
+        status,
+      },
+    );
   }
 }
