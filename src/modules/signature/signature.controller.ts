@@ -44,9 +44,12 @@ export class SignatureController {
     const signature = await this.verifySignature(signatureData);
 
     if (signature.valid) {
-      const result = await this.signatureService.verifySignature(signatureData);
-      await this.documentService.changeStatus(Status.SIGNED, userId);
-      return result;
+      const changedDoc = await this.documentService.changeStatus(
+        Status.SIGNED,
+        userId,
+      );
+      return changedDoc;
     }
+    return false;
   }
 }
