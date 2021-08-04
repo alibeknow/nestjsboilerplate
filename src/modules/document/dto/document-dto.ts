@@ -7,7 +7,7 @@ import type { DocumentEntity } from '../document.entity';
 export class DocumentDto extends AbstractDto {
   @ApiPropertyOptional()
   @IsUUID()
-  uid: string;
+  id: string;
 
   @ApiPropertyOptional()
   @IsString()

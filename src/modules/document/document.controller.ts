@@ -1,4 +1,11 @@
-import { Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
 import { Auth } from '../../decorators/http.decorators';
@@ -19,7 +26,10 @@ export class DocumentController {
     type: DocumentDto,
     description: 'Document info with access token',
   })
-  getDocuments() {
-    return this.documentService.getDocuments();
+  async getDocuments(@Req() request) {
+    return await this.documentService.getDocs(request.user.id);
+  }
+  getFilteredDocs(@Req() request) {
+    return this.documentService.getDocs(request.user.id);
   }
 }
