@@ -19,14 +19,6 @@ import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
-    AuthModule,
-    UserModule,
-    PostModule,
-    SignatureModule,
-    DocumentModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
     TypeOrmModule.forRootAsync({
       imports: [SharedModule],
       useFactory: (configService: ApiConfigService) =>
@@ -46,6 +38,15 @@ import { SharedModule } from './shared/shared.module';
       inject: [ApiConfigService],
     }),
     HealthCheckerModule,
+    AuthModule,
+    UserModule,
+    PostModule,
+    DocumentModule,
+    SignatureModule,
+
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
 })
 export class AppModule implements NestModule {

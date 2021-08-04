@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
+import type { Status } from './../../common/constants/status';
 import { DocumentRepository } from './document.repository';
+import type { DocumentDto } from './dto/document-dto';
 
 @Injectable()
 export class DocumentService {
@@ -23,7 +25,7 @@ export class DocumentService {
       },
     ];
   }
-  async getDocs(author): Promise<any> {
+  async getDocs(author): Promise<DocumentDto[] | DocumentDto> {
     const documents = await this.documentRepository.find({ where: { author } });
     if (documents.length <= 0) {
       const document = this.documentRepository.create({
@@ -35,5 +37,11 @@ export class DocumentService {
       return document.toDto();
     }
     return documents.toDtos();
+  }
+  changeStatus(status: Status, author) {
+    return this.documentRepository.save({
+      author,
+      status,
+    });
   }
 }

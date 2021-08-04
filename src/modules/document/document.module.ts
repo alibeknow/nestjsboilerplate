@@ -7,7 +7,7 @@ import { DocumentRepository } from './document.repository';
 import { DocumentService } from './document.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DocumentRepository]), AuthModule],
+  imports: [TypeOrmModule.forFeature([DocumentRepository])],
   controllers: [DocumentController],
   providers: [DocumentService],
   exports: [DocumentService],

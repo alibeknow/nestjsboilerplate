@@ -1,13 +1,24 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import axios from 'axios';
 
+import { Status } from '../../common/constants/status';
+import { DocumentService } from '../document/document.service';
 import { SignatureDto } from './dto/signatureDto';
 import { SignatureService } from './signature.service';
 
 @Controller('signature')
 export class SignatureController {
-  constructor(public readonly signatureService: SignatureService) {}
+  constructor(
+    public readonly signatureService: SignatureService,
+    public readonly documentService: DocumentService,
+  ) {}
   @Post()
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
@@ -18,5 +29,23 @@ export class SignatureController {
   async verifySignature(@Body() signatureData: SignatureDto) {
     const result = await this.signatureService.verifySignature(signatureData);
     return result;
+  }
+
+  @Post('document')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Verify document Signature XML',
+    type: SignatureDto,
+  })
+  async verifyDocument(@Body() signatureData: SignatureDto, @Req() request) {
+    const userId = request.user.id;
+    const signature = await this.verifySignature(signatureData);
+
+    if (signature.valid) {
+      const result = await this.signatureService.verifySignature(signatureData);
+      await this.documentService.changeStatus(Status.SIGNED, userId);
+      return result;
+    }
   }
 }
