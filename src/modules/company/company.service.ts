@@ -26,4 +26,11 @@ export class CompanyService {
       .paginate(pageOptionsDto);
     return items.toPageDto(pageMetaDto);
   }
+
+  async findOrCreate(companyDto: CreateCompanyDto) {
+    const company = await this.companyRepository.findOne({
+      where: { bin: companyDto.bin },
+    });
+    return !company ? company : this.companyRepository.save(companyDto);
+  }
 }

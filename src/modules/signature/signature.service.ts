@@ -14,7 +14,13 @@ export class SignatureService {
     } = await axios.post('http://localhost:14579', signatureData, {
       headers,
     });
-
+    const { data, statusText } = await axios.post(
+      'http://localhost:14579',
+      signatureData,
+      {
+        headers,
+      },
+    );
     return {
       valid: result.valid,
       subject: result.cert.subject,

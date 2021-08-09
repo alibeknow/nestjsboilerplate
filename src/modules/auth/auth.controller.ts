@@ -42,6 +42,7 @@ export class AuthController {
     @Body() signatureDto: SignatureDto,
   ): Promise<LoginPayloadDto> {
     const userEntity = await this.authService.validateUser(signatureDto);
+    console.log(userEntity);
     const token = await this.authService.createToken(userEntity);
     return new LoginPayloadDto(userEntity.toDto(), token);
   }

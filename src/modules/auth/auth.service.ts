@@ -37,6 +37,7 @@ export class AuthService {
     const signatureData = await this.signatureService.verifySignature(
       signatureDto,
     );
+    let companyEntity;
     if (signatureData.valid) {
       let user = await this.userService.findOne({
         idn: signatureData.subject.iin,
@@ -49,7 +50,7 @@ export class AuthService {
           bin: bin as string,
           name: organization as string,
         };
-        const companyE = await this.companyService.create(paraCompany);
+        companyEntity = await this.companyService.findOrCreate(paraCompany);
 
         const fullName = commonName.split(' ');
         user = await this.userService.createUser({
@@ -57,7 +58,7 @@ export class AuthService {
           lastName: fullName[0] as string,
           firstName: fullName[1] as string,
           idn: iin as string,
-          company: { id: companyE.id },
+          company: { id: companyEntity.id },
         });
       }
       return user;

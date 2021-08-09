@@ -25,7 +25,9 @@ export class UserEntity extends AbstractEntity<UserDto> {
   @VirtualColumn()
   fullName: string;
 
-  @ManyToOne((type) => CompanyEntity, (company) => company.employes)
+  @ManyToOne((type) => CompanyEntity, (company) => company.employes, {
+    eager: true,
+  })
   company: CompanyEntity;
   dtoClass = UserDto;
 }
