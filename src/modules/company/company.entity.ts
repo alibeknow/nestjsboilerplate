@@ -22,7 +22,7 @@ export class CompanyEntity extends AbstractEntity<CompanyDto> {
   @OneToMany((type) => UserEntity, (user) => user.company) // note: we will create author property in the Photo class below
   employes: UserEntity[];
 
-  @OneToMany((type) => DocumentEntity, (document) => document) // note: we will create author property in the Photo class below
+  @OneToMany((type) => DocumentEntity, (document) => document.company) // note: we will create author property in the Photo class below
   documents: DocumentEntity[];
 
   dtoClass = CompanyDto;

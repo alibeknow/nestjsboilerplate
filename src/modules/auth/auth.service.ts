@@ -3,8 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 
 import { NotValidCertException } from '../../exceptions/not-valid-cert.eception';
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import type { CompanyEntity } from '../company/company.entity';
 import { CompanyService } from '../company/company.service';
-import type { CompanyDto } from '../company/dto/company-dto';
 import type { CreateCompanyDto } from '../company/dto/createCompany.dto';
 import type { SignatureDto } from '../signature/dto/signatureDto';
 import { SignatureService } from '../signature/signature.service';
@@ -25,7 +25,11 @@ export class AuthService {
   async createToken(user: UserEntity | UserDto): Promise<TokenPayloadDto> {
     return new TokenPayloadDto({
       expiresIn: this.configService.authConfig.jwtExpirationTime,
-      accessToken: await this.jwtService.signAsync({ id: user.id }),
+      accessToken: await this.jwtService.signAsync({
+        id: user.id,
+        role: user.role,
+        bin: user.company.bin,
+      }),
     });
   }
 

@@ -20,8 +20,10 @@ export class CompanyService {
     pageOptionsDto: CompanyPageOptionsDto,
   ): Promise<PageDto<CompanyDto>> {
     const queryBuilder = this.companyRepository.createQueryBuilder('company');
-    queryBuilder.loadAllRelationIds();
-    const { items, pageMetaDto } = await queryBuilder.paginate(pageOptionsDto);
+
+    const { items, pageMetaDto } = await queryBuilder
+      .leftJoinAndSelect('company.documents', 'documents')
+      .paginate(pageOptionsDto);
     return items.toPageDto(pageMetaDto);
   }
 }

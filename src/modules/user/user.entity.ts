@@ -4,7 +4,6 @@ import { AbstractEntity } from '../../common/abstract.entity';
 import { RoleType } from '../../common/constants/role-type';
 import { VirtualColumn } from '../../decorators/virtual-column.decorator';
 import { CompanyEntity } from '../company/company.entity';
-import { DocumentEntity } from '../document/document.entity';
 import { UserDto } from './dto/user-dto';
 
 @Entity({ name: 'users' })
