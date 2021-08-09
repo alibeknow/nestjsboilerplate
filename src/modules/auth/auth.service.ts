@@ -38,22 +38,23 @@ export class AuthService {
         idn: signatureData.subject.iin,
       });
       if (!user) {
-        const fullName = signatureData.subject.commonName.split(' ');
-
-        user = await this.userService.createUser({
-          middleName: signatureData.subject.lastName as string,
-          lastName: fullName[0] as string,
-          firstName: fullName[1] as string,
-          idn: signatureData.subject.iin,
-        });
         const {
-          subject: { bin, organization },
+          subject: { bin, organization, commonName, lastName, iin },
         } = signatureData;
         const paraCompany: CreateCompanyDto = {
-          bin: bin as number,
+          bin: bin as string,
           name: organization as string,
         };
-        const company = await this.companyService.create(paraCompany);
+        const companyE = await this.companyService.create(paraCompany);
+
+        const fullName = commonName.split(' ');
+        user = await this.userService.createUser({
+          middleName: lastName as string,
+          lastName: fullName[0] as string,
+          firstName: fullName[1] as string,
+          idn: iin as string,
+          company: { id: companyE.id },
+        });
       }
       return user;
     } else {

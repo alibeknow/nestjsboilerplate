@@ -18,7 +18,7 @@ export class CompanyDto extends AbstractDto {
 
   @ApiPropertyOptional()
   @IsNumber()
-  bin: number;
+  bin: string;
 
   @ApiPropertyOptional()
   @IsBoolean()

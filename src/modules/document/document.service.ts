@@ -35,7 +35,7 @@ export class DocumentService {
         body: '<xml><body>Документ настоящим сообщает что его надо подписать тестович тестоев</body</xml>',
         company,
       });
-      await this.documentRepository.save(document);
+      //await this.documentRepository.save(document);
       return document.toDto();
     }
     return documents.toDtos();

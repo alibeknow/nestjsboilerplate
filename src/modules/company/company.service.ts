@@ -10,14 +10,17 @@ import type { CreateCompanyDto } from './dto/createCompany.dto';
 export class CompanyService {
   constructor(public readonly companyRepository: CompanyRepository) {}
 
-  create(companyDto: CreateCompanyDto) {
-    return this.companyRepository.save(companyDto);
+  async create(companyDto: CreateCompanyDto) {
+    await this.companyRepository.save(companyDto);
+    const returnedDto = await this.companyRepository.create(companyDto).toDto();
+    return returnedDto;
   }
 
   async findAll(
     pageOptionsDto: CompanyPageOptionsDto,
   ): Promise<PageDto<CompanyDto>> {
     const queryBuilder = this.companyRepository.createQueryBuilder('company');
+    queryBuilder.loadAllRelationIds();
     const { items, pageMetaDto } = await queryBuilder.paginate(pageOptionsDto);
     return items.toPageDto(pageMetaDto);
   }

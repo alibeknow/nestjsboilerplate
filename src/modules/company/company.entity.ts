@@ -11,7 +11,7 @@ export class CompanyEntity extends AbstractEntity<CompanyDto> {
   name: string;
 
   @Column({ nullable: false })
-  bin: number;
+  bin: string;
 
   @Column({ nullable: true })
   iban: string;

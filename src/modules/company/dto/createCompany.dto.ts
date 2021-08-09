@@ -8,6 +8,6 @@ export class CreateCompanyDto {
   name: string;
 
   @ApiPropertyOptional()
-  @IsNumber()
-  bin: number;
+  @IsString()
+  bin: string;
 }

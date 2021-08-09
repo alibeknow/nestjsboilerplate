@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsPhoneNumber,
   IsString,
+  IsUUID,
   MinLength,
 } from 'class-validator';
 import { Column } from 'typeorm';
@@ -34,4 +35,10 @@ export class UserRegisterDto {
   @Column()
   @IsOptional()
   middleName: string;
+
+  @IsUUID()
+  @ApiProperty()
+  @IsOptional()
+  @Column()
+  company?: any;
 }
