@@ -6,10 +6,6 @@ import type { DocumentEntity } from '../document.entity';
 
 export class DocumentDto extends AbstractDto {
   @ApiPropertyOptional()
-  @IsUUID()
-  id: string;
-
-  @ApiPropertyOptional()
   @IsString()
   name: string;
 
@@ -22,10 +18,6 @@ export class DocumentDto extends AbstractDto {
   body: string;
 
   @ApiPropertyOptional()
-  @IsDate()
-  dateCreate: Date;
-
-  @ApiPropertyOptional()
   @IsBoolean()
   isActive: boolean;
 
@@ -34,7 +26,6 @@ export class DocumentDto extends AbstractDto {
     options?: Partial<{ isActive: boolean }>,
   ) {
     super(document);
-
     this.name = document.name;
     this.status = document.status;
     this.body = document.body;

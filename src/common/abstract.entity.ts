@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
@@ -7,6 +8,7 @@ import {
 import { UtilsProvider } from '../providers/utils.provider';
 import type { AbstractDto } from './dto/abstract.dto';
 
+@Exclude()
 export abstract class AbstractEntity<DTO extends AbstractDto = AbstractDto> {
   @PrimaryGeneratedColumn('uuid')
   id: string;

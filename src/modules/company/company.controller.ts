@@ -10,6 +10,7 @@ import { ApiOkResponse } from '@nestjs/swagger';
 
 import type { PageDto } from '../../common/dto/page.dto';
 import { Auth } from '../../decorators/http.decorators';
+import type { CompanyEntity } from './company.entity';
 import { CompanyService } from './company.service';
 import { CompanyDto } from './dto/company-dto';
 import { CompanyPageOptionsDto } from './dto/companyPageOptionsDto';
@@ -27,7 +28,7 @@ export class CompanyController {
   getAllCompanies(
     @Query(new ValidationPipe({ transform: true }))
     pageOptionsDto: CompanyPageOptionsDto,
-  ): Promise<PageDto<CompanyDto>> {
+  ): Promise<PageDto<CompanyEntity>> {
     return this.companyService.findAll(pageOptionsDto);
   }
 }

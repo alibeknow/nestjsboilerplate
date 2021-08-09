@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import type { PageDto } from '../../common/dto/page.dto';
+import type { CompanyEntity } from './company.entity';
 import { CompanyRepository } from './company.repository';
 import type { CompanyDto } from './dto/company-dto';
 import type { CompanyPageOptionsDto } from './dto/companyPageOptionsDto';
@@ -18,13 +19,13 @@ export class CompanyService {
 
   async findAll(
     pageOptionsDto: CompanyPageOptionsDto,
-  ): Promise<PageDto<CompanyDto>> {
+  ): Promise<PageDto<CompanyEntity>> {
     const queryBuilder = this.companyRepository.createQueryBuilder('company');
-
     const { items, pageMetaDto } = await queryBuilder
       .leftJoinAndSelect('company.documents', 'documents')
       .paginate(pageOptionsDto);
-    return items.toPageDto(pageMetaDto);
+
+    return { data: items, meta: pageMetaDto };
   }
 
   async findOrCreate(companyDto: CreateCompanyDto) {

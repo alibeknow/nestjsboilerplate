@@ -16,9 +16,7 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
   isActive: boolean;
   @Column({ type: 'text', nullable: false })
   body: string;
-  @ManyToOne((type) => CompanyEntity, (company) => company.documents, {
-    eager: true,
-  })
+  @ManyToOne((type) => CompanyEntity, (company) => company.documents)
   company: CompanyEntity;
 
   dtoClass = DocumentDto;

@@ -5,9 +5,11 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
+import type { DocumentEntity } from '../../document/document.entity';
 import type { CompanyEntity } from '../company.entity';
 
 export class CompanyDto extends AbstractDto {
@@ -25,6 +27,11 @@ export class CompanyDto extends AbstractDto {
   @IsOptional()
   isActive?: boolean;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  //@ValidateNested()
+  documents: DocumentEntity[];
+
   constructor(
     company: CompanyEntity,
     options?: Partial<{ isActive: boolean }>,
@@ -32,6 +39,7 @@ export class CompanyDto extends AbstractDto {
     super(company);
     this.name = company.name;
     this.bin = company.bin;
+    this.documents = company.documents;
     this.isActive = options?.isActive;
   }
 }

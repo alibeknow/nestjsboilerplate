@@ -23,7 +23,6 @@ export class DocumentController {
     description: 'Document info with access token',
   })
   getFilteredDocs(@Req() request) {
-    console.log(request.user.company);
     return this.documentService.getDocs(request.user.company.id);
   }
 }
