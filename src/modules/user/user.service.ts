@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import type { FindConditions } from 'typeorm';
 
 import type { PageDto } from '../../common/dto/page.dto';
-import { FileNotImageException } from '../../exceptions/file-not-image.exception';
 import type { IFile } from '../../interfaces/IFile';
 import { AwsS3Service } from '../../shared/services/aws-s3.service';
 import { ValidatorService } from '../../shared/services/validator.service';

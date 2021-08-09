@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';
 import { Status } from '../../common/constants/status';
-import { UserEntity } from '../user/user.entity';
+import { CompanyEntity } from '../company/company.entity';
 import { DocumentDto } from './dto/document-dto';
 
 @Entity({ name: 'documents' })
@@ -16,8 +16,8 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
   isActive: boolean;
   @Column({ type: 'text', nullable: false })
   body: string;
-  @ManyToOne((type) => UserEntity, (user) => user.documents)
-  author: UserEntity;
+  @ManyToOne((type) => CompanyEntity, (company) => company.documents)
+  company: CompanyEntity;
 
   dtoClass = DocumentDto;
 }

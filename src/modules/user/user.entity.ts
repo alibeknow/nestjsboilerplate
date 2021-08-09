@@ -26,9 +26,6 @@ export class UserEntity extends AbstractEntity<UserDto> {
   @VirtualColumn()
   fullName: string;
 
-  @OneToMany((type) => DocumentEntity, (document) => document) // note: we will create author property in the Photo class below
-  documents: DocumentEntity[];
-
   @ManyToOne((type) => CompanyEntity, (company) => company.employes)
   company: CompanyEntity;
   dtoClass = UserDto;

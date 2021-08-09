@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import { CompanyModule } from '../company/company.module';
 import { SignatureModule } from '../signature/signature.module';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
@@ -12,6 +13,7 @@ import { JwtStrategy } from './jwt.strategy';
 @Module({
   imports: [
     SignatureModule,
+    CompanyModule,
     forwardRef(() => UserModule),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({

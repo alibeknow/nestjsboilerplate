@@ -12,7 +12,7 @@
         "start:dev": "ts-node src/main.ts",
         "start:prod": "node dist/main.js",
         "typeorm": "ts-node node_modules/typeorm/cli.js  -f ormconfig",
-        "migration:generate": "yarn run typeorm migration:generate -d src/migrations -n companies",
+        "migration:generate": "yarn run typeorm migration:generate -d src/migrations -n copanies_many_documents",
         "migration:create": "yarn run typeorm migration:create -d src/migrations -n",
         "migration:revert": "yarn run typeorm migration:revert",
         "schema:drop": "yarn run typeorm schema:drop",

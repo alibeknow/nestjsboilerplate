@@ -3,6 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 
 import { NotValidCertException } from '../../exceptions/not-valid-cert.eception';
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import { CompanyService } from '../company/company.service';
+import type { CompanyDto } from '../company/dto/company-dto';
+import type { CreateCompanyDto } from '../company/dto/createCompany.dto';
 import type { SignatureDto } from '../signature/dto/signatureDto';
 import { SignatureService } from '../signature/signature.service';
 import type { UserDto } from '../user/dto/user-dto';
@@ -15,6 +18,7 @@ export class AuthService {
     public readonly jwtService: JwtService,
     public readonly configService: ApiConfigService,
     public readonly userService: UserService,
+    public readonly companyService: CompanyService,
     public readonly signatureService: SignatureService,
   ) {}
 
@@ -29,7 +33,6 @@ export class AuthService {
     const signatureData = await this.signatureService.verifySignature(
       signatureDto,
     );
-    console.log(signatureData);
     if (signatureData.valid) {
       let user = await this.userService.findOne({
         idn: signatureData.subject.iin,
@@ -43,6 +46,14 @@ export class AuthService {
           firstName: fullName[1] as string,
           idn: signatureData.subject.iin,
         });
+        const {
+          subject: { bin, organization },
+        } = signatureData;
+        const paraCompany: CreateCompanyDto = {
+          bin: bin as number,
+          name: organization as string,
+        };
+        const company = await this.companyService.create(paraCompany);
       }
       return user;
     } else {

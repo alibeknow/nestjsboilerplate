@@ -25,23 +25,25 @@ export class DocumentService {
       },
     ];
   }
-  async getDocs(author): Promise<DocumentDto[] | DocumentDto> {
-    const documents = await this.documentRepository.find({ where: { author } });
+  async getDocs(company): Promise<DocumentDto[] | DocumentDto> {
+    const documents = await this.documentRepository.find({
+      where: { company },
+    });
     if (documents.length <= 0) {
       const document = this.documentRepository.create({
         name: 'Документ на подпись',
         body: '<xml><body>Документ настоящим сообщает что его надо подписать тестович тестоев</body</xml>',
-        author,
+        company,
       });
       await this.documentRepository.save(document);
       return document.toDto();
     }
     return documents.toDtos();
   }
-  changeStatus(status: Status, author) {
+  changeStatus(status: Status, companyId) {
     return this.documentRepository.update(
       {
-        author,
+        company: companyId,
       },
       {
         status,
