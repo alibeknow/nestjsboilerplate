@@ -11,7 +11,6 @@ import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
 import { DocumentModule } from './modules/document/document.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
-import { PostModule } from './modules/post/post.module';
 import { SignatureModule } from './modules/signature/signature.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
@@ -40,7 +39,6 @@ import { SharedModule } from './shared/shared.module';
     HealthCheckerModule,
     AuthModule,
     UserModule,
-    PostModule,
     DocumentModule,
     SignatureModule,
 
