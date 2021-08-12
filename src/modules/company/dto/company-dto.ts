@@ -1,12 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsIBAN,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import type { DocumentEntity } from '../../document/document.entity';
