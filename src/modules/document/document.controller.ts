@@ -22,7 +22,10 @@ export class DocumentController {
     type: DocumentDto,
     description: 'Document info with access token',
   })
-  getFilteredDocs(@Req() request) {
-    return this.documentService.getDocs(request.user.company.id);
+  async getFilteredDocs(@Req() request): Promise<DocumentDto[] | DocumentDto> {
+    const documents = await this.documentService.getDocs(
+      request.user.company.id,
+    );
+    return documents;
   }
 }

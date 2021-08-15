@@ -34,9 +34,9 @@ export class CompanyService {
     });
     if (!company) {
       const resultCompany = await this.companyRepository.create(companyDto);
-      await this.companyRepository.save(companyDto);
+      await this.companyRepository.save(resultCompany);
       return resultCompany;
     }
-    return !company ? company : this.companyRepository.save(companyDto);
+    return company;
   }
 }
