@@ -51,7 +51,7 @@ export class AuthService {
           name: organization as string,
         };
         companyEntity = await this.companyService.findOrCreate(paraCompany);
-
+        console.log(companyEntity);
         const fullName = commonName.split(' ');
         user = await this.userService.createUser({
           middleName: lastName as string,

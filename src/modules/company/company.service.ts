@@ -32,6 +32,11 @@ export class CompanyService {
     const company = await this.companyRepository.findOne({
       where: { bin: companyDto.bin },
     });
+    if (!company) {
+      const resultCompany = await this.companyRepository.create(companyDto);
+      await this.companyRepository.save(companyDto);
+      return resultCompany;
+    }
     return !company ? company : this.companyRepository.save(companyDto);
   }
 }
