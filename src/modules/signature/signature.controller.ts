@@ -8,6 +8,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
+import { RoleType } from 'common/constants/role-type';
 
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
@@ -32,7 +33,7 @@ export class SignatureController {
     const result = await this.signatureService.verifySignature(signatureData);
     return result;
   }
-  @Auth()
+  @Auth(RoleType.USER)
   @Post('document')
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
