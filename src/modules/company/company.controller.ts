@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
+import { RoleType } from '../../common/constants/role-type';
 import type { PageDto } from '../../common/dto/page.dto';
 import { Auth } from '../../decorators/http.decorators';
 import type { CompanyEntity } from './company.entity';
@@ -19,8 +20,8 @@ import { CompanyPageOptionsDto } from './dto/companyPageOptionsDto';
 export class CompanyController {
   constructor(readonly companyService: CompanyService) {}
   @Get()
-  @Auth()
   @HttpCode(HttpStatus.OK)
+  @Auth(RoleType.ADMIN)
   @ApiOkResponse({
     type: CompanyDto,
     description: 'Document info with access token',

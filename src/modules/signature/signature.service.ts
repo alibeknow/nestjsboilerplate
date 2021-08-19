@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
+import type { SignatureDocumentDto } from './dto/signatureDocument.dto';
 import type { SignatureDto } from './dto/signatureDto';
+import { SignatureRepository } from './signature.repository';
+import type { SignatureEntity } from './signatureDocument.entity';
 
 @Injectable()
 export class SignatureService {
+  constructor(public readonly signatureRepository: SignatureRepository) {}
+
   async verifySignature(signatureData: SignatureDto) {
     const headers = {
       'Content-Type': 'application/json',
@@ -14,16 +19,15 @@ export class SignatureService {
     } = await axios.post('http://localhost:14579', signatureData, {
       headers,
     });
-    const { data, statusText } = await axios.post(
-      'http://localhost:14579',
-      signatureData,
-      {
-        headers,
-      },
-    );
     return {
       valid: result.valid,
       subject: result.cert.subject,
     };
+  }
+
+  async createSignature(signatureData: any) {
+    const signatureEntity = this.signatureRepository.create(signatureData);
+    await this.signatureRepository.save(signatureEntity);
+    return signatureEntity;
   }
 }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpCode,
@@ -40,16 +41,32 @@ export class SignatureController {
     type: SignatureDto,
   })
   async verifyDocument(@Body() signatureData: SignatureDto, @Req() request) {
-    const userId = request.user.id;
-    const signature = await this.verifySignature(signatureData);
-
-    if (signature.valid) {
+    const companyId = request.user.company.id;
+    const { valid, subject } = await this.verifySignature(signatureData);
+    console.log(subject);
+    if (
+      subject.bin === request.user.company.bin &&
+      subject.iin === request.user.idn &&
+      valid
+    ) {
+      const {
+        params: { xml },
+      } = signatureData;
       const changedDoc = await this.documentService.changeStatus(
         Status.SIGNED,
-        userId,
+        companyId,
       );
+      const document = await this.documentService.getDocs(companyId);
+
+      await this.signatureService.createSignature({
+        body: xml,
+        document: document[0].id,
+      });
+
       return changedDoc;
     }
-    return false;
+    return BadRequestException.createBody({
+      message: 'Пожалуйста используйте верную подпись',
+    });
   }
 }

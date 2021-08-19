@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 
 import { NotValidCertException } from '../../exceptions/not-valid-cert.eception';
 import { ApiConfigService } from '../../shared/services/api-config.service';
-import type { CompanyEntity } from '../company/company.entity';
 import { CompanyService } from '../company/company.service';
 import type { CreateCompanyDto } from '../company/dto/createCompany.dto';
 import type { SignatureDto } from '../signature/dto/signatureDto';
@@ -51,7 +50,6 @@ export class AuthService {
           name: organization as string,
         };
         companyEntity = await this.companyService.findOrCreate(paraCompany);
-        console.log(companyEntity);
         const fullName = commonName.split(' ');
         user = await this.userService.createUser({
           middleName: lastName as string,

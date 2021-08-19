@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { setupSwagger } from '../../setup-swagger';
 import type { Status } from './../../common/constants/status';
 import { DocumentRepository } from './document.repository';
 import type { DocumentDto } from './dto/document-dto';

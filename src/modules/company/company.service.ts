@@ -13,7 +13,7 @@ export class CompanyService {
 
   async create(companyDto: CreateCompanyDto) {
     await this.companyRepository.save(companyDto);
-    const returnedDto = await this.companyRepository.create(companyDto).toDto();
+    const returnedDto = this.companyRepository.create(companyDto).toDto();
     return returnedDto;
   }
 
@@ -33,7 +33,7 @@ export class CompanyService {
       where: { bin: companyDto.bin },
     });
     if (!company) {
-      const resultCompany = await this.companyRepository.create(companyDto);
+      const resultCompany = this.companyRepository.create(companyDto);
       await this.companyRepository.save(resultCompany);
       return resultCompany;
     }

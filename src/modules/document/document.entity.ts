@@ -1,8 +1,9 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';
 import { Status } from '../../common/constants/status';
 import { CompanyEntity } from '../company/company.entity';
+import { SignatureEntity } from '../signature/signatureDocument.entity';
 import { DocumentDto } from './dto/document-dto';
 
 @Entity({ name: 'documents' })
@@ -16,8 +17,13 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
   isActive: boolean;
   @Column({ type: 'text', nullable: false })
   body: string;
+
   @ManyToOne((type) => CompanyEntity, (company) => company.documents)
   company: CompanyEntity;
+  @OneToMany((type) => SignatureEntity, (signature) => signature.document, {
+    cascade: ['insert', 'update'],
+  })
+  signatures: SignatureEntity[];
 
   dtoClass = DocumentDto;
 }

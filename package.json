@@ -1,8 +1,8 @@
 {
-    "name": "awesome-nest-boilerplate",
-    "version": "7.0.1",
-    "description": "Awesome NestJS Boilerplate, Typescript, Postgres, TypeORM",
-    "author": "Narek Hakobyan <narek.hakobyan.07@gmail.com>",
+    "name": "qaj-roadPayout",
+    "version": "1.0.1",
+    "description": "Qaj Typescript, Postgres, TypeORM",
+    "author": "Alibek Nauryzbayev <alibek.amazing@gmail.com> ",
     "private": true,
     "license": "MIT",
     "scripts": {
@@ -12,7 +12,7 @@
         "start:dev": "ts-node src/main.ts",
         "start:prod": "node dist/main.js",
         "typeorm": "ts-node node_modules/typeorm/cli.js  -f ormconfig",
-        "migration:generate": "yarn run typeorm migration:generate -d src/migrations -n add_iban_field_company",
+        "migration:generate": "yarn run typeorm migration:generate -d src/migrations -n new_entity",
         "migration:create": "yarn run typeorm migration:create -d src/migrations -n",
         "migration:revert": "yarn run typeorm migration:revert",
         "schema:drop": "yarn run typeorm schema:drop",

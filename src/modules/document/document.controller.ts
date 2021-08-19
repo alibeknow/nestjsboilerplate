@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
+import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
 import { DocumentService } from './document.service';
 import { DocumentDto } from './dto/document-dto';
@@ -15,7 +16,7 @@ import { DocumentDto } from './dto/document-dto';
 @Controller('documents')
 export class DocumentController {
   constructor(public readonly documentService: DocumentService) {}
-  @Auth()
+  @Auth(RoleType.USER)
   @Post()
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({

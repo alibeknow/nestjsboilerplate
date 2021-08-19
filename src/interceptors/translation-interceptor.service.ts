@@ -7,8 +7,8 @@ import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { TranslationService } from '../shared/services/translation.service';
 import type { AbstractDto } from '../common/dto/abstract.dto';
+import { TranslationService } from '../shared/services/translation.service';
 
 @Injectable()
 export class TranslationInterceptor implements NestInterceptor {
