@@ -8,8 +8,8 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { RoleType } from 'common/constants/role-type';
 
+import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
 import { DocumentService } from '../document/document.service';
@@ -44,7 +44,6 @@ export class SignatureController {
   async verifyDocument(@Body() signatureData: SignatureDto, @Req() request) {
     const companyId = request.user.company.id;
     const { valid, subject } = await this.verifySignature(signatureData);
-    console.log(subject);
     if (
       subject.bin === request.user.company.bin &&
       subject.iin === request.user.idn &&

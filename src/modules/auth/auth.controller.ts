@@ -22,6 +22,7 @@ import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginPayloadDto } from './dto/LoginPayloadDto';
+import { UserLoginDto } from './dto/UserLoginDto copy';
 import { UserRegisterDto } from './dto/UserRegisterDto';
 
 @Controller('auth')
@@ -42,7 +43,20 @@ export class AuthController {
     @Body() signatureDto: SignatureDto,
   ): Promise<LoginPayloadDto> {
     const userEntity = await this.authService.validateUser(signatureDto);
-    console.log(userEntity);
+    const token = await this.authService.createToken(userEntity);
+    return new LoginPayloadDto(userEntity.toDto(), token);
+  }
+
+  @Post('operator')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    type: LoginPayloadDto,
+    description: 'User info with access token',
+  })
+  async operatorLogin(
+    @Body() userLoginDto: UserLoginDto,
+  ): Promise<LoginPayloadDto> {
+    const userEntity = await this.authService.validateOperator(userLoginDto);
     const token = await this.authService.createToken(userEntity);
     return new LoginPayloadDto(userEntity.toDto(), token);
   }

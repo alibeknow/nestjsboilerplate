@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { NotValidCertException } from '../../exceptions/not-valid-cert.eception';
+import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
+import { UtilsProvider } from '../../providers/utils.provider';
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { CompanyService } from '../company/company.service';
 import type { CreateCompanyDto } from '../company/dto/createCompany.dto';
@@ -11,6 +13,7 @@ import type { UserDto } from '../user/dto/user-dto';
 import type { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { TokenPayloadDto } from './dto/TokenPayloadDto';
+import type { UserLoginDto } from './dto/UserLoginDto copy';
 @Injectable()
 export class AuthService {
   constructor(
@@ -63,5 +66,19 @@ export class AuthService {
     } else {
       throw new NotValidCertException();
     }
+  }
+
+  async validateOperator(userLoginDto: UserLoginDto): Promise<UserEntity> {
+    const user = await this.userService.findOne({
+      email: userLoginDto.email,
+    });
+    const isPasswordValid = await UtilsProvider.validateHash(
+      userLoginDto.password,
+      user?.password,
+    );
+    if (!user || !isPasswordValid) {
+      throw new UserNotFoundException();
+    }
+    return user;
   }
 }
