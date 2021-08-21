@@ -12,5 +12,5 @@ module.exports = {
   namingStrategy: new SnakeNamingStrategy(),
   entities: ['src/modules/**/*.entity{.ts,.js}'],
   migrations: ['src/migrations/*{.ts,.js}'],
-  synchronize:true
+  synchronize:false
 };
