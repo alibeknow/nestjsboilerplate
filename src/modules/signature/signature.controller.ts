@@ -67,6 +67,7 @@ export class SignatureController {
     }
     return BadRequestException.createBody({
       message: 'Пожалуйста используйте верную подпись',
+      statusCode: 416,
     });
   }
 }
