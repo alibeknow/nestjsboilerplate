@@ -7,6 +7,9 @@ import { UtilsProvider } from '../../providers/utils.provider';
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { CompanyService } from '../company/company.service';
 import type { CreateCompanyDto } from '../company/dto/createCompany.dto';
+import type { IbanAccountDto } from '../iban/dto/ibanAccount.dto';
+import type { IbanAccountServiceDto } from '../iban/dto/ibanAccountService.dto';
+import { IbanService } from '../iban/iban.service';
 import type { SignatureDto } from '../signature/dto/signatureDto';
 import { SignatureService } from '../signature/signature.service';
 import type { UserDto } from '../user/dto/user-dto';
@@ -22,6 +25,7 @@ export class AuthService {
     public readonly userService: UserService,
     public readonly companyService: CompanyService,
     public readonly signatureService: SignatureService,
+    public readonly ibanService: IbanService,
   ) {}
 
   async createToken(user: UserEntity | UserDto): Promise<TokenPayloadDto> {
@@ -43,24 +47,44 @@ export class AuthService {
       let user = await this.userService.findOne({
         idn: signatureData.subject.iin,
       });
+      const {
+        subject: { bin, organization, commonName, lastName, iin, email },
+      } = signatureData;
       if (!user) {
-        const {
-          subject: { bin, organization, commonName, lastName, iin },
-        } = signatureData;
         const paraCompany: CreateCompanyDto = {
-          bin: bin as string,
-          name: organization as string,
+          bin,
+          name: organization,
         };
         companyEntity = await this.companyService.findOrCreate(paraCompany);
         const fullName = commonName.split(' ');
         user = await this.userService.createUser({
-          middleName: lastName as string,
-          lastName: fullName[0] as string,
-          firstName: fullName[1] as string,
-          idn: iin as string,
+          middleName: lastName,
+          lastName: fullName[0],
+          firstName: fullName[1],
+          idn: iin,
           company: { id: companyEntity.id },
         });
+        if (!companyEntity.iban) {
+          await this.ibanService.createIbanAccount({
+            bin,
+            companyName: organization,
+            mobileNumber: '',
+            email,
+            address: '',
+          });
+        }
       }
+      if (!user.company.iban) {
+        console.log('we are here');
+        await this.ibanService.createIbanAccount({
+          bin,
+          companyName: organization,
+          mobileNumber: '',
+          email,
+          address: '',
+        });
+      }
+
       return user;
     } else {
       throw new NotValidCertException();

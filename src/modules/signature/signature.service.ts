@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
 import type { SignatureDto } from './dto/signatureDto';
+import type { ISignature } from './IResponseSignature';
 import { SignatureRepository } from './signature.repository';
 
 @Injectable()
@@ -14,7 +15,7 @@ export class SignatureService {
     };
     const {
       data: { result },
-    } = await axios.post('http://localhost:14579', signatureData, {
+    } = await axios.post<ISignature>('http://localhost:14579', signatureData, {
       headers,
     });
     return {
