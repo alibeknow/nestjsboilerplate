@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
-import { AbstractEntity } from '../../common/abstract.entity';
-import { DocumentEntity } from '../document/document.entity';
-import { SignatureDocumentDto } from './dto/signatureDocument.dto';
+import { AbstractEntity } from '../../../common/abstract.entity';
+import { DocumentEntity } from '../../document/document.entity';
+import { SignatureDocumentDto } from './../dto/signatureDocument.dto';
 
 @Entity({ name: 'signature' })
 export class SignatureEntity extends AbstractEntity<SignatureDocumentDto> {

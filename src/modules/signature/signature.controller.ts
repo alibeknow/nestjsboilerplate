@@ -71,7 +71,7 @@ export class SignatureController {
     description: 'Verify document Signature XML',
     type: SignatureDto,
   })
-  async verifyDocument(@Body() signatureData: SignatureDto) {
+  async signedDocument(@Body() signatureData: SignatureDto) {
     const { companyId } = signatureData;
     const { valid, subject } = await this.signatureService.verifySignature(
       signatureData,

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsString, IsUUID, ValidateNested } from 'class-validator';
+import { IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
 
 import { XMLDto } from './xmlDto';
 
@@ -15,8 +15,9 @@ export class SignatureDto {
 
   @IsString()
   @IsUUID()
+  @IsOptional()
   @ApiProperty()
-  readonly companyId: string = '';
+  readonly companyId?: string = '';
 
   @ApiProperty()
   @ValidateNested()
