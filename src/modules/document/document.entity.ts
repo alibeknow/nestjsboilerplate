@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { Status } from '../../common/constants/status';
 import { CompanyEntity } from '../company/company.entity';
-import { SignatureEntity } from '../signature/signatureDocument.entity';
+import { SignatureEntity } from '../signature/repository/signatureDocument.entity';
 import { DocumentDto } from './dto/document-dto';
 
 @Entity({ name: 'documents' })
