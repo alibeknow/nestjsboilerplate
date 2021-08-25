@@ -14,7 +14,6 @@ export class SignatureDto {
   readonly method: string = 'XML.verify';
 
   @IsString()
-  @IsUUID()
   @IsOptional()
   @ApiProperty()
   readonly companyId?: string = '';

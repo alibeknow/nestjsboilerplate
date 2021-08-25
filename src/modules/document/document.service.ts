@@ -33,7 +33,7 @@ export class DocumentService {
     if (documents.length <= 0) {
       const document = this.documentRepository.create({
         name: 'Документ на подпись',
-        body: '<xml><body>Документ настоящим сообщает что его надо подписать тестович тестоев</body</xml>',
+        body: '<xml><body>Документ настоящим сообщает что его надо подписать тестович тестоев</body></xml>',
         company,
       });
       await this.documentRepository.save(document);

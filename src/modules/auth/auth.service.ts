@@ -76,13 +76,15 @@ export class AuthService {
       }
       if (!user.company.iban) {
         console.log('we are here');
-        await this.ibanService.createIbanAccount({
-          bin,
-          companyName: organization,
-          mobileNumber: '',
-          email,
-          address: '',
-        });
+        this.ibanService
+          .createIbanAccount({
+            bin,
+            companyName: organization,
+            mobileNumber: '',
+            email,
+            address: '',
+          })
+          .catch((error) => console.log(error));
       }
 
       return user;
