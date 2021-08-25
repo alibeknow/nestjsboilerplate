@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
 import type { SignatureDto } from './dto/signatureDto';
-import type { ISignature } from './IResponseSignature';
-import { SignatureRepository } from './signature.repository';
+import type { ISignature } from './interfaces/IResponseSignature';
+import { SignatureRepository } from './repository/signature.repository';
 
 @Injectable()
 export class SignatureService {

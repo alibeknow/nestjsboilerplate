@@ -22,17 +22,7 @@ export class SignatureController {
     public readonly signatureService: SignatureService,
     public readonly documentService: DocumentService,
   ) {}
-  @Post()
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Verify signature XML',
-    type: SignatureDto,
-  })
-  async verifySignature(@Body() signatureData: SignatureDto) {
-    const result = await this.signatureService.verifySignature(signatureData);
-    return result;
-  }
+
   @Auth(RoleType.USER)
   @Post('document')
   @HttpCode(HttpStatus.OK)
@@ -43,7 +33,9 @@ export class SignatureController {
   })
   async verifyDocument(@Body() signatureData: SignatureDto, @Req() request) {
     const companyId = request.user.company.id;
-    const { valid, subject } = await this.verifySignature(signatureData);
+    const { valid, subject } = await this.signatureService.verifySignature(
+      signatureData,
+    );
     if (
       subject.bin === request.user.company.bin &&
       subject.iin === request.user.idn &&
@@ -58,6 +50,41 @@ export class SignatureController {
       );
       const document = await this.documentService.getDocs(companyId);
 
+      await this.signatureService.createSignature({
+        body: xml,
+        document: document[0].id,
+      });
+
+      return changedDoc;
+    }
+    return BadRequestException.createBody({
+      message: 'Пожалуйста используйте верную подпись',
+      statusCode: 416,
+    });
+  }
+
+  @Auth(RoleType.ADMIN)
+  @Post('operator')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Verify document Signature XML',
+    type: SignatureDto,
+  })
+  async verifyDocument(@Body() signatureData: SignatureDto) {
+    const { companyId } = signatureData;
+    const { valid, subject } = await this.signatureService.verifySignature(
+      signatureData,
+    );
+    if (subject.bin === '140241014416' && valid) {
+      const document = await this.documentService.getDocs(companyId);
+      const {
+        params: { xml },
+      } = signatureData;
+      const changedDoc = await this.documentService.changeStatus(
+        Status.APPROVED,
+        companyId,
+      );
       await this.signatureService.createSignature({
         body: xml,
         document: document[0].id,

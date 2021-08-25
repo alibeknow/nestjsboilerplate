@@ -2,8 +2,8 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { DocumentModule } from '../document/document.module';
+import { SignatureRepository } from './repository/signature.repository';
 import { SignatureController } from './signature.controller';
-import { SignatureRepository } from './signature.repository';
 import { SignatureService } from './signature.service';
 
 @Module({
