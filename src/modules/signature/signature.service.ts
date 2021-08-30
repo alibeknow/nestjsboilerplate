@@ -44,6 +44,7 @@ export class SignatureService {
         '"documents"."id"=:documentId',
         { documentId },
       )
+      .select('"signature"."body"')
       .execute();
     return signatures;
   }
