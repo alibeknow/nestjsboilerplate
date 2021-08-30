@@ -3,12 +3,8 @@ import { Type } from 'class-transformer';
 import {
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
-  IsPhoneNumber,
   IsString,
-  IsUUID,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 import { Column } from 'typeorm';
@@ -16,7 +12,7 @@ import { Column } from 'typeorm';
 import { Trim } from '../../../decorators/transforms.decorator';
 import { SignatureDto } from '../../signature/dto/signatureDto';
 
-export class UserRegisterDto {
+export class UserRegisterXmlDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -32,6 +28,10 @@ export class UserRegisterDto {
   @Column()
   @IsString()
   idn: string;
+  @ApiProperty()
+  @Column()
+  @IsString()
+  bin: string;
 
   @ApiProperty()
   @Column()
@@ -46,4 +46,9 @@ export class UserRegisterDto {
   @ApiProperty()
   @Column()
   company?: any;
+
+  @ApiProperty()
+  @ValidateNested()
+  @Type(() => SignatureDto)
+  signedXml: SignatureDto;
 }

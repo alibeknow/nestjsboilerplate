@@ -5,17 +5,14 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { AuthUser } from '../../decorators/auth-user.decorator';
-import { ApiFile } from '../../decorators/swagger.schema';
 import { AuthGuard } from '../../guards/auth.guard';
 import { AuthUserInterceptor } from '../../interceptors/auth-user-interceptor.service';
-import { IFile } from '../../interfaces';
 import { SignatureDto } from '../signature/dto/signatureDto';
 import { UserDto } from '../user/dto/user-dto';
 import { UserEntity } from '../user/user.entity';
@@ -23,7 +20,7 @@ import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginPayloadDto } from './dto/LoginPayloadDto';
 import { UserLoginDto } from './dto/UserLoginDto copy';
-import { UserRegisterDto } from './dto/UserRegisterDto';
+import { UserRegisterXmlDto } from './dto/UserRegisterXmlDto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -42,7 +39,7 @@ export class AuthController {
   async userLogin(
     @Body() signatureDto: SignatureDto,
   ): Promise<LoginPayloadDto> {
-    const userEntity = await this.authService.validateUser(signatureDto);
+    const userEntity = await this.authService.validateLogin(signatureDto);
     const token = await this.authService.createToken(userEntity);
     return new LoginPayloadDto(userEntity.toDto(), token);
   }
@@ -63,20 +60,16 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: UserDto, description: 'Successfully Registered' })
-  @ApiFile({ name: 'avatar' })
+  @ApiOkResponse({
+    type: LoginPayloadDto,
+    description: 'Successfully Registered',
+  })
   async userRegister(
-    @Body() userRegisterDto: UserRegisterDto,
-    @UploadedFile() file: IFile,
-  ): Promise<UserDto> {
-    const createdUser = await this.userService.createUser(
-      userRegisterDto,
-      file,
-    );
-
-    return createdUser.toDto<typeof UserDto>({
-      isActive: true,
-    });
+    @Body() userRegisterDto: UserRegisterXmlDto,
+  ): Promise<LoginPayloadDto> {
+    const createdUser = await this.authService.validateUser(userRegisterDto);
+    const token = await this.authService.createToken(createdUser);
+    return new LoginPayloadDto(createdUser.toDto(), token);
   }
 
   @Get('me')

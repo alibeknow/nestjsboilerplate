@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import type { FindConditions } from 'typeorm';
 
 import type { PageDto } from '../../common/dto/page.dto';
-import type { IFile } from '../../interfaces/IFile';
-import { AwsS3Service } from '../../shared/services/aws-s3.service';
 import { ValidatorService } from '../../shared/services/validator.service';
 import type { UserRegisterDto } from '../auth/dto/UserRegisterDto';
 import type { UserDto } from './dto/user-dto';
@@ -16,7 +14,6 @@ export class UserService {
   constructor(
     public readonly userRepository: UserRepository,
     public readonly validatorService: ValidatorService,
-    public readonly awsS3Service: AwsS3Service,
   ) {}
 
   /**
@@ -44,20 +41,8 @@ export class UserService {
     return queryBuilder.getOne();
   }
 
-  async createUser(
-    userRegisterDto: UserRegisterDto,
-    file?: IFile,
-  ): Promise<UserEntity> {
+  async createUser(userRegisterDto: UserRegisterDto): Promise<UserEntity> {
     const user = this.userRepository.create(userRegisterDto);
-
-    if (file && !this.validatorService.isImage(file.mimetype)) {
-      //throw new FileNotImageException();
-    }
-
-    if (file) {
-      // user.avatar = await this.awsS3Service.uploadImage(file);
-    }
-
     return this.userRepository.save(user);
   }
 

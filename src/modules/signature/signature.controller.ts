@@ -7,7 +7,7 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
@@ -17,6 +17,7 @@ import { SignatureDto } from './dto/signatureDto';
 import { SignatureService } from './signature.service';
 
 @Controller('signature')
+@ApiTags('signature')
 export class SignatureController {
   constructor(
     public readonly signatureService: SignatureService,

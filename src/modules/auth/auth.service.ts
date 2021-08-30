@@ -7,8 +7,6 @@ import { UtilsProvider } from '../../providers/utils.provider';
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { CompanyService } from '../company/company.service';
 import type { CreateCompanyDto } from '../company/dto/createCompany.dto';
-import type { IbanAccountDto } from '../iban/dto/ibanAccount.dto';
-import type { IbanAccountServiceDto } from '../iban/dto/ibanAccountService.dto';
 import { IbanService } from '../iban/iban.service';
 import type { SignatureDto } from '../signature/dto/signatureDto';
 import { SignatureService } from '../signature/signature.service';
@@ -17,6 +15,7 @@ import type { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { TokenPayloadDto } from './dto/TokenPayloadDto';
 import type { UserLoginDto } from './dto/UserLoginDto copy';
+import type { UserRegisterXmlDto } from './dto/UserRegisterXmlDto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -38,17 +37,22 @@ export class AuthService {
     });
   }
 
-  async validateUser(signatureDto: SignatureDto): Promise<UserEntity> {
+  async validateUser(signatureDto: UserRegisterXmlDto): Promise<UserEntity> {
     const signatureData = await this.signatureService.verifySignature(
-      signatureDto,
+      signatureDto.signedXml,
     );
     let companyEntity;
-    if (signatureData.valid) {
+    if (
+      signatureData.valid &&
+      signatureData.subject.bin &&
+      signatureData.subject.bin === signatureDto.bin &&
+      signatureData.subject.iin === signatureDto.idn
+    ) {
       let user = await this.userService.findOne({
         idn: signatureData.subject.iin,
       });
       const {
-        subject: { bin, organization, commonName, lastName, iin, email },
+        subject: { bin, organization, commonName, lastName, iin },
       } = signatureData;
       if (!user) {
         const paraCompany: CreateCompanyDto = {
@@ -62,34 +66,32 @@ export class AuthService {
           lastName: fullName[0],
           firstName: fullName[1],
           idn: iin,
+          email: signatureDto.email,
           company: { id: companyEntity.id },
         });
-        if (!companyEntity.iban) {
-          await this.ibanService.createIbanAccount({
-            bin,
-            companyName: organization,
-            mobileNumber: '',
-            email,
-            address: '',
-          });
-        }
       }
-      if (!user.company.iban) {
-        console.log('we are here');
-        this.ibanService
-          .createIbanAccount({
-            bin,
-            companyName: organization,
-            mobileNumber: '',
-            email,
-            address: '',
-          })
-          .catch((error) => console.log(error));
-      }
-
       return user;
     } else {
-      throw new NotValidCertException();
+      throw new NotValidCertException(
+        `Проверьте сертификат и введённый ИИН ${signatureDto.idn} введённый БИН 
+        ${signatureDto.bin} ЭЦП ИИН:${signatureData.subject.iin} ЭЦП БИН:${signatureData.subject.bin}`,
+      );
+    }
+  }
+  async validateLogin(signatureDto: SignatureDto): Promise<UserEntity> {
+    const signatureData = await this.signatureService.verifySignature(
+      signatureDto,
+    );
+    if (signatureData.valid) {
+      const user = await this.userService.findOne({
+        idn: signatureData.subject.iin,
+      });
+      if (!user) {
+        throw new UserNotFoundException('Пользователь не найден');
+      }
+      return user;
+    } else {
+      throw new NotValidCertException('Проверьте сертификат');
     }
   }
 

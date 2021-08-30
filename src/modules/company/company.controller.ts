@@ -6,9 +6,10 @@ import {
   Query,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
+import { Status } from '../../common/constants/status';
 import type { PageDto } from '../../common/dto/page.dto';
 import { Auth } from '../../decorators/http.decorators';
 import type { CompanyEntity } from './company.entity';
@@ -17,11 +18,13 @@ import { CompanyDto } from './dto/company-dto';
 import { CompanyPageOptionsDto } from './dto/companyPageOptionsDto';
 
 @Controller('company')
+@ApiTags('company')
 export class CompanyController {
   constructor(readonly companyService: CompanyService) {}
   @Get()
   @HttpCode(HttpStatus.OK)
   @Auth(RoleType.ADMIN)
+  @ApiQuery({ enum: Status, name: 'status' })
   @ApiOkResponse({
     type: CompanyDto,
     description: 'Document info with access token',

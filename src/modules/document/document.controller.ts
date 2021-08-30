@@ -6,7 +6,7 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
@@ -14,6 +14,7 @@ import { DocumentService } from './document.service';
 import { DocumentDto } from './dto/document-dto';
 
 @Controller('documents')
+@ApiTags('documents')
 export class DocumentController {
   constructor(public readonly documentService: DocumentService) {}
   @Auth(RoleType.USER)
