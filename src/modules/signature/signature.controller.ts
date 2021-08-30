@@ -2,9 +2,11 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -23,6 +25,21 @@ export class SignatureController {
     public readonly signatureService: SignatureService,
     public readonly documentService: DocumentService,
   ) {}
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Verify document Signature XML',
+    type: SignatureDto,
+  })
+  async getSignature(
+    @Query('documentId') documentId: string,
+  ): Promise<SignatureDto> {
+    const signatures = await this.signatureService.getSignatureByDocumentId(
+      documentId,
+    );
+    return signatures;
+  }
 
   @Auth(RoleType.USER)
   @Post('document')
@@ -63,7 +80,6 @@ export class SignatureController {
       statusCode: 416,
     });
   }
-
   @Auth(RoleType.ADMIN)
   @Post('operator')
   @HttpCode(HttpStatus.OK)

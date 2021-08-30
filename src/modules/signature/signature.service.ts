@@ -15,9 +15,13 @@ export class SignatureService {
     };
     const {
       data: { result },
-    } = await axios.post<ISignature>('http://localhost:14579', signatureData, {
-      headers,
-    });
+    } = await axios.post<ISignature>(
+      process.env.SIGNATURE_VERIFICATION_URL,
+      signatureData,
+      {
+        headers,
+      },
+    );
     return {
       valid: result.valid,
       subject: result.cert.subject,
@@ -28,5 +32,19 @@ export class SignatureService {
     const signatureEntity = this.signatureRepository.create(signatureData);
     await this.signatureRepository.save(signatureEntity);
     return signatureEntity;
+  }
+
+  async getSignatureByDocumentId(documentId: string) {
+    const queryBuilder =
+      this.signatureRepository.createQueryBuilder('signature');
+    const signatures = await queryBuilder
+      .innerJoinAndSelect(
+        'signature.document',
+        'documents',
+        '"documents"."id"=:documentId',
+        { documentId },
+      )
+      .execute();
+    return signatures;
   }
 }
