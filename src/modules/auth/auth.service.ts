@@ -38,26 +38,28 @@ export class AuthService {
   }
 
   async validateUser(signatureDto: UserRegisterXmlDto): Promise<UserEntity> {
+    const { idn, companyType, signedXml, email, bin } = signatureDto;
     const signatureData = await this.signatureService.verifySignature(
-      signatureDto.signedXml,
+      signedXml,
     );
     let companyEntity;
     if (
       signatureData.valid &&
       signatureData.subject.bin &&
-      signatureData.subject.bin === signatureDto.bin &&
-      signatureData.subject.iin === signatureDto.idn
+      signatureData.subject.bin === bin &&
+      signatureData.subject.iin === idn
     ) {
       let user = await this.userService.findOne({
         idn: signatureData.subject.iin,
       });
       const {
-        subject: { bin, organization, commonName, lastName, iin },
+        subject: { organization, commonName, lastName, iin },
       } = signatureData;
       if (!user) {
         const paraCompany: CreateCompanyDto = {
           bin,
           name: organization,
+          companyType,
         };
         companyEntity = await this.companyService.findOrCreate(paraCompany);
         const fullName = commonName.split(' ');
@@ -66,15 +68,15 @@ export class AuthService {
           lastName: fullName[0],
           firstName: fullName[1],
           idn: iin,
-          email: signatureDto.email,
+          email,
           company: { id: companyEntity.id },
         });
       }
       return user;
     } else {
       throw new NotValidCertException(
-        `Проверьте сертификат и введённый ИИН ${signatureDto.idn} введённый БИН 
-        ${signatureDto.bin} ЭЦП ИИН:${signatureData.subject.iin} ЭЦП БИН:${signatureData.subject.bin}`,
+        `Проверьте сертификат и введённый ИИН ${idn} введённый БИН 
+        ${bin} ЭЦП ИИН:${signatureData.subject.iin} ЭЦП БИН:${signatureData.subject.bin}`,
       );
     }
   }

@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -9,6 +10,7 @@ import {
 } from 'class-validator';
 import { Column } from 'typeorm';
 
+import { CompanyType } from '../../../common/constants/company-type';
 import { Trim } from '../../../decorators/transforms.decorator';
 import { SignatureDto } from '../../signature/dto/signatureDto';
 
@@ -42,6 +44,11 @@ export class UserRegisterXmlDto {
   @Column()
   @IsOptional()
   middleName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(CompanyType)
+  companyType: CompanyType;
 
   @ApiProperty()
   @Column()
