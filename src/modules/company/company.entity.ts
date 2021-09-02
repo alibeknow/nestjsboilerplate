@@ -20,7 +20,7 @@ export class CompanyEntity extends AbstractEntity<CompanyDto> {
   @Column({ nullable: false, default: true })
   isActive: boolean;
 
-  @Column({ type: 'enum', enum: CompanyType, nullable: false })
+  @Column({ type: 'enum', enum: CompanyType, default: CompanyType.JSC })
   companyType: CompanyType;
 
   @OneToMany((type) => UserEntity, (user) => user.company) // note: we will create author property in the Photo class below
