@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { statSync } from 'fs';
 
 import type { PageDto } from '../../common/dto/page.dto';
 import type { CompanyEntity } from './company.entity';
@@ -22,16 +23,22 @@ export class CompanyService {
   ): Promise<PageDto<CompanyEntity>> {
     const queryBuilder = this.companyRepository.createQueryBuilder('company');
     const status = pageOptionsDto.status;
-    const { items, pageMetaDto } = await queryBuilder
-      .innerJoinAndSelect(
-        'company.documents',
-        'documents',
-        '"documents"."status"=:status',
-        { status },
-      )
-      .paginate(pageOptionsDto);
-
-    return { data: items, meta: pageMetaDto };
+    if (status) {
+      const { items, pageMetaDto } = await queryBuilder
+        .innerJoinAndSelect(
+          'company.documents',
+          'documents',
+          '"documents"."status" in (:status)',
+          { status },
+        )
+        .paginate(pageOptionsDto);
+      return { data: items, meta: pageMetaDto };
+    } else {
+      const { items, pageMetaDto } = await queryBuilder
+        .innerJoinAndSelect('company.documents', 'documents')
+        .paginate(pageOptionsDto);
+      return { data: items, meta: pageMetaDto };
+    }
   }
 
   async findOrCreate(companyDto: CreateCompanyDto): Promise<CompanyEntity> {

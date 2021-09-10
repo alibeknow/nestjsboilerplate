@@ -8,5 +8,5 @@ export class CompanyPageOptionsDto extends PageOptionsDto {
   @ApiProperty({ type: Status })
   @IsOptional()
   @IsEnum(Status)
-  status?: Status = Status.SIGNED;
+  status?: Status;
 }
