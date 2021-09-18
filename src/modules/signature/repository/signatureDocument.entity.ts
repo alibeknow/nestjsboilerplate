@@ -9,6 +9,8 @@ export class SignatureEntity extends AbstractEntity<SignatureDocumentDto> {
   @Column({ nullable: true })
   name: string;
   @Column({ nullable: true })
+  fio: string;
+  @Column({ nullable: true })
   isActive: boolean;
   @Column({ type: 'text', nullable: false })
   body: string;
