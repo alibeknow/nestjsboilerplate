@@ -31,13 +31,15 @@ export class DocumentService {
       where: { company },
     });
     if (documents.length <= 0) {
-      const document = this.documentRepository.create({
-        name: 'Документ на подпись',
-        body: '<xml><body>Документ настоящим сообщает что его надо подписать тестович тестоев</body></xml>',
-        company,
-      });
+      const document = this.documentRepository.create([
+        {
+          name: 'Документ на подпись',
+          body: '<xml><body>Документ настоящим сообщает что его надо подписать тестович тестоев</body></xml>',
+          company,
+        },
+      ]);
       await this.documentRepository.save(document);
-      return document.toDto();
+      return document.toDtos();
     }
     return documents.toDtos();
   }
