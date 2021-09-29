@@ -106,6 +106,8 @@ export class SignatureController {
       await this.signatureService.createSignature({
         body: xml,
         document: document[0].id,
+        fio: subject.commonName,
+        name: 'operatorSignature',
       });
 
       return changedDoc;
