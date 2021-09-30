@@ -1,5 +1,5 @@
 export interface IAnswer {
-  accountNumber?: string[];
+  accountNumber?: string;
 }
 
 export interface ICreateIbanAccount {

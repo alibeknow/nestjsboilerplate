@@ -4,7 +4,7 @@ import { IsEmail, IsMobilePhone, IsString } from 'class-validator';
 export class IbanAccountServiceDto {
   @ApiProperty()
   @IsString()
-  bin: string;
+  xin: string;
   @ApiProperty()
   @IsString()
   companyName: string;
@@ -19,4 +19,6 @@ export class IbanAccountServiceDto {
   @ApiProperty()
   @IsString()
   address = '';
+  @IsString()
+  contractNumber = '№135/20 от 11.07.2021';
 }

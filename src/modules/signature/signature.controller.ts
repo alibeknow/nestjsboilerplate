@@ -10,11 +10,13 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
 import { DocumentService } from '../document/document.service';
+import { IbanService } from '../iban/iban.service';
 import { SignatureDto } from './dto/signatureDto';
 import { SignatureService } from './signature.service';
 
@@ -24,6 +26,7 @@ export class SignatureController {
   constructor(
     public readonly signatureService: SignatureService,
     public readonly documentService: DocumentService,
+    public readonly ibanService: IbanService,
   ) {}
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -66,6 +69,7 @@ export class SignatureController {
         Status.SIGNED,
         companyId,
       );
+
       const document = await this.documentService.getDocs(companyId);
 
       await this.signatureService.createSignature({
@@ -84,6 +88,7 @@ export class SignatureController {
   @Auth(RoleType.ADMIN)
   @Post('operator')
   @HttpCode(HttpStatus.OK)
+  @Transactional()
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Verify document Signature XML',
@@ -107,7 +112,16 @@ export class SignatureController {
         body: xml,
         document: document[0].id,
         fio: subject.commonName,
-        name: 'operatorSignature',
+        name: 'clientSignature',
+      });
+      const replacedforJson = subject.organization.replace(/(\\")/g, '');
+      const data = await this.ibanService.createIbanAccount({
+        address: 'mockDefaultAddress',
+        companyName: replacedforJson,
+        xin: subject.bin,
+        email: subject.email,
+        mobileNumber: '+777709999999',
+        contractNumber: '№135/20 от 11.07.2021',
       });
 
       return changedDoc;

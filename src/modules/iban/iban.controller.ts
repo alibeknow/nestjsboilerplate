@@ -11,7 +11,7 @@ import { ApiResponse } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
-import { IbanAccountDto } from './dto/ibanAccount.dto';
+import { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import { IbanService } from './iban.service';
 
 @Controller('iban')
@@ -23,9 +23,9 @@ export class IbanController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Create iban in external service',
-    type: IbanAccountDto,
+    type: IbanAccountServiceDto,
   })
-  async verifySignature(@Body() ibanAccountDto: IbanAccountDto) {
+  async verifySignature(@Body() ibanAccountDto: IbanAccountServiceDto) {
     const result = await this.ibanService.createIbanAccount(ibanAccountDto);
     return result;
   }

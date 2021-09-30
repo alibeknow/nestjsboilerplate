@@ -44,7 +44,7 @@ export class SignatureService {
         '"documents"."id"=:documentId',
         { documentId },
       )
-      .select('"signature"."body"')
+      .select('"signature"."fio","signature"."createdAt"')
       .execute();
     return signatures;
   }
