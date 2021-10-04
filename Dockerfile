@@ -1,14 +1,14 @@
-FROM node:lts AS dist
+FROM registry.k10.kaztoll.kz/node:lts AS dist
 COPY package.json ./
 RUN yarn install
 COPY . ./
 RUN yarn build:prod
 
-FROM node:lts AS node_modules
+FROM registry.k10.kaztoll.kz/node:lts AS node_modules
 COPY package.json ./
 RUN yarn install --prod
 
-FROM node:lts
+FROM registry.k10.kaztoll.kz/node:lts
 ARG PORT=3000
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
