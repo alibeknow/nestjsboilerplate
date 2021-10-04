@@ -1,0 +1,12 @@
+---
+ - name: Docker Pull&Push
+   hosts: k10_registry 
+   become: yes
+   
+   tasks:
+   - name: Docker pull registry.k10.kaztoll.kz/kaztoll-enterprise-back
+     ansible.builtin.shell: docker pull registry.k10.kaztoll.kz/kaztoll-enterprise-back
+
+   - name: Docker push registry.k10.kaztoll.kz/kaztoll-enterprise-back
+     ansible.builtin.shell: docker push registry.k10.kaztoll.kz/kaztoll-enterprise-back
+

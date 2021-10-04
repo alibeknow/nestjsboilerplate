@@ -1,0 +1,36 @@
+---
+ - name: kaztoll-enterprise-back docker container deploy
+   hosts: msw-appserv09.kaztoll.kz 
+   become: yes
+   
+   tasks:
+   - name: Get infos on container
+     containers.podman.podman_container_info:
+       name: kaztoll-enterprise-back
+     register: result
+
+   - name: Stop a container kaztoll-enterprise-back
+     containers.podman.podman_container:
+       name: kaztoll-enterprise-back
+       state: stopped
+
+   - name: Remove container
+     containers.podman.podman_container:
+       name: kaztoll-enterprise-back
+       state: absent
+
+   - name: kaztoll-enterprise-back image remove
+     containers.podman.podman_image:
+       state: absent
+       name: registry.k10.kaztoll.kz/kaztoll-enterprise-back
+
+   - name: Deploy kaztoll-enterprise-back container
+     containers.podman.podman_container:
+       name: kaztoll-enterprise-back
+       image: registry.k10.kaztoll.kz/kaztoll-enterprise-back
+       ports:
+         - "3000:3000"
+       network:
+         - bridge0
+       ip: 192.168.89.10
+       restart_policy: always
