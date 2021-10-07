@@ -1,7 +1,7 @@
 
 FROM registry.k10.kaztoll.kz/node:14-alpine3.12 AS dist
 COPY package.json yarn.lock package-lock.json ./
-COPY . ./
+#COPY . ./
 RUN yarn install
 RUN yarn build:prod
 
