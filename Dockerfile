@@ -30,6 +30,9 @@
 FROM registry.k10.kaztoll.kz/node:14-alpine3.12
 ENV NODE_ENV=production
 ADD . /usr/src/app
+COPY package.json ./
+COPY yarn.lock ./
+COPY package-lock.json ./
 RUN yarn install --prod --offline && \ 
     rm -rf .yarn_mirror && \
     mv node_modules /tmp
