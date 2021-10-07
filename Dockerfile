@@ -4,7 +4,7 @@ COPY package.json ./
 COPY yarn.lock ./
 COPY package-lock.json ./
 RUN yarn install
-COPY ./src ./src
+COPY . ./src
 RUN yarn build:prod
 
 FROM registry.k10.kaztoll.kz/node:14-alpine3.12 AS node_modules
