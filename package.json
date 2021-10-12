@@ -10,7 +10,7 @@
         "postbuild:prod": "copyfiles --up 1 src/**/*.json dist",
         "start:hmr": "node dist/main.hmr.ts",
         "start:dev": "ts-node src/main.ts",
-        "start:prod": "node dist/main.js",
+        "start:prod": "node dist/src/main.js",
         "typeorm": "ts-node node_modules/typeorm/cli.js  -f ormconfig",
         "migration:generate": "yarn run typeorm migration:generate -d src/migrations -n new_entity",
         "migration:create": "yarn run typeorm migration:create -d src/migrations -n",
