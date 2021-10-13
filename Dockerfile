@@ -5,7 +5,7 @@ RUN yarn install
 COPY . ./
 RUN yarn install
 RUN yarn build:prod
-
+RUN yarn 
 
 FROM registry.k10.kaztoll.kz/node:14-alpine3.12 AS node_modules
 COPY . ./
