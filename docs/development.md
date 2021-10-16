@@ -37,11 +37,11 @@ yarn install
 Before start install PostgreSQL and fill correct configurations in `.development.env` file
 
 ```env
-DB_HOST=localhost
+DB_HOST=10.0.124.132
 DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=postgres
-DB_DATABASE=nest_boilerplate
+DB_USERNAME=kaztoll_user
+DB_PASSWORD=VW9z7FNcAv
+DB_DATABASE=kaztoll_enterprise
 ```
 
 Some helper script to work with database
