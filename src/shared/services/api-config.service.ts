@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
@@ -7,7 +7,9 @@ import { SnakeNamingStrategy } from '../../snake-naming.strategy';
 
 @Injectable()
 export class ApiConfigService {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) {
+    Logger.log(JSON.stringify(this.typeOrmConfig), 'DB_ENVIRONMENTS');
+  }
 
   get isDevelopment(): boolean {
     return this.nodeEnv === 'development';
