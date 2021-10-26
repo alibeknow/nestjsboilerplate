@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import { UserSubscriber } from '../../entity-subscribers/user-subscriber';
 import { SnakeNamingStrategy } from '../../snake-naming.strategy';
 
 @Injectable()
@@ -88,6 +87,7 @@ export class ApiConfigService {
         return migration as string;
       });
     }
+    Logger.warn;
     return {
       entities,
       migrations,
@@ -98,7 +98,6 @@ export class ApiConfigService {
       username: this.getString('DB_USERNAME'),
       password: this.getString('DB_PASSWORD'),
       database: this.getString('DB_DATABASE'),
-      subscribers: [UserSubscriber],
       migrationsRun: true,
       logging: this.getBoolean('ENABLE_ORMLOGS', this.isDevelopment),
       namingStrategy: new SnakeNamingStrategy(),

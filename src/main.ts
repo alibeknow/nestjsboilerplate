@@ -1,11 +1,11 @@
 import {
   ClassSerializerInterceptor,
   HttpStatus,
+  Logger,
   UnprocessableEntityException,
   ValidationPipe,
 } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
-import { Transport } from '@nestjs/microservices';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import compression from 'compression';
@@ -63,15 +63,16 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   );
 
   const configService = app.select(SharedModule).get(ApiConfigService);
-
-  // only start nats if it is enabled
-
-  await app.startAllMicroservicesAsync();
-
   if (configService.documentationEnabled) {
     setupSwagger(app);
   }
-
+  Logger.log(configService.appConfig.port, 'appConfig');
+  Logger.log(JSON.stringify(configService.authConfig), 'authConfig');
+  Logger.log(JSON.stringify(configService.typeOrmConfig), 'typeOrmConfig');
+  Logger.log(
+    JSON.stringify(configService.documentationEnabled),
+    'documentationEnabled',
+  );
   const port = configService.appConfig.port;
   await app.listen(port);
 
