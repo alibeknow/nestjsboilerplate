@@ -9,22 +9,22 @@
        name: kaztoll-enterprise-back
      register: result
 
-#   - name: Stop a container kaztoll-enterprise-back
-#     containers.podman.podman_container:
-#       name: kaztoll-enterprise-back
-#       state: stopped
-##     when: result.exists
+   - name: Stop a container kaztoll-enterprise-back
+     containers.podman.podman_container:
+       name: kaztoll-enterprise-back
+       state: stopped
+#     when: result.exists
 
-#   - name: Remove container
-#     containers.podman.podman_container:
-#       name: kaztoll-enterprise-back
-#       state: absent
-##     when: result.exists
+   - name: Remove container
+     containers.podman.podman_container:
+       name: kaztoll-enterprise-back
+       state: absent
+#     when: result.exists
 
-#   - name: kaztoll-enterprise-back image remove
-#     containers.podman.podman_image:
-#       state: absent
-#       name: registry.k10.kaztoll.kz/kaztoll-enterprise-back
+   - name: kaztoll-enterprise-back image remove
+     containers.podman.podman_image:
+       state: absent
+       name: registry.k10.kaztoll.kz/kaztoll-enterprise-back
 
    - name: Deploy kaztoll-enterprise-back container
      containers.podman.podman_container:
@@ -33,11 +33,21 @@
        ports:
          - "3000:3000"
        env:
+#       Database connection, username, password
         DB_HOST="10.0.124.132"
         DB_PORT="5432"
         DB_USERNAME="kaztoll_user"
         DB_PASSWORD="VW9z7FNcAv"
         DB_DATABASE="kaztoll_enterprise"   
+	PORT="3000"
+        JWT_SECRET_KEY="rxPhglGJWPlOW596"
+        JWT_EXPIRATION_TIME="3600"
+        ENABLE_ORMLOGS="true"
+        ENABLE_DOCUMENTATION="true"
+#       External Services
+        LEGAL_ACCOUNT_URL="http://10.0.89.10:8096/api/legal-account"
+        LEGAL_ACCOUNT_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        SIGNATURE_VERIFICATION_URL="http://localhost:14579"
        network:
          - bridge0
        ip: 192.168.89.10
