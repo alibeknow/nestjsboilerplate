@@ -21,9 +21,6 @@ COPY --from=dist dist /usr/src/app/dist
 COPY --from=node_modules node_modules  /usr/src/app/node_modules
 COPY . /usr/src/app
 ##### Added string ####
-RUN yarn global add gulp && \
-    npm install && \
-    yarn build && \
-    yarn cache clean
+RUN yarn install 
 CMD [ "yarn", "start" ]
 EXPOSE 3000
