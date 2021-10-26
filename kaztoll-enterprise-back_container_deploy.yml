@@ -39,11 +39,11 @@
         DB_USERNAME="kaztoll_user"
         DB_PASSWORD="VW9z7FNcAv"
         DB_DATABASE="kaztoll_enterprise"   
-	PORT="3000"
         JWT_SECRET_KEY="rxPhglGJWPlOW596"
         JWT_EXPIRATION_TIME="3600"
         ENABLE_ORMLOGS="true"
         ENABLE_DOCUMENTATION="true"
+        PORT="3000"
 #       External Services
         LEGAL_ACCOUNT_URL="http://10.0.89.10:8096/api/legal-account"
         LEGAL_ACCOUNT_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
