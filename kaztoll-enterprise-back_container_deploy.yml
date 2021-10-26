@@ -33,7 +33,6 @@
        ports:
          - "3000:3000"
        env:
-#       Database connection, username, password
         DB_HOST="10.0.124.132"
         DB_PORT="5432"
         DB_USERNAME="kaztoll_user"
@@ -44,7 +43,6 @@
         ENABLE_ORMLOGS="true"
         ENABLE_DOCUMENTATION="true"
         PORT="3000"
-#       External Services
         LEGAL_ACCOUNT_URL="http://10.0.89.10:8096/api/legal-account"
         LEGAL_ACCOUNT_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
         SIGNATURE_VERIFICATION_URL="http://localhost:14579"
