@@ -5,3 +5,11 @@ db-data
 .vuepress
 .vscode
 docs
+Dockerfile.v3
+docker_pull_push.yml
+kaztoll-enterprise-back_container_deploy.yml
+Jenkinsfile
+Jenkinsfile.v1
+hosts.inv
+Dockerfile
+
