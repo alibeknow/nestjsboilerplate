@@ -12,4 +12,5 @@ Jenkinsfile
 Jenkinsfile.v1
 hosts.inv
 Dockerfile
-
+.dockerignore
+docker-compose.yml
