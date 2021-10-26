@@ -1,11 +1,9 @@
 
 FROM registry.k10.kaztoll.kz/node:14-alpine3.12 AS dist
 COPY package.json yarn.lock package-lock.json ./
-RUN yarn install
 COPY . ./
 RUN yarn install
 RUN yarn build:prod
-RUN yarn 
 
 FROM registry.k10.kaztoll.kz/node:14-alpine3.12 AS node_modules
 COPY . ./
@@ -21,6 +19,5 @@ COPY --from=dist dist /usr/src/app/dist
 COPY --from=node_modules node_modules  /usr/src/app/node_modules
 COPY . /usr/src/app
 ##### Added string ####
-RUN yarn install 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "run", "start:prod" ]
 EXPOSE 3000
