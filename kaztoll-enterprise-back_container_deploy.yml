@@ -32,6 +32,20 @@
        image: registry.k10.kaztoll.kz/kaztoll-enterprise-back
        ports:
          - "3000:3000"
+       env:
+        DB_HOST="10.0.124.132"
+        DB_PORT="5432"
+        DB_USERNAME="kaztoll_user"
+        DB_PASSWORD="VW9z7FNcAv"
+        DB_DATABASE="kaztoll_enterprise"   
+        JWT_SECRET_KEY="rxPhglGJWPlOW596"
+        JWT_EXPIRATION_TIME="3600"
+        ENABLE_ORMLOGS="true"
+        ENABLE_DOCUMENTATION="true"
+        PORT="3000"
+        LEGAL_ACCOUNT_URL="http://10.0.89.10:8096/api/legal-account"
+        LEGAL_ACCOUNT_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        SIGNATURE_VERIFICATION_URL="http://localhost:14579"
        network:
          - bridge0
        ip: 192.168.89.10
