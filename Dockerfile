@@ -5,9 +5,9 @@ COPY . /usr/src/app
 COPY package.json yarn.lock package-lock.json ./
 
 RUN npm install
-RUN npm run build:prod
-CMD npm run start:prod 
-#EXPOSE 3000
+#RUN npm run build:prod
+CMD npm run start:dev 
+EXPOSE 3000
 
 
 
