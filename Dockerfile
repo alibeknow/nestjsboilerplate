@@ -20,6 +20,6 @@ COPY --from=dist dist /usr/src/app/dist
 COPY --from=node_modules node_modules  /usr/src/app/node_modules
 COPY . /usr/src/app
 #CMD [ "yarn", "start:prod" ]
-RUN yarn run build:prod
+RUN npm run build:prod
 CMD yarn run start:prod 
 EXPOSE 3000
