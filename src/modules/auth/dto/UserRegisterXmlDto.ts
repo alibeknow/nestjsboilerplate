@@ -11,21 +11,9 @@ import {
 import { Column } from 'typeorm';
 
 import { CompanyType } from '../../../common/constants/company-type';
-import { Trim } from '../../../decorators/transforms.decorator';
 import { SignatureDto } from '../../signature/dto/signatureDto';
 
 export class UserRegisterXmlDto {
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @Trim()
-  readonly firstName: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @Trim()
-  readonly lastName: string;
   @ApiProperty()
   @Column()
   @IsString()
@@ -40,10 +28,6 @@ export class UserRegisterXmlDto {
   @IsEmail()
   @IsOptional()
   email: string;
-  @ApiProperty()
-  @Column()
-  @IsOptional()
-  middleName: string;
 
   @ApiProperty()
   @IsNotEmpty()
