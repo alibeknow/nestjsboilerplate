@@ -14,7 +14,7 @@ RUN yarn install
 
 FROM registry.k10.kaztoll.kz/node:14-alpine3.12
 RUN mkdir -p /usr/src/app
-RUN apk add net-tools
+RUN apk add net-tools telnet
 WORKDIR /usr/src/app
 COPY --from=dist dist /usr/src/app/dist
 COPY --from=node_modules node_modules  /usr/src/app/node_modules
