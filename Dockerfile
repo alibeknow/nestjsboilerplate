@@ -7,7 +7,7 @@ COPY package.json yarn.lock package-lock.json ./
 RUN npm install
 RUN npm run build:prod
 CMD npm run start:prod 
-EXPOSE 3000
+#EXPOSE 3000
 
 
 
