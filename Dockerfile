@@ -19,4 +19,4 @@ RUN npm install --production
 COPY . .
 CMD npm run start:prod
 
-#EXPOSE 3000
+EXPOSE 3000
