@@ -128,4 +128,7 @@ export class ApiConfigService {
   get signatureUrl(): string {
     return this.getString('SIGNATURE_VERIFICATION_URL');
   }
+  get mailUrl(): string {
+    return this.getString('MAIL_URL');
+  }
 }
