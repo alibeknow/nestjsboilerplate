@@ -1,6 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { ApiConfigService } from '../../shared/services/api-config.service';
 import { CompanyRepository } from '../company/company.repository';
 import { DocumentModule } from '../document/document.module';
 import { IbanModule } from '../iban/iban.module';
@@ -15,7 +16,7 @@ import { SignatureService } from './signature.service';
     IbanModule,
   ],
   controllers: [SignatureController],
-  providers: [SignatureService],
+  providers: [SignatureService, ApiConfigService],
   exports: [SignatureService],
 })
 export class SignatureModule {}

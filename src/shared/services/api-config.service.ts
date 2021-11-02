@@ -87,7 +87,6 @@ export class ApiConfigService {
         return migration as string;
       });
     }
-    Logger.warn;
     return {
       entities,
       migrations,
@@ -119,5 +118,14 @@ export class ApiConfigService {
     return {
       port: this.getString('PORT'),
     };
+  }
+  get frontRestUrl(): any {
+    return {
+      url: this.getString('LEGAL_ACCOUNT_URL'),
+      secret: this.getString('LEGAL_ACCOUNT_TOKEN'),
+    };
+  }
+  get signatureUrl(): string {
+    return this.getString('SIGNATURE_VERIFICATION_URL');
   }
 }

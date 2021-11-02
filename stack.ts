@@ -32,3 +32,8 @@ class Sort {
 const mySort=new Sort();
 
 mySort.selectionSort([5,3,6,2,10])
+
+
+let asd='yikes';
+asd[0]='l'
+console.log(asd)

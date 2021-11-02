@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
+import { ApiConfigService } from '../../shared/services/api-config.service';
 import type { SignatureDto } from './dto/signatureDto';
 import type { ISignature } from './interfaces/IResponseSignature';
 import { SignatureRepository } from './repository/signature.repository';
 
 @Injectable()
 export class SignatureService {
-  constructor(public readonly signatureRepository: SignatureRepository) {}
+  constructor(
+    public readonly signatureRepository: SignatureRepository,
+    public readonly configService: ApiConfigService,
+  ) {}
 
   async verifySignature(signatureData: SignatureDto) {
     const headers = {
@@ -16,7 +20,7 @@ export class SignatureService {
     const {
       data: { result },
     } = await axios.post<ISignature>(
-      process.env.SIGNATURE_VERIFICATION_URL,
+      this.configService.signatureUrl,
       signatureData,
       {
         headers,

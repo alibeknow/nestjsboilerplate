@@ -1,11 +1,11 @@
 import {
-  BadRequestException,
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
-  Req,
+  Query,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 
@@ -13,7 +13,7 @@ import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
 import { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import { IbanService } from './iban.service';
-
+import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
 @Controller('iban')
 export class IbanController {
   constructor(public readonly ibanService: IbanService) {}
@@ -25,8 +25,19 @@ export class IbanController {
     description: 'Create iban in external service',
     type: IbanAccountServiceDto,
   })
-  async verifySignature(@Body() ibanAccountDto: IbanAccountServiceDto) {
-    const result = await this.ibanService.createIbanAccount(ibanAccountDto);
-    return result;
+  createIban(@Body() ibanAccountDto: IbanAccountServiceDto) {
+    return this.ibanService.createIbanAccount(ibanAccountDto);
+  }
+  @Get()
+  @Auth(RoleType.USER)
+  @HttpCode(HttpStatus.OK)
+  searchBin(@Query('xin') bin: string): Promise<ISearchAccountResponse> {
+    return this.ibanService.searchAccountByBin(bin);
+  }
+  @Post('setMain')
+  @Auth(RoleType.USER)
+  @HttpCode(HttpStatus.ACCEPTED)
+  setMain(@Query('iban') iban: string, @Query('bin') bin: string) {
+    return this.ibanService.setMainAccount(iban, bin);
   }
 }

@@ -1,34 +1,90 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 
+import { ApiConfigService } from '../../shared/services/api-config.service';
+import type { CompanyEntity } from '../company/company.entity';
 import { CompanyRepository } from '../company/company.repository';
 import type { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import type { ICreateIbanAccount } from './interfaces/ICreateIbanAccount';
+import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
+import { AccountEntity } from './repository/account.entity';
+import { AccountRepository } from './repository/account.repository';
 
 @Injectable()
 export class IbanService {
-  constructor(public readonly companyRepository: CompanyRepository) {}
+  url: string;
+  secret: string;
+  constructor(
+    public readonly companyRepository: CompanyRepository,
+    public readonly accountRepository: AccountRepository,
+    public apiConfigService: ApiConfigService,
+  ) {
+    const result = this.apiConfigService.frontRestUrl;
+    this.url = result.url;
+    this.secret = result.secret;
+  }
   async createIbanAccount(
     ibanAccountDto: IbanAccountServiceDto,
-  ): Promise<ICreateIbanAccount> {
+  ): Promise<ICreateIbanAccount | ISearchAccountResponse> {
     const headers = {
       'Content-Type': 'application/json',
     };
-    try {
-      const { data } = await axios.post<ICreateIbanAccount>(
-        'http://10.0.89.10:8096/api/legal-account/create?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-        ibanAccountDto,
-        {
-          headers,
-        },
-      );
-      await this.companyRepository.update(
-        { bin: ibanAccountDto.xin },
-        { iban: data.answer.accountNumber },
-      );
-      return data;
-    } catch (error) {
-      console.error(error);
+    const searchResult = await this.searchAccountByBin(ibanAccountDto.xin);
+    if (searchResult.totalElements <= 0) {
+      try {
+        const { data } = await axios.post<ICreateIbanAccount>(
+          `${this.url}/create?token=${this.secret}`,
+          ibanAccountDto,
+          {
+            headers,
+          },
+        );
+        const company = await this.companyRepository.findOne({
+          bin: ibanAccountDto.xin,
+        });
+        const date = new Date();
+        const iban = new AccountEntity();
+        iban.iban = data.answer.accountNumber;
+        iban.name = date.getUTCDate().toString();
+        iban.isMain = true;
+        iban.isActive = true;
+        company.accounts = [iban];
+        await this.companyRepository.save(company);
+
+        return data;
+      } catch (error) {
+        Logger.error(error);
+      }
     }
+    return searchResult;
+  }
+
+  async getMainAccount(bin: string): Promise<CompanyEntity> {
+    const queryBuilder = this.companyRepository.createQueryBuilder('company');
+    const result = await queryBuilder
+      .innerJoinAndSelect(
+        'company.accounts',
+        'accounts',
+        '"accounts"."isMain" =true',
+      )
+      .andWhere('company.bin::bin', { bin })
+      .getOne();
+    return result;
+  }
+
+  async setMainAccount(iban: string, bin: string): Promise<string> {
+    await this.accountRepository.update(
+      { company: { bin } },
+      { isMain: false },
+    );
+    await this.accountRepository.update({ iban }, { isMain: true });
+    return 'OK';
+  }
+
+  async searchAccountByBin(bin: string): Promise<ISearchAccountResponse> {
+    const { data } = await axios.get<ISearchAccountResponse>(
+      `${this.url}/searchByXin?token=${this.secret}&xin=${bin}`,
+    );
+    return data;
   }
 }

@@ -15,6 +15,7 @@ import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
+import { ApiConfigService } from '../../shared/services/api-config.service';
 import { DocumentService } from '../document/document.service';
 import { IbanService } from '../iban/iban.service';
 import { SignatureDto } from './dto/signatureDto';

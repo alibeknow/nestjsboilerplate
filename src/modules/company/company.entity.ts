@@ -3,6 +3,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { CompanyType } from '../../common/constants/company-type';
 import { DocumentEntity } from '../document/document.entity';
+import { AccountEntity } from '../iban/repository/account.entity';
 import { UserEntity } from '../user/user.entity';
 import { CompanyDto } from './dto/company-dto';
 
@@ -28,6 +29,9 @@ export class CompanyEntity extends AbstractEntity<CompanyDto> {
 
   @OneToMany((type) => DocumentEntity, (document) => document.company) // note: we will create author property in the Photo class below
   documents: DocumentEntity[];
+
+  @OneToMany((type) => AccountEntity, (account) => account.company) // note: we will create author property in the Photo class below
+  accounts: AccountEntity[];
 
   dtoClass = CompanyDto;
 }

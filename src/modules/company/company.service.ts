@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { statSync } from 'fs';
 
 import type { PageDto } from '../../common/dto/page.dto';
 import type { CompanyEntity } from './company.entity';
 import { CompanyRepository } from './company.repository';
-import type { CompanyDto } from './dto/company-dto';
 import type { CompanyPageOptionsDto } from './dto/companyPageOptionsDto';
 import type { CreateCompanyDto } from './dto/createCompany.dto';
 
