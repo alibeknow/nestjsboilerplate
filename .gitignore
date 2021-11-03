@@ -75,3 +75,4 @@ mongo
 
 # Docker compose ganarated files
 db-data
+.env
