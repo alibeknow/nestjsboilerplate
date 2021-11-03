@@ -11,6 +11,7 @@ import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
 import { DocumentModule } from './modules/document/document.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
+import { LoggerModule } from './modules/logger/logger.module';
 import { SignatureModule } from './modules/signature/signature.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
@@ -41,7 +42,7 @@ import { SharedModule } from './shared/shared.module';
     UserModule,
     DocumentModule,
     SignatureModule,
-
+    LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

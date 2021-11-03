@@ -13,10 +13,7 @@ export class LogsService {
   ) {}
 
   async createLog(log: LogDto) {
-    const newLog = this.logsRepository.create();
-    newLog.context = log.context;
-    newLog.message = log.message;
-    newLog.level = log.level;
+    const newLog = this.logsRepository.create(log);
     await this.logsRepository.save(newLog, {
       data: {
         isCreatingLogs: true,

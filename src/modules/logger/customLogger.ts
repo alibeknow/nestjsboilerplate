@@ -6,7 +6,7 @@ import { getLogLevels } from '../../providers/loglevel.provider';
 import { LogsService } from './logs.service';
 
 @Injectable()
-export class CustomLogger extends ConsoleLogger {
+class CustomLogger extends ConsoleLogger {
   private readonly logsService: LogsService;
 
   constructor(
@@ -25,15 +25,6 @@ export class CustomLogger extends ConsoleLogger {
     this.logsService = logsService;
   }
 
-  async log(message: string, context?: string) {
-    Reflect.apply(super.log, this, [message, context]);
-
-    await this.logsService.createLog({
-      message,
-      context,
-      level: 'log',
-    });
-  }
   async error(message: string, stack?: string, context?: string) {
     Reflect.apply(super.error, this, [message, stack, context]);
 
@@ -52,22 +43,17 @@ export class CustomLogger extends ConsoleLogger {
       level: 'error',
     });
   }
-  async debug(message: string, context?: string) {
+
+  log(message: any, ...optionalParams: any[]) {}
+  public async logAction(message: string, context?: string) {
     Reflect.apply(super.debug, this, [message, context]);
 
     await this.logsService.createLog({
       message,
       context,
-      level: 'error',
-    });
-  }
-  async verbose(message: string, context?: string) {
-    Reflect.apply(super.debug, this, [message, context]);
-
-    await this.logsService.createLog({
-      message,
-      context,
-      level: 'error',
+      level: 'Action',
     });
   }
 }
+
+export default CustomLogger;

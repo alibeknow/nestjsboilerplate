@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   Post,
   Query,
   Req,
@@ -12,12 +13,13 @@ import {
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
+import { LOGACTION } from '../../common/constants/LOG_ACTION';
 import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
-import { ApiConfigService } from '../../shared/services/api-config.service';
 import { DocumentService } from '../document/document.service';
 import { IbanService } from '../iban/iban.service';
+import CustomLogger from '../logger/customLogger';
 import { SignatureDto } from './dto/signatureDto';
 import { SignatureService } from './signature.service';
 
@@ -28,7 +30,9 @@ export class SignatureController {
     public readonly signatureService: SignatureService,
     public readonly documentService: DocumentService,
     public readonly ibanService: IbanService,
+    public readonly myLogger: CustomLogger,
   ) {}
+
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
@@ -78,7 +82,10 @@ export class SignatureController {
         document: document[0].id,
         fio: subject.commonName,
       });
-
+      await this.myLogger.logAction(
+        JSON.stringify(subject),
+        LOGACTION.USERSIGNED,
+      );
       return changedDoc;
     }
     return BadRequestException.createBody({
@@ -125,6 +132,10 @@ export class SignatureController {
         contractNumber: '№135/20 от 11.07.2021',
       });
 
+      await this.myLogger.logAction(
+        JSON.stringify(subject),
+        LOGACTION.OPERATORSIGNED,
+      );
       return changedDoc;
     }
     return BadRequestException.createBody({

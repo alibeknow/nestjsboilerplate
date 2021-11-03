@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { CustomLogger } from './customLogger';
+import CustomLogger from './customLogger';
 import { Log } from './log.entity';
 import { LogsService } from './logs.service';
 

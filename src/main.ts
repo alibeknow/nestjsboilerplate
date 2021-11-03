@@ -33,7 +33,8 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     new ExpressAdapter(),
     { cors: true },
   );
-  app.use(app.get(CustomLogger));
+  app.useLogger(app.get(CustomLogger));
+
   app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   app.use(helmet());
   app.use(

@@ -1,8 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-import { AbstractDto } from '../../../common/dto/abstract.dto';
-export class LogDto extends AbstractDto {
+export class LogDto {
   @ApiPropertyOptional()
   @IsString()
   message: string;
