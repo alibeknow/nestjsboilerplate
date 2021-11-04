@@ -7,7 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
@@ -16,6 +16,7 @@ import { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import { IbanService } from './iban.service';
 import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
 @Controller('iban')
+@ApiTags('iban')
 export class IbanController {
   constructor(public readonly ibanService: IbanService) {}
   @Post()
