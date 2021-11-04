@@ -41,10 +41,10 @@ export class IbanController {
   setMain(@Query('iban') iban: string, @Query('bin') bin: string) {
     return this.ibanService.setMainAccount(iban, bin);
   }
-  @Post('setMain')
+  @Post('create')
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.ACCEPTED)
   createAccounts(@Body() accounts: AccountDto[]) {
-    return this.ibanService.createIbanAccount(accounts);
+    return this.ibanService.addAccounts(accounts);
   }
 }
