@@ -90,11 +90,6 @@ export class SignatureController {
         subject: 'Вы  подписали документ',
         content: EmailTemplate.SIGNED,
       });
-      await this.mailService.sendMail({
-        email: request.user.email,
-        subject: 'Вы  подписали документ',
-        content: EmailTemplate.SIGNEDOPERATOR,
-      });
       return changedDoc;
     }
     return BadRequestException.createBody({

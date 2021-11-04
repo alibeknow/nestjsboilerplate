@@ -4,6 +4,7 @@ import axios from 'axios';
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import type { CompanyEntity } from '../company/company.entity';
 import { CompanyRepository } from '../company/company.repository';
+import type { AccountDto } from './dto/account-entity.dto';
 import type { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import type { ICreateIbanAccount } from './interfaces/ICreateIbanAccount';
 import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
@@ -86,5 +87,10 @@ export class IbanService {
       `${this.url}/searchByXin?token=${this.secret}&xin=${bin}`,
     );
     return data;
+  }
+  async addAccounts(account: AccountDto[]) {
+    const accounts = this.accountRepository.create(account);
+    await this.accountRepository.save(accounts);
+    return accounts;
   }
 }
