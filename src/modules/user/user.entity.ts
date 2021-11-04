@@ -4,6 +4,7 @@ import { AbstractEntity } from '../../common/abstract.entity';
 import { RoleType } from '../../common/constants/role-type';
 import { VirtualColumn } from '../../decorators/virtual-column.decorator';
 import { CompanyEntity } from '../company/company.entity';
+import { LogEntity } from '../logger/log.entity';
 import { UserDto } from './dto/user-dto';
 
 @Entity({ name: 'users' })
@@ -35,5 +36,8 @@ export class UserEntity extends AbstractEntity<UserDto> {
     eager: true,
   })
   company: CompanyEntity;
+
+  @OneToMany((type) => LogEntity, (log) => log.user) // note: we will create author property in the Photo class below
+  logs: LogEntity[];
   dtoClass = UserDto;
 }

@@ -1,9 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
-
-import { AbstractDto } from '../../../common/dto/abstract.dto';
-
-export class SendEmail extends AbstractDto {
+import { IsEmail, IsEnum, IsString } from 'class-validator';
+export class SendEmail {
   @ApiPropertyOptional()
   @IsString()
   @IsEmail()
@@ -14,6 +11,12 @@ export class SendEmail extends AbstractDto {
   subject: string;
 
   @ApiPropertyOptional()
-  @IsString()
-  content?: boolean;
+  content: EmailTemplate;
+}
+
+export enum EmailTemplate {
+  SIGNED = 'SIGNED',
+  SIGNEDOPERATOR = 'SIGNEDOPERATOR',
+  SIGNEDCOMPLETE = 'SIGNEDCOMPLETE',
+  SIGNEDREJECTED = 'SIGNEDREJECTED',
 }

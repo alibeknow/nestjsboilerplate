@@ -33,7 +33,6 @@ export class CompanyController {
     @Query(new ValidationPipe({ transform: true }))
     pageOptionsDto: CompanyPageOptionsDto,
   ): Promise<PageDto<CompanyEntity>> {
-    console.log(pageOptionsDto);
     return this.companyService.findAll(pageOptionsDto);
   }
 }

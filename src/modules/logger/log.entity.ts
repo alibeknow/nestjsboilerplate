@@ -2,11 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
-export class Log {
+import { UserEntity } from '../user/user.entity';
+
+@Entity({ name: 'logs' })
+export class LogEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -18,7 +21,6 @@ export class Log {
 
   @Column()
   public level: string;
-
-  @CreateDateColumn()
-  creationDate: Date;
+  @ManyToOne((type) => UserEntity, (user) => user.logs)
+  user: UserEntity;
 }

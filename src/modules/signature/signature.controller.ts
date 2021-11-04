@@ -9,17 +9,19 @@ import {
   Post,
   Query,
   Req,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
-import { LOGACTION } from '../../common/constants/LOG_ACTION';
 import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
+import { LoggerInterceptor } from '../../interceptors/logger-interceptor.service';
 import { DocumentService } from '../document/document.service';
 import { IbanService } from '../iban/iban.service';
-import CustomLogger from '../logger/customLogger';
+import { EmailTemplate } from '../mail/dto/sendmail.dto';
+import { MailService } from '../mail/mail.service';
 import { SignatureDto } from './dto/signatureDto';
 import { SignatureService } from './signature.service';
 
@@ -30,7 +32,7 @@ export class SignatureController {
     public readonly signatureService: SignatureService,
     public readonly documentService: DocumentService,
     public readonly ibanService: IbanService,
-    public readonly myLogger: CustomLogger,
+    public readonly mailService: MailService,
   ) {}
 
   @Get()
@@ -52,6 +54,7 @@ export class SignatureController {
   @Auth(RoleType.USER)
   @Post('document')
   @HttpCode(HttpStatus.OK)
+  @UseInterceptors(LoggerInterceptor)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Verify document Signature XML',
@@ -82,10 +85,16 @@ export class SignatureController {
         document: document[0].id,
         fio: subject.commonName,
       });
-      await this.myLogger.logAction(
-        JSON.stringify(subject),
-        LOGACTION.USERSIGNED,
-      );
+      await this.mailService.sendMail({
+        email: request.user.email,
+        subject: 'Вы  подписали документ',
+        content: EmailTemplate.SIGNED,
+      });
+      await this.mailService.sendMail({
+        email: request.user.email,
+        subject: 'Вы  подписали документ',
+        content: EmailTemplate.SIGNEDOPERATOR,
+      });
       return changedDoc;
     }
     return BadRequestException.createBody({
@@ -93,7 +102,9 @@ export class SignatureController {
       statusCode: 416,
     });
   }
+
   @Auth(RoleType.ADMIN)
+  @UseInterceptors(LoggerInterceptor)
   @Post('operator')
   @HttpCode(HttpStatus.OK)
   @Transactional()
@@ -132,10 +143,6 @@ export class SignatureController {
         contractNumber: '№135/20 от 11.07.2021',
       });
 
-      await this.myLogger.logAction(
-        JSON.stringify(subject),
-        LOGACTION.OPERATORSIGNED,
-      );
       return changedDoc;
     }
     return BadRequestException.createBody({

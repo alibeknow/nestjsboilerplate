@@ -2,13 +2,13 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import CustomLogger from './customLogger';
-import { Log } from './log.entity';
+import { CustomLogger } from './customLogger';
+import { LogEntity } from './log.entity';
 import { LogsService } from './logs.service';
 @Global()
 @Module({
-  imports: [ConfigModule, TypeOrmModule.forFeature([Log])],
+  imports: [ConfigModule, TypeOrmModule.forFeature([LogEntity])],
   providers: [CustomLogger, LogsService],
-  exports: [CustomLogger],
+  exports: [CustomLogger, LogsService],
 })
 export class LoggerModule {}
