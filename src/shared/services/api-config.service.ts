@@ -131,4 +131,7 @@ export class ApiConfigService {
   get mailUrl(): string {
     return this.getString('MAIL_URL');
   }
+  get contractUrl(): string {
+    return this.getString('CONTRACT_URL');
+  }
 }

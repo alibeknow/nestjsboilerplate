@@ -11,7 +11,8 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
-import type { AccountDto } from './dto/account-entity.dto';
+import { AccountDto } from './dto/account-entity.dto';
+import { ArrayAccounts } from './dto/accounts.array.dto';
 import { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import { IbanService } from './iban.service';
 import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
@@ -39,13 +40,13 @@ export class IbanController {
   @Post('setMain')
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.ACCEPTED)
-  setMain(@Query('iban') iban: string, @Query('bin') bin: string) {
-    return this.ibanService.setMainAccount(iban, bin);
+  setMain(@Query('iban') iban: string, @Query('bin') companyId: string) {
+    return this.ibanService.setMainAccount(iban, companyId);
   }
   @Post('create')
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.ACCEPTED)
-  createAccounts(@Body() accounts: AccountDto[]) {
+  createAccounts(@Body() accounts: ArrayAccounts) {
     return this.ibanService.addAccounts(accounts);
   }
 }

@@ -10,7 +10,7 @@ export class AccountEntity extends AbstractEntity<AccountDto> {
   name: string;
   @Column({ nullable: true })
   iban: string;
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   isMain: boolean;
 
   @Column({ nullable: true })

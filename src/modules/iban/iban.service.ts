@@ -5,6 +5,7 @@ import { ApiConfigService } from '../../shared/services/api-config.service';
 import type { CompanyEntity } from '../company/company.entity';
 import { CompanyRepository } from '../company/company.repository';
 import type { AccountDto } from './dto/account-entity.dto';
+import type { ArrayAccounts } from './dto/accounts.array.dto';
 import type { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import type { ICreateIbanAccount } from './interfaces/ICreateIbanAccount';
 import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
@@ -73,13 +74,18 @@ export class IbanService {
     return result;
   }
 
-  async setMainAccount(iban: string, bin: string): Promise<string> {
-    await this.accountRepository.update(
-      { company: { bin } },
-      { isMain: false },
+  async setMainAccount(iban: string, companyId: string) {
+    await this.accountRepository
+      .createQueryBuilder()
+      .update()
+      .set({ isMain: false })
+      .where('company_id=:companyId', { companyId })
+      .execute();
+    const result = await this.accountRepository.update(
+      { iban },
+      { isMain: true },
     );
-    await this.accountRepository.update({ iban }, { isMain: true });
-    return 'OK';
+    return result;
   }
 
   async searchAccountByBin(bin: string): Promise<ISearchAccountResponse> {
@@ -88,9 +94,12 @@ export class IbanService {
     );
     return data;
   }
-  async addAccounts(account: AccountDto[]) {
-    const accounts = this.accountRepository.create(account);
-    await this.accountRepository.save(accounts);
+  async addAccounts(account: ArrayAccounts) {
+    const accounts = await this.accountRepository
+      .createQueryBuilder()
+      .insert()
+      .values(account.accounts)
+      .execute();
     return accounts;
   }
 }
