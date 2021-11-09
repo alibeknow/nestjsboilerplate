@@ -39,7 +39,11 @@ export class AuthController {
   ): Promise<LoginPayloadDto> {
     const userEntity = await this.authService.validateLogin(signatureDto);
     const token = await this.authService.createToken(userEntity);
-    return new LoginPayloadDto(userEntity.toDto(), token);
+    return new LoginPayloadDto(
+      userEntity.toDto(),
+      token,
+      userEntity.company.toDto(),
+    );
   }
 
   @Post('operator')
@@ -53,7 +57,11 @@ export class AuthController {
   ): Promise<LoginPayloadDto> {
     const userEntity = await this.authService.validateOperator(userLoginDto);
     const token = await this.authService.createToken(userEntity);
-    return new LoginPayloadDto(userEntity.toDto(), token);
+    return new LoginPayloadDto(
+      userEntity.toDto(),
+      token,
+      userEntity.company.toDto(),
+    );
   }
 
   @Post('register')
@@ -67,7 +75,11 @@ export class AuthController {
   ): Promise<LoginPayloadDto> {
     const createdUser = await this.authService.validateUser(userRegisterDto);
     const token = await this.authService.createToken(createdUser);
-    return new LoginPayloadDto(createdUser.toDto(), token);
+    return new LoginPayloadDto(
+      createdUser.toDto(),
+      token,
+      createdUser.company.toDto(),
+    );
   }
 
   @Get('me')
