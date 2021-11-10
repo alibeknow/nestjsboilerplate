@@ -61,15 +61,15 @@ export class IbanService {
     return searchResult;
   }
 
-  async getMainAccount(bin: string): Promise<CompanyEntity> {
+  async getMainAccount(companyId: string): Promise<CompanyEntity> {
     const queryBuilder = this.companyRepository.createQueryBuilder('company');
     const result = await queryBuilder
       .innerJoinAndSelect(
         'company.accounts',
         'accounts',
-        '"accounts"."isMain" =true',
+        '"accounts"."is_main" =true',
       )
-      .andWhere('company.bin::bin', { bin })
+      .andWhere('company.id = :companyId', { companyId })
       .getOne();
     return result;
   }

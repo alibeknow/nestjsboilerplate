@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Post,
   Query,
+  Req,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -48,5 +49,12 @@ export class IbanController {
   @HttpCode(HttpStatus.ACCEPTED)
   createAccounts(@Body() accounts: ArrayAccounts) {
     return this.ibanService.addAccounts(accounts);
+  }
+  @Get('getmain')
+  @Auth(RoleType.USER)
+  @HttpCode(HttpStatus.OK)
+  getMainAccount(@Req() req) {
+    const companyId = req.user.company.id as string;
+    return this.ibanService.getMainAccount(companyId);
   }
 }
