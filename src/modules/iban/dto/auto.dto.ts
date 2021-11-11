@@ -3,8 +3,8 @@ import { IsNumber, IsString } from 'class-validator';
 
 export class AutoDto {
   @ApiProperty()
-  @IsNumber()
-  accountNumber: number;
+  @IsString()
+  accountNumber: string;
   @ApiProperty()
   @IsString()
   licencePlate: string;
