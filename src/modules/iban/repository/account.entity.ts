@@ -8,7 +8,7 @@ import { AccountDto } from '../dto/account-entity.dto';
 export class AccountEntity extends AbstractEntity<AccountDto> {
   @Column({ nullable: true })
   name: string;
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   iban: string;
   @Column({ type: 'boolean', default: false })
   isMain: boolean;

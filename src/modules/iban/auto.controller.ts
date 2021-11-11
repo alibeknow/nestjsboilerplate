@@ -15,7 +15,6 @@ import { Auth } from '../../decorators/http.decorators';
 import { AutoService } from './auto.service';
 import { AutoDto } from './dto/auto.dto';
 import { AutoListDto } from './dto/autoList.dto';
-import { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
 @Controller('auto')
 @ApiTags('auto')
@@ -26,8 +25,8 @@ export class AutoController {
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Create iban in external service',
-    type: IbanAccountServiceDto,
+    description: 'Create auto in external service',
+    type: AutoDto,
   })
   addAutoAccount(@Body() autoDto: AutoDto) {
     return this.autoService.addAutoAccount(autoDto);
@@ -38,10 +37,10 @@ export class AutoController {
   deleteAutoAccount(@Body() autoDto: AutoDto): Promise<ISearchAccountResponse> {
     return this.autoService.deleteAutoAccount(autoDto);
   }
-  @Get()
+  @Post('getList')
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.OK)
-  listAuto(@Query('accountNumber') autoList: AutoListDto) {
+  listAuto(@Body() autoList: AutoListDto) {
     return this.autoService.getListAutoAccount(autoList);
   }
 }

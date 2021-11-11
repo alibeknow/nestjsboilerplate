@@ -15,6 +15,7 @@ import { Auth } from '../../decorators/http.decorators';
 import { AccountDto } from './dto/account-entity.dto';
 import { ArrayAccounts } from './dto/accounts.array.dto';
 import { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
+import { SetMainDto } from './dto/setMain.dto';
 import { IbanService } from './iban.service';
 import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
 @Controller('iban')
@@ -41,8 +42,8 @@ export class IbanController {
   @Post('setMain')
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.ACCEPTED)
-  setMain(@Query('iban') iban: string, @Query('bin') companyId: string) {
-    return this.ibanService.setMainAccount(iban, companyId);
+  setMain(@Body() setMain: SetMainDto) {
+    return this.ibanService.setMainAccount(setMain);
   }
   @Post('create')
   @Auth(RoleType.USER)

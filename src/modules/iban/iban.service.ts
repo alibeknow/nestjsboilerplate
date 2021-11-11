@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import axios from 'axios';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
@@ -7,6 +7,7 @@ import { CompanyRepository } from '../company/company.repository';
 import type { AccountDto } from './dto/account-entity.dto';
 import type { ArrayAccounts } from './dto/accounts.array.dto';
 import type { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
+import type { SetMainDto } from './dto/setMain.dto';
 import type { ICreateIbanAccount } from './interfaces/ICreateIbanAccount';
 import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
 import { AccountEntity } from './repository/account.entity';
@@ -74,18 +75,21 @@ export class IbanService {
     return result;
   }
 
-  async setMainAccount(iban: string, companyId: string) {
-    await this.accountRepository
+  async setMainAccount(setMain: SetMainDto) {
+    const result = await this.accountRepository
       .createQueryBuilder()
       .update()
       .set({ isMain: false })
-      .where('company_id=:companyId', { companyId })
+      .where('company_id=:companyId', { companyId: setMain.companyId })
       .execute();
-    const result = await this.accountRepository.update(
-      { iban },
+    if (result.affected <= 0) {
+      throw new NotFoundException();
+    }
+    const affected = await this.accountRepository.update(
+      { iban: setMain.iban },
       { isMain: true },
     );
-    return result;
+    return affected;
   }
 
   async searchAccountByBin(bin: string): Promise<ISearchAccountResponse> {
