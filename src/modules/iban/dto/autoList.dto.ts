@@ -6,9 +6,9 @@ export class AutoListDto {
   @IsString()
   accountNumber: string;
   @ApiProperty()
-  @IsString()
+  @IsNumber()
   page = 0;
-  @IsString()
+  @IsNumber()
   @ApiProperty()
   size = 20;
 }

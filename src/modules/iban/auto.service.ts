@@ -59,7 +59,7 @@ export class AutoService {
   async getListAutoAccount(autoDto: AutoListDto) {
     try {
       const { data } = await axios.get(
-        `${this.url}/remove-vehicle?token=${this.secret}&accountNumber=${autoDto.accountNumber}&page=${autoDto.page}&size${autoDto.size}`,
+        `${this.url}/vehicle-list?token=${this.secret}&accountNumber=${autoDto.accountNumber}&page=${autoDto.page}&size=${autoDto.size}`,
       );
       return data;
     } catch (error) {

@@ -7,8 +7,8 @@ import { XMLDto } from '../../signature/dto/xmlDto';
 
 export class AutoDto {
   @ApiProperty()
-  @IsNumber()
-  accountNumber: number;
+  @IsString()
+  accountNumber: string;
   @ApiProperty()
   @IsString()
   licencePlate: string;
