@@ -20,7 +20,7 @@ export class AutoService {
     this.url = result.url;
     this.secret = result.secret;
   }
-  async addAutoAccount(autoDto: AutoDto) {
+  async addAutoAccount(autoDto: Omit<AutoDto, 'signature'>) {
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -38,7 +38,7 @@ export class AutoService {
     }
   }
 
-  async deleteAutoAccount(autoDto: AutoDto) {
+  async deleteAutoAccount(autoDto: Omit<AutoDto, 'signature'>) {
     const headers = {
       'Content-Type': 'application/json',
     };

@@ -42,7 +42,8 @@ export class IbanController {
   @Post('setMain')
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.ACCEPTED)
-  setMain(@Body() setMain: SetMainDto) {
+  setMain(@Body() setMain: SetMainDto, @Req() req) {
+    setMain.companyId = req.user.company.id;
     return this.ibanService.setMainAccount(setMain);
   }
   @Post('create')

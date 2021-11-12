@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { CompanyEntity } from '../company/company.entity';
 import { UserEntity } from '../user/user.entity';
 
 @Entity({ name: 'logs' })
@@ -23,4 +24,7 @@ export class LogEntity {
   public level: string;
   @ManyToOne((type) => UserEntity, (user) => user.logs)
   user: UserEntity;
+
+  @ManyToOne((type) => CompanyEntity, (company) => company.logs)
+  company: CompanyEntity;
 }

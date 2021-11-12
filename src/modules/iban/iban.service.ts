@@ -76,6 +76,18 @@ export class IbanService {
   }
 
   async setMainAccount(setMain: SetMainDto) {
+    const ibanCount = await this.accountRepository.find({
+      where: { company: { id: setMain.companyId }, iban: setMain.iban },
+    });
+    if (ibanCount.length <= 0) {
+      return this.accountRepository.create({
+        company: { id: setMain.companyId },
+        iban: setMain.iban,
+        isActive: true,
+        isMain: true,
+        name: Date.now().toString(),
+      });
+    }
     const result = await this.accountRepository
       .createQueryBuilder()
       .update()
