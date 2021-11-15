@@ -30,13 +30,15 @@ export class IbanController {
     description: 'Create iban in external service',
     type: IbanAccountServiceDto,
   })
-  createIban(@Body() ibanAccountDto: IbanAccountServiceDto) {
+  createIban(@Body() ibanAccountDto: IbanAccountServiceDto, @Req() req) {
+    ibanAccountDto.xin = req.user.company.bin as string;
     return this.ibanService.createIbanAccount(ibanAccountDto);
   }
   @Get()
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.OK)
-  searchBin(@Query('xin') bin: string): Promise<ISearchAccountResponse> {
+  searchBin(@Req() req): Promise<ISearchAccountResponse> {
+    const bin = req.user.company.bin as string;
     return this.ibanService.searchAccountByBin(bin);
   }
   @Post('setMain')
@@ -49,8 +51,8 @@ export class IbanController {
   @Post('create')
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.ACCEPTED)
-  createAccounts(@Body() accounts: ArrayAccounts) {
-    return this.ibanService.addAccounts(accounts);
+  createAccounts(@Body() accounts: ArrayAccounts, @Req() req) {
+    return this.ibanService.addAccounts(accounts, req);
   }
   @Get('getmain')
   @Auth(RoleType.USER)

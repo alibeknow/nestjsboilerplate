@@ -9,6 +9,7 @@ import path from 'path';
 
 import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
+import { IbanModule } from './modules/contract/contract.module';
 import { DocumentModule } from './modules/document/document.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
 import { LoggerModule } from './modules/logger/logger.module';
@@ -43,6 +44,7 @@ import { SharedModule } from './shared/shared.module';
     DocumentModule,
     SignatureModule,
     LoggerModule,
+    IbanModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

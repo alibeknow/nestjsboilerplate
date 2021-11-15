@@ -1,4 +1,11 @@
-import { Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
@@ -18,13 +25,13 @@ export class ContractController {
     type: ContractDto,
     description: 'Document info with access token',
   })
-  GenerateContract(contract: ContractDto): Promise<Buffer> {
+  GenerateContract(contract: ContractDto, @Req() req): Promise<Buffer> {
     return this.contractService.GenerateContract(contract);
   }
   @Post()
   @HttpCode(HttpStatus.OK)
   @Auth(RoleType.ADMIN)
-  SignedContract(contractDto: SignedContractDto): Promise<Buffer> {
-    return this.contractService.SignedContract(contractDto);
+  SignedContract(contractDto: SignedContractDto, @Req() req): Promise<Buffer> {
+    return this.contractService.SignedContract(contractDto, req);
   }
 }

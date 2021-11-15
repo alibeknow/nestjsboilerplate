@@ -2,17 +2,15 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import { AutoController } from '../auto/auto.controller';
 import { CompanyRepository } from '../company/company.repository';
+import { AccountRepository } from '../iban/repository/account.repository';
 import { SignatureModule } from '../signature/signature.module';
 import { SignatureService } from '../signature/signature.service';
-import { IbanController } from './iban.controller';
-import { IbanService } from './iban.service';
-import { AccountRepository } from './repository/account.repository';
-
+import { AutoService } from './auto.service';
 @Module({
-  imports: [TypeOrmModule.forFeature([CompanyRepository, AccountRepository])],
-  controllers: [IbanController],
-  providers: [IbanService, ApiConfigService],
-  exports: [IbanService],
+  imports: [SignatureModule],
+  controllers: [AutoController],
+  providers: [ApiConfigService, AutoService, SignatureService],
 })
-export class IbanModule {}
+export class AutoModule {}

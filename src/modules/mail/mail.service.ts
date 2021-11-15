@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { readFileSync } from 'fs';
+// eslint-disable-next-line unicorn/import-style
 import { resolve } from 'path';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';

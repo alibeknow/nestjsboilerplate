@@ -59,4 +59,7 @@ export class SignedContractDto {
   @ApiPropertyOptional()
   @IsString()
   phone: string;
+
+  @IsString()
+  bin: string;
 }

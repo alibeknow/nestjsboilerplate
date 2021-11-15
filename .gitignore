@@ -71,6 +71,7 @@ out
 gen
 dist
 mongo
+contracts
 
 
 # Docker compose ganarated files

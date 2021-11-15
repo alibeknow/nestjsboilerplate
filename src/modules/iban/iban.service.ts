@@ -110,7 +110,10 @@ export class IbanService {
     );
     return data;
   }
-  async addAccounts(account: ArrayAccounts) {
+  async addAccounts(account: ArrayAccounts, req) {
+    for (let index = 0; index < account.accounts.length; index++) {
+      account.accounts[index].company.id = req.user.company.id;
+    }
     const accounts = await this.accountRepository
       .createQueryBuilder()
       .insert()

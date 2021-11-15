@@ -18,6 +18,7 @@ import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
 import { LoggerInterceptor } from '../../interceptors/logger-interceptor.service';
+import { ContractService } from '../contract/contract.service';
 import { DocumentService } from '../document/document.service';
 import { IbanService } from '../iban/iban.service';
 import { EmailTemplate } from '../mail/dto/sendmail.dto';
@@ -33,6 +34,7 @@ export class SignatureController {
     public readonly documentService: DocumentService,
     public readonly ibanService: IbanService,
     public readonly mailService: MailService,
+    public readonly contractService: ContractService,
   ) {}
 
   @Get()
@@ -108,7 +110,7 @@ export class SignatureController {
     description: 'Verify document Signature XML',
     type: SignatureDto,
   })
-  async signedDocument(@Body() signatureData: SignatureDto) {
+  async signedDocument(@Body() signatureData: SignatureDto, @Req() req: any) {
     const { companyId } = signatureData;
     const { valid, subject } = await this.signatureService.verifySignature(
       signatureData,
@@ -128,14 +130,14 @@ export class SignatureController {
         fio: subject.commonName,
         name: 'clientSignature',
       });
-      const replacedforJson = subject.organization.replace(/(\\")/g, '');
+      const myData = this.contractService.getJson(req);
       const data = await this.ibanService.createIbanAccount({
-        address: 'mockDefaultAddress',
-        companyName: replacedforJson,
-        xin: subject.bin,
-        email: subject.email,
-        mobileNumber: '+777709999999',
-        contractNumber: '№135/20 от 11.07.2021',
+        address: myData.legalAddress,
+        companyName: myData.companyName,
+        xin: myData.bin,
+        email: myData.email,
+        mobileNumber: myData.contractNumber,
+        contractNumber: myData.contractNumber,
       });
 
       return changedDoc;

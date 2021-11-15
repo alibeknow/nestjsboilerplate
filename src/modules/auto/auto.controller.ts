@@ -14,11 +14,11 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
 import { NotValidCertException } from '../../exceptions/not-valid-cert.eception';
+import type { ISearchAccountResponse } from '../iban/interfaces/ISearchAccountResponse';
 import { SignatureService } from '../signature/signature.service';
 import { AutoService } from './auto.service';
 import { AutoDto } from './dto/auto.dto';
 import { AutoListDto } from './dto/autoList.dto';
-import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse';
 @Controller('auto')
 @ApiTags('auto')
 export class AutoController {
