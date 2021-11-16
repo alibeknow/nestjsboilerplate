@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import type { AutoDto } from './dto/auto.dto';
+import type { AutoArray } from './dto/autoArray.dto';
 import type { AutoListDto } from './dto/autoList.dto';
 
 @Injectable()
@@ -14,14 +15,14 @@ export class AutoService {
     this.url = result.url;
     this.secret = result.secret;
   }
-  async addAutoAccount(autoDto: Omit<AutoDto, 'signature'>) {
+  async addAutoAccount(autoDto: Omit<AutoArray, 'signature'>) {
     const headers = {
       'Content-Type': 'application/json',
     };
     try {
       const { data } = await axios.post(
         `${this.url}/add-vehicle?token=${this.secret}`,
-        autoDto,
+        autoDto.vehicles,
         {
           headers,
         },
@@ -32,14 +33,14 @@ export class AutoService {
     }
   }
 
-  async deleteAutoAccount(autoDto: Omit<AutoDto, 'signature'>) {
+  async deleteAutoAccount(autoDto: Omit<AutoArray, 'signature'>) {
     const headers = {
       'Content-Type': 'application/json',
     };
     try {
       const { data } = await axios.post(
         `${this.url}/remove-vehicle?token=${this.secret}`,
-        autoDto,
+        autoDto.vehicles,
         {
           headers,
         },

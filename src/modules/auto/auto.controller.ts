@@ -18,6 +18,7 @@ import type { ISearchAccountResponse } from '../iban/interfaces/ISearchAccountRe
 import { SignatureService } from '../signature/signature.service';
 import { AutoService } from './auto.service';
 import { AutoDto } from './dto/auto.dto';
+import { AutoArray } from './dto/autoArray.dto';
 import { AutoListDto } from './dto/autoList.dto';
 @Controller('auto')
 @ApiTags('auto')
@@ -34,7 +35,7 @@ export class AutoController {
     description: 'Create auto in external service',
     type: AutoDto,
   })
-  async addAutoAccount(@Body() autoDto: AutoDto, @Req() req) {
+  async addAutoAccount(@Body() autoDto: AutoArray, @Req() req) {
     const signatureData = await this.signatureService.verifySignature(
       autoDto.signature,
     );
@@ -55,7 +56,7 @@ export class AutoController {
   @Auth(RoleType.USER)
   @HttpCode(HttpStatus.OK)
   async deleteAutoAccount(
-    @Body() autoDto: AutoDto,
+    @Body() autoDto: AutoArray,
     @Req() req: any,
   ): Promise<ISearchAccountResponse> {
     const signatureData = await this.signatureService.verifySignature(

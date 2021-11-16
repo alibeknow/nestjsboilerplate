@@ -1,9 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsNumber, IsString, ValidateNested } from 'class-validator';
-
-import { SignatureDto } from '../../signature/dto/signatureDto';
-import { XMLDto } from '../../signature/dto/xmlDto';
+import { IsString } from 'class-validator';
 
 export class AutoDto {
   @ApiProperty()
@@ -12,9 +8,4 @@ export class AutoDto {
   @ApiProperty()
   @IsString()
   licencePlate: string;
-
-  @ApiProperty()
-  @ValidateNested()
-  @Type(() => XMLDto)
-  signature: SignatureDto;
 }
