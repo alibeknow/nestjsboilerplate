@@ -50,4 +50,11 @@ export class CompanyService {
     }
     return company;
   }
+  getByBin(bin: string) {
+    return this.companyRepository.findOne({
+      where: {
+        bin,
+      },
+    });
+  }
 }

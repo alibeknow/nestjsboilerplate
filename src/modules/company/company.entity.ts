@@ -22,7 +22,8 @@ export class CompanyEntity extends AbstractEntity<CompanyDto> {
   @Column({ nullable: false, default: true })
   isActive: boolean;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'jsonb', array: true, nullable: true })
+  // eslint-disable-next-line @typescript-eslint/ban-types
   jsonData: string;
 
   @Column({ type: 'enum', enum: CompanyType, default: CompanyType.JSC })

@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { CompanyRepository } from '../company/company.repository';
+import { CompanyService } from '../company/company.service';
 import { ContractService } from '../contract/contract.service';
 import { DocumentModule } from '../document/document.module';
 import { IbanModule } from '../iban/iban.module';
@@ -29,7 +30,7 @@ import { SignatureService } from './signature.service';
     ApiConfigService,
     MailService,
     IbanService,
-    ContractService,
+    CompanyService,
   ],
   exports: [SignatureService],
 })

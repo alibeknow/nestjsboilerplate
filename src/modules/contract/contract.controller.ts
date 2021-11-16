@@ -40,7 +40,7 @@ export class ContractController {
     @Req() req,
     @Res() res,
   ) {
-    contractDto.companyId = req.user.company.id;
+    //contractDto.companyId = req.user.company.id;
     const pdfData = await this.contractService.SignedContract(contractDto);
 
     res.set({

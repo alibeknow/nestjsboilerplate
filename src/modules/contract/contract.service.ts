@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import * as path from 'path';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import { CompanyRepository } from '../company/company.repository';
 import { DocumentService } from '../document/document.service';
 import type { ContractDto } from './dto/contract.dto';
 import type { SignedContractDto } from './dto/signedContract.dto';
@@ -15,7 +16,9 @@ export class ContractService {
   constructor(
     public apiConfigService: ApiConfigService,
     private readonly documentService: DocumentService,
+    private readonly сompanyRepository: CompanyRepository,
   ) {}
+
   async GenerateContract(contractDto: ContractDto): Promise<Buffer> {
     const url = `${this.url}api/pdf/template?contractNumber=
 ${contractDto.contractNumber}&contractDate=${contractDto.contractDate}&operatorPosition=
@@ -26,10 +29,14 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
 
     return data;
   }
+
   async SignedContract(contractDto: SignedContractDto): Promise<Buffer> {
     const resultTemplate = await this.documentService.xmlPutVariables(
       contractDto,
     );
+    await this.сompanyRepository.update(contractDto.companyId, {
+      jsonData: JSON.stringify(contractDto),
+    });
     await this.documentService.updateDocument(
       contractDto.companyId,
       resultTemplate,

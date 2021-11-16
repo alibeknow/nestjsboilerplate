@@ -18,6 +18,7 @@ import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
 import { LoggerInterceptor } from '../../interceptors/logger-interceptor.service';
+import { CompanyService } from '../company/company.service';
 import { ContractService } from '../contract/contract.service';
 import { DocumentService } from '../document/document.service';
 import { IbanService } from '../iban/iban.service';
@@ -34,7 +35,7 @@ export class SignatureController {
     public readonly documentService: DocumentService,
     public readonly ibanService: IbanService,
     public readonly mailService: MailService,
-    public readonly contractService: ContractService,
+    public readonly companyService: CompanyService,
   ) {}
 
   @Get()
@@ -100,8 +101,8 @@ export class SignatureController {
     });
   }
 
-  @Auth(RoleType.ADMIN)
-  @UseInterceptors(LoggerInterceptor)
+  //@Auth(RoleType.ADMIN)
+  //@UseInterceptors(LoggerInterceptor)
   @Post('operator')
   @HttpCode(HttpStatus.OK)
   @Transactional()
@@ -110,7 +111,7 @@ export class SignatureController {
     description: 'Verify document Signature XML',
     type: SignatureDto,
   })
-  async signedDocument(@Body() signatureData: SignatureDto, @Req() req: any) {
+  async signedDocument(@Body() signatureData: SignatureDto) {
     const { companyId } = signatureData;
     const { valid, subject } = await this.signatureService.verifySignature(
       signatureData,
@@ -130,14 +131,15 @@ export class SignatureController {
         fio: subject.commonName,
         name: 'clientSignature',
       });
-      const myData = this.contractService.getJson(req);
+      const { jsonData } = await this.companyService.getByBin('140241014416');
+      const jsonParsed = JSON.parse(jsonData);
       const data = await this.ibanService.createIbanAccount({
-        address: myData.legalAddress,
-        companyName: myData.companyName,
-        xin: myData.bin,
-        email: myData.email,
-        mobileNumber: myData.contractNumber,
-        contractNumber: myData.contractNumber,
+        address: jsonParsed.legalAddress,
+        companyName: jsonParsed.companyName,
+        xin: jsonParsed.bin,
+        email: jsonParsed.email,
+        mobileNumber: jsonParsed.contractNumber,
+        contractNumber: jsonParsed.contractNumber,
       });
 
       return changedDoc;
