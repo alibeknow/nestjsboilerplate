@@ -20,23 +20,23 @@ import { SignedContractDto } from './dto/signedContract.dto';
 export class ContractController {
   constructor(public readonly contractService: ContractService) {}
 
-  @Post()
+  @Post('generate')
   @HttpCode(HttpStatus.OK)
-  @Auth(RoleType.ADMIN)
+  //@Auth(RoleType.ADMIN)
   @ApiOkResponse({
     type: ContractDto,
     description: 'Document info with access token',
   })
-  GenerateContract(@Body() contract: ContractDto, @Req() req): Promise<Buffer> {
+  GenerateContract(@Body() contract: ContractDto): Promise<Buffer> {
     return this.contractService.GenerateContract(contract);
   }
   @Post()
   @HttpCode(HttpStatus.OK)
-  @Auth(RoleType.ADMIN)
+  @Auth(RoleType.USER)
   SignedContract(
     @Body() contractDto: SignedContractDto,
     @Req() req,
   ): Promise<Buffer> {
-    return this.contractService.SignedContract(contractDto, req);
+    return this.contractService.SignedContract(contractDto);
   }
 }

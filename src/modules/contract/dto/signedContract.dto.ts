@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 
 export class SignedContractDto {
   @ApiPropertyOptional()
@@ -62,4 +62,6 @@ export class SignedContractDto {
 
   @IsString()
   bin: string;
+  @IsUUID()
+  companyId: string;
 }
