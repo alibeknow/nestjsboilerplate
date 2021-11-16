@@ -14,6 +14,6 @@ export class AutoArray {
 
   @ApiProperty()
   @ValidateNested()
-  @Type(() => XMLDto)
+  @Type(() => SignatureDto)
   signature: SignatureDto;
 }
