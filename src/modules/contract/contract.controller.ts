@@ -40,10 +40,16 @@ export class ContractController {
   @Post()
   @HttpCode(HttpStatus.OK)
   @Auth(RoleType.USER)
-  SignedContract(
+  async SignedContract(
     @Body() contractDto: SignedContractDto,
     @Req() req,
-  ): Promise<Buffer> {
-    return this.contractService.SignedContract(contractDto);
+    @Res() res,
+  ) {
+    const pdfData = await this.contractService.SignedContract(contractDto);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=example.pdf',
+    });
+    res.end(pdfData);
   }
 }
