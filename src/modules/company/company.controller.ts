@@ -25,10 +25,6 @@ export class CompanyController {
   @HttpCode(HttpStatus.OK)
   @Auth(RoleType.ADMIN)
   @ApiQuery({ enum: Status, name: 'status' })
-  @ApiOkResponse({
-    type: CompanyDto,
-    description: 'Document info with access token',
-  })
   getAllCompanies(
     @Query(new ValidationPipe({ transform: true }))
     pageOptionsDto: CompanyPageOptionsDto,

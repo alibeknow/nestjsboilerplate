@@ -15,7 +15,6 @@ export class CompanyService {
     const returnedDto = this.companyRepository.create(companyDto).toDto();
     return returnedDto;
   }
-
   async findAll(
     pageOptionsDto: CompanyPageOptionsDto,
   ): Promise<PageDto<CompanyEntity>> {
@@ -35,6 +34,7 @@ export class CompanyService {
       const { items, pageMetaDto } = await queryBuilder
         .innerJoinAndSelect('company.documents', 'documents')
         .paginate(pageOptionsDto);
+
       return { data: items, meta: pageMetaDto };
     }
   }

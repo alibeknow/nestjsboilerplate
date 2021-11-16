@@ -11,6 +11,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
 import { DocumentService } from './document.service';
+import { DeclineDocument } from './dto/delcine-document.dto';
 import { DocumentDto } from './dto/document-dto';
 
 @Controller('documents')
@@ -29,5 +30,19 @@ export class DocumentController {
       request.user.company.id,
     );
     return documents;
+  }
+  @Auth(RoleType.ADMIN)
+  @Post()
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    type: 'string',
+    description: 'Decline Document',
+  })
+  declineContract(decline: DeclineDocument) {
+    return this.documentService.declineDocument(decline);
+  }
+  @Get()
+  getTemplate() {
+    return this.documentService.xmlPutVariables('123', '123');
   }
 }

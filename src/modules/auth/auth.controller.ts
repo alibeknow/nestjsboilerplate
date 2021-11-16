@@ -17,6 +17,7 @@ import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginPayloadDto } from './dto/LoginPayloadDto';
+import { OperatorLoginDto } from './dto/OperatorLogin';
 import { UserLoginDto } from './dto/UserLoginDto copy';
 import { UserRegisterXmlDto } from './dto/UserRegisterXmlDto';
 
@@ -49,19 +50,15 @@ export class AuthController {
   @Post('operator')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
-    type: LoginPayloadDto,
+    type: OperatorLoginDto,
     description: 'User info with access token',
   })
   async operatorLogin(
     @Body() userLoginDto: UserLoginDto,
-  ): Promise<LoginPayloadDto> {
+  ): Promise<OperatorLoginDto> {
     const userEntity = await this.authService.validateOperator(userLoginDto);
     const token = await this.authService.createToken(userEntity);
-    return new LoginPayloadDto(
-      userEntity.toDto(),
-      token,
-      userEntity.company.toDto(),
-    );
+    return new OperatorLoginDto(userEntity.toDto(), token);
   }
 
   @Post('register')

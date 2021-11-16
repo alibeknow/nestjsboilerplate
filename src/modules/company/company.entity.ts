@@ -22,6 +22,9 @@ export class CompanyEntity extends AbstractEntity<CompanyDto> {
   @Column({ nullable: false, default: true })
   isActive: boolean;
 
+  @Column({ type: 'json', nullable: true })
+  jsonData: string;
+
   @Column({ type: 'enum', enum: CompanyType, default: CompanyType.JSC })
   companyType: CompanyType;
 

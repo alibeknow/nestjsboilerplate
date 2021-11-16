@@ -10,9 +10,11 @@ import path from 'path';
 import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
 import { AutoModule } from './modules/auto/auto.module';
-import { IbanModule } from './modules/contract/contract.module';
+import { CompanyUserModule } from './modules/companyUsers/companyUser.module';
+import { ContractModule } from './modules/contract/contract.module';
 import { DocumentModule } from './modules/document/document.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
+import { IbanModule } from './modules/iban/iban.module';
 import { LoggerModule } from './modules/logger/logger.module';
 import { SignatureModule } from './modules/signature/signature.module';
 import { UserModule } from './modules/user/user.module';
@@ -46,6 +48,8 @@ import { SharedModule } from './shared/shared.module';
     SignatureModule,
     LoggerModule,
     IbanModule,
+    ContractModule,
+    CompanyUserModule,
     AutoModule,
     ConfigModule.forRoot({
       isGlobal: true,

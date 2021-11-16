@@ -5,18 +5,14 @@ import { CompanyDto } from '../../company/dto/company-dto';
 import { UserDto } from '../../user/dto/user-dto';
 import { TokenPayloadDto } from './TokenPayloadDto';
 
-export class LoginPayloadDto {
+export class OperatorLoginDto {
   @ApiProperty({ type: UserDto })
   user: UserDto;
   @ApiProperty({ type: TokenPayloadDto })
   token: TokenPayloadDto;
-  @ApiProperty({ type: CompanyDto })
-  @IsOptional()
-  company?: CompanyDto;
 
-  constructor(user: UserDto, token: TokenPayloadDto, company: CompanyDto) {
+  constructor(user: UserDto, token: TokenPayloadDto) {
     this.user = user;
     this.token = token;
-    this.company = company;
   }
 }
