@@ -1,30 +1,32 @@
 export interface IDatum {
   text: string;
-  operatorData: string;
+  operatorPosition: string;
+  operatorFio: string;
   textContract: string;
   operatorDoc: string;
-  clientName: string;
+  companyName: string;
   userPosition: string;
   userFio: string;
   userDoc: string;
   legalAddress: string;
   factAddress: string;
-  emailUser: string;
+  email: string;
   bin: string;
   iik: string;
   kbe: string;
   bik: string;
-  bankUser: string;
-  siteUser: string;
-  telUser: string;
+  bank: string;
+  website: string;
+  phone: string;
 }
 
 export interface IContractData {
   text: string;
-  number: string;
-  dateContract: string;
+  contractNumber: string;
+  contractDate: string;
   data: IDatum[];
-  operatorData: string;
+  operatorFio: string;
+  operatorPosition: string;
   textContract: string;
 }
 

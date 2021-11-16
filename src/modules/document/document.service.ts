@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-for-of */
 import { Injectable } from '@nestjs/common';
 import * as fxp from 'fast-xml-parser';
 import { readFileSync } from 'fs';
@@ -7,6 +8,7 @@ import { result } from 'lodash';
 import { resolve } from 'path';
 
 import { CompanyRepository } from '../company/company.repository';
+import type { SignedContractDto } from '../contract/dto/signedContract.dto';
 import type { Status } from './../../common/constants/status';
 import { DocumentRepository } from './document.repository';
 import type { DeclineDocument } from './dto/delcine-document.dto';
@@ -19,11 +21,13 @@ export class DocumentService {
     public readonly companyRepository: CompanyRepository,
   ) {}
 
-  async updateDocument(id: string) {
-    const result = await this.companyRepository.findOne(id);
-    const xml = await this.documentRepository.findOne({
-      where: { company: { id } },
+  async updateDocument(companyId: string, body: string) {
+    const document = await this.documentRepository.findOne({
+      where: { company: { id: companyId } },
     });
+    document.body = body;
+    const updatedvalues = await this.documentRepository.save(document);
+    return updatedvalues;
   }
 
   async declineDocument(decline: DeclineDocument) {
@@ -67,7 +71,7 @@ export class DocumentService {
       },
     );
   }
-  async xmlPutVariables(jsonXml: any, variables: any): Promise<IContract> {
+  async xmlPutVariables(variables: SignedContractDto): Promise<string> {
     const options = {
       attributeNamePrefix: '@_',
       attrNodeName: 'attr', //default is 'false'
@@ -94,15 +98,58 @@ export class DocumentService {
       alwaysCreateTextNode: false,
     };
     const template = this.getTemplate();
-    const xmlJson = await fxp.parse(template, options);
+    const xmlJson: IContract = await fxp.parse(template, options);
+    xmlJson.Contract.operatorFio = variables.operatorFio;
+    xmlJson.Contract.contractDate = variables.contractDate;
+    xmlJson.Contract.operatorPosition = variables.operatorPosition;
+    const data = xmlJson.Contract.data;
 
-    return xmlJson;
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    // eslint-disable-next-line unicorn/no-for-loop
+    for (let index = 0; index < data.length; index++) {
+      data[index].bank = variables.bank;
+      data[index].iik = variables.iik;
+      data[index].bik = variables.bik;
+      data[index].bin = variables.bin;
+      data[index].kbe = variables.kbe;
+      data[index].website = variables.website;
+      data[index].phone = variables.phone;
+      data[index].companyName = variables.companyName;
+      data[index].userFio = variables.userFio;
+      data[index].operatorPosition = variables.operatorPosition;
+      data[index].operatorFio = variables.operatorFio;
+      data[index].operatorDoc = variables.operatorDoc;
+      data[index].userPosition = variables.userPosition;
+      data[index].legalAddress = variables.legalAddress;
+      data[index].factAddress = variables.factAddress;
+      data[index].email = variables.email;
+      data[index].userDoc = variables.userDoc;
+    }
+    xmlJson.Contract.data = data;
+    const optionsJsonToXml = {
+      attributeNamePrefix: '@_',
+      attrNodeName: '@', //default is false
+      textNodeName: '#text',
+      ignoreAttributes: true,
+      cdataTagName: '__cdata', //default is false
+      cdataPositionChar: '\\c',
+      format: false,
+      indentBy: '  ',
+      supressEmptyNode: false,
+
+      rootNodeName: 'element',
+    };
+    const js2Xml = new fxp.j2xParser(optionsJsonToXml);
+    const xml = js2Xml.parse(xmlJson);
+    console.log(xml);
+    return xml;
   }
   getTemplate() {
     const content = readFileSync(
       resolve(__dirname, './template/contract.xml'),
       'utf8',
     ).toString();
+
     return content;
   }
 }

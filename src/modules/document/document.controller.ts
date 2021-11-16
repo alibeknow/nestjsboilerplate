@@ -41,8 +41,4 @@ export class DocumentController {
   declineContract(decline: DeclineDocument) {
     return this.documentService.declineDocument(decline);
   }
-  @Get()
-  getTemplate() {
-    return this.documentService.xmlPutVariables('123', '123');
-  }
 }
