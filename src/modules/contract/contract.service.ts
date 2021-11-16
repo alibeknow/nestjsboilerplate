@@ -16,7 +16,10 @@ export class ContractService {
     const url = `${this.url}api/pdf/template?contractNumber=
 ${contractDto.contractNumber}&contractDate=${contractDto.contractDate}&operatorPosition=
 ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyName=${contractDto.companyName}`;
-    const { data } = await axios.get<Buffer>(encodeURI(url));
+    const { data } = await axios.get<Buffer>(encodeURI(url), {
+      responseType: 'arraybuffer',
+    });
+
     return data;
   }
   async SignedContract(contractDto: SignedContractDto): Promise<Buffer> {
@@ -24,13 +27,16 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     const { data } = await axios.post<Buffer>(
       `${this.url}api/pdf/template`,
       contractDto,
+      {
+        responseType: 'arraybuffer',
+      },
     );
     return data;
   }
 
   saveJson(json: any, companyId: string) {
     const jsonStr: string = JSON.stringify(json);
-    console.log(path.resolve(__dirname, '../../../contracts'));
+
     if (existsSync(path.resolve(__dirname, '../../../contracts'))) {
       writeFileSync(
         path.resolve(__dirname, `../../../contracts/${companyId}`),

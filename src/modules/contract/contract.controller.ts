@@ -2,11 +2,13 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpCode,
   HttpStatus,
   Post,
   Query,
   Req,
+  Res,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
@@ -27,8 +29,13 @@ export class ContractController {
     type: ContractDto,
     description: 'Document info with access token',
   })
-  GenerateContract(@Body() contract: ContractDto): Promise<Buffer> {
-    return this.contractService.GenerateContract(contract);
+  async GenerateContract(@Body() contract: ContractDto, @Res() res: any) {
+    const pdfData = await this.contractService.GenerateContract(contract);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=example.pdf',
+    });
+    res.end(pdfData);
   }
   @Post()
   @HttpCode(HttpStatus.OK)
