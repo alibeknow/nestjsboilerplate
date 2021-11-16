@@ -19,24 +19,12 @@ export class CompanyService {
     pageOptionsDto: CompanyPageOptionsDto,
   ): Promise<PageDto<CompanyEntity>> {
     const queryBuilder = this.companyRepository.createQueryBuilder('company');
-    const status = pageOptionsDto.status;
-    if (status) {
-      const { items, pageMetaDto } = await queryBuilder
-        .innerJoinAndSelect(
-          'company.documents',
-          'documents',
-          '"documents"."status" in (:status)',
-          { status },
-        )
-        .paginate(pageOptionsDto);
-      return { data: items, meta: pageMetaDto };
-    } else {
-      const { items, pageMetaDto } = await queryBuilder
-        .innerJoinAndSelect('company.documents', 'documents')
-        .paginate(pageOptionsDto);
 
-      return { data: items, meta: pageMetaDto };
-    }
+    const { items, pageMetaDto } = await queryBuilder
+      .innerJoinAndSelect('company.documents', 'documents')
+      .paginate(pageOptionsDto);
+
+    return { data: items, meta: pageMetaDto };
   }
 
   async findOrCreate(companyDto: CreateCompanyDto): Promise<CompanyEntity> {

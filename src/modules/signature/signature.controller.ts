@@ -101,8 +101,8 @@ export class SignatureController {
     });
   }
 
-  //@Auth(RoleType.ADMIN)
-  //@UseInterceptors(LoggerInterceptor)
+  @Auth(RoleType.ADMIN)
+  @UseInterceptors(LoggerInterceptor)
   @Post('operator')
   @HttpCode(HttpStatus.OK)
   @Transactional()

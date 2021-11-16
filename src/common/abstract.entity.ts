@@ -25,6 +25,7 @@ export abstract class AbstractEntity<DTO extends AbstractDto = AbstractDto> {
   })
   updatedAt: Date;
 
+  @Exclude()
   abstract dtoClass: new (
     entity: AbstractEntity,
     options?: GetConstructorArgs<DTO>[1],
