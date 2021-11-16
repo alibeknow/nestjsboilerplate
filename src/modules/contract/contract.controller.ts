@@ -1,20 +1,14 @@
 import {
   Body,
   Controller,
-  Get,
-  Header,
   HttpCode,
   HttpStatus,
   Post,
-  Query,
   Req,
   Res,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
-import { RoleType } from '../../common/constants/role-type';
-import { Auth } from '../../decorators/http.decorators';
-import { DocumentService } from '../document/document.service';
 import { ContractService } from './contract.service';
 import { ContractDto } from './dto/contract.dto';
 import { SignedContractDto } from './dto/signedContract.dto';
@@ -46,7 +40,7 @@ export class ContractController {
     @Req() req,
     @Res() res,
   ) {
-    //contractDto.companyId = req.user.company.id;
+    contractDto.companyId = req.user.company.id;
     const pdfData = await this.contractService.SignedContract(contractDto);
 
     res.set({
