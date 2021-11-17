@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import axios from 'axios';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
@@ -14,22 +14,26 @@ export class SignatureService {
   ) {}
 
   async verifySignature(signatureData: SignatureDto) {
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-    const {
-      data: { result },
-    } = await axios.post<ISignature>(
-      this.configService.signatureUrl,
-      signatureData,
-      {
-        headers,
-      },
-    );
-    return {
-      valid: result.valid,
-      subject: result.cert.subject,
-    };
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      const {
+        data: { result },
+      } = await axios.post<ISignature>(
+        this.configService.signatureUrl,
+        signatureData,
+        {
+          headers,
+        },
+      );
+      return {
+        valid: result.valid,
+        subject: result.cert.subject,
+      };
+    } catch {
+      throw new BadRequestException('Сервис NcaNode не работает');
+    }
   }
 
   async createSignature(signatureData: any) {

@@ -13,7 +13,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
-import { NotValidCertException } from '../../exceptions/not-valid-cert.eception';
+import { NotValidCertException } from '../../exceptions/bad-request-ncanode';
 import type { ISearchAccountResponse } from '../iban/interfaces/ISearchAccountResponse';
 import { SignatureService } from '../signature/signature.service';
 import { AutoService } from './auto.service';
