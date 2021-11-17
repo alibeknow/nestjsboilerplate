@@ -80,13 +80,15 @@ export class IbanService {
       where: { company: { id: setMain.companyId }, iban: setMain.iban },
     });
     if (ibanCount.length <= 0) {
-      return this.accountRepository.create({
+      const account = this.accountRepository.create({
         company: { id: setMain.companyId },
         iban: setMain.iban,
         isActive: true,
         isMain: true,
         name: Date.now().toString(),
       });
+      const result = await this.accountRepository.save(account, { data: true });
+      return result;
     }
     const result = await this.accountRepository
       .createQueryBuilder()
