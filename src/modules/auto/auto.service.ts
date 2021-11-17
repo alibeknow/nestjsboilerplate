@@ -20,14 +20,19 @@ export class AutoService {
       'Content-Type': 'application/json',
     };
     try {
-      const { data } = await axios.post(
-        `${this.url}/add-vehicle?token=${this.secret}`,
-        autoDto.vehicles,
-        {
-          headers,
-        },
-      );
-      return data;
+      const vehicles = autoDto.vehicles;
+      const result = [];
+      for (const vehicle of vehicles) {
+        const { data } = await axios.post(
+          `${this.url}/add-vehicle?token=${this.secret}`,
+          vehicle,
+          {
+            headers,
+          },
+        );
+        result.push(data);
+      }
+      return result;
     } catch (error) {
       Logger.error(error);
     }
@@ -38,14 +43,19 @@ export class AutoService {
       'Content-Type': 'application/json',
     };
     try {
-      const { data } = await axios.post(
-        `${this.url}/remove-vehicle?token=${this.secret}`,
-        autoDto.vehicles,
-        {
-          headers,
-        },
-      );
-      return data;
+      const vehicles = autoDto.vehicles;
+      const result = [];
+      for (const vehicle of vehicles) {
+        const { data } = await axios.post(
+          `${this.url}/remove-vehicle?token=${this.secret}`,
+          vehicle,
+          {
+            headers,
+          },
+        );
+        result.push(data);
+      }
+      return result;
     } catch (error) {
       Logger.error(error);
     }
