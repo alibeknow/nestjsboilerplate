@@ -34,8 +34,9 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     const resultTemplate = await this.documentService.xmlPutVariables(
       contractDto,
     );
+
     await this.сompanyRepository.update(contractDto.companyId, {
-      jsonData: JSON.stringify(contractDto),
+      jsonData: contractDto,
     });
     await this.documentService.updateDocument(
       contractDto.companyId,
@@ -48,31 +49,29 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
         responseType: 'arraybuffer',
       },
     );
+
+    await this.saveFile(data, contractDto.companyId);
     return data;
   }
 
-  saveJson(json: any, companyId: string) {
-    const jsonStr: string = JSON.stringify(json);
-
+  async saveFile(pdfData: Buffer, companyId: string) {
+    const docUrl = path.resolve(
+      __dirname,
+      `../../../contracts/${companyId}.pdf`,
+    );
     if (existsSync(path.resolve(__dirname, '../../../contracts'))) {
-      writeFileSync(
-        path.resolve(__dirname, `../../../contracts/${companyId}`),
-        jsonStr,
-      );
+      writeFileSync(docUrl, pdfData);
     } else {
       mkdirSync(path.resolve(__dirname, '../../../contracts'));
-      writeFileSync(
-        path.resolve(__dirname, `../../../contracts/${companyId}`),
-        jsonStr,
-      );
+      writeFileSync(docUrl, pdfData);
     }
+    await this.documentService.updateDocumentAsset(companyId, docUrl);
   }
 
-  getJson(@Req() req) {
+  getPdf(companyId: string): Buffer {
     const strContent = readFileSync(
-      path.resolve(__dirname, `../../../contracts/${req.user.company.id}`),
-      'utf8',
-    ).toString();
-    return JSON.parse(strContent);
+      path.resolve(__dirname, `../../../contracts/${companyId}.pdf`),
+    );
+    return strContent;
   }
 }

@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';
 import { CompanyType } from '../../common/constants/company-type';
+import { SignedContractDto } from '../contract/dto/signedContract.dto';
 import { DocumentEntity } from '../document/document.entity';
 import { AccountEntity } from '../iban/repository/account.entity';
 import { LogEntity } from '../logger/log.entity';
@@ -22,9 +23,9 @@ export class CompanyEntity extends AbstractEntity<CompanyDto> {
   @Column({ nullable: false, default: true })
   isActive: boolean;
 
-  @Column({ type: 'jsonb', array: true, nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   // eslint-disable-next-line @typescript-eslint/ban-types
-  jsonData: string;
+  jsonData: SignedContractDto;
 
   @Column({ type: 'enum', enum: CompanyType, default: CompanyType.JSC })
   companyType: CompanyType;

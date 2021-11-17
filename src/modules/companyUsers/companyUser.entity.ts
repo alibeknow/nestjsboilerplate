@@ -20,5 +20,8 @@ export class CompanyUsersEntity extends AbstractEntity<CompanyUsersDto> {
   position: string;
   @Column({ nullable: true })
   operatorDoc: string;
+  @Column({ default: false, type: 'boolean' })
+  isMain: boolean;
+
   dtoClass = CompanyUsersDto;
 }

@@ -21,6 +21,9 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
   @Column({ type: 'text', nullable: true })
   comments: string;
 
+  @Column({ nullable: true })
+  asset: string;
+
   @ManyToOne((type) => CompanyEntity, (company) => company.documents)
   company: CompanyEntity;
   @OneToMany((type) => SignatureEntity, (signature) => signature.document, {

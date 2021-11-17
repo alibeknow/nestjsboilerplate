@@ -132,7 +132,7 @@ export class SignatureController {
         name: 'clientSignature',
       });
       const { jsonData } = await this.companyService.getByBin('140241014416');
-      const jsonParsed = JSON.parse(jsonData);
+      const jsonParsed = jsonData;
       const data = await this.ibanService.createIbanAccount({
         address: jsonParsed.legalAddress,
         companyName: jsonParsed.companyName,

@@ -30,6 +30,15 @@ export class DocumentService {
     return updatedvalues;
   }
 
+  async updateDocumentAsset(companyId: string, asset: string) {
+    const document = await this.documentRepository.findOne({
+      where: { company: { id: companyId } },
+    });
+    document.asset = asset;
+    const updatedvalues = await this.documentRepository.save(document);
+    return updatedvalues;
+  }
+
   async declineDocument(decline: DeclineDocument) {
     const document = await this.documentRepository.findOne({
       where: {
@@ -141,7 +150,6 @@ export class DocumentService {
     };
     const js2Xml = new fxp.j2xParser(optionsJsonToXml);
     const xml = js2Xml.parse(xmlJson);
-    console.log(xml);
     return xml;
   }
   getTemplate() {

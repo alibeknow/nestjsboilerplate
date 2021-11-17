@@ -61,7 +61,8 @@ export class SignedContractDto {
   phone: string;
 
   @IsString()
-  bin: string;
+  @IsOptional()
+  bin?: string;
 
   @IsOptional()
   companyId?: string;
