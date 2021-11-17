@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { NotValidCertException } from '../../exceptions/not-valid-cert.eception';
+import { NotValidCertException } from '../../exceptions/bad-request-ncanode';
 import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
 import { UtilsProvider } from '../../providers/utils.provider';
 import { ApiConfigService } from '../../shared/services/api-config.service';
