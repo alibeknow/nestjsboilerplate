@@ -1,6 +1,6 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 
-export class NotValidCertException extends NotFoundException {
+export class NotValidCertException extends BadRequestException {
   constructor(error?: string) {
     super('error.not_valid_signature', error);
   }
