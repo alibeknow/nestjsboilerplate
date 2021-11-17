@@ -34,6 +34,10 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     const resultTemplate = await this.documentService.xmlPutVariables(
       contractDto,
     );
+    const docCount = await this.documentService.documentRepository.count();
+    const date = new Date();
+    const numberContract = `${date.getMonth()}/${date.getFullYear()}/${docCount}`;
+    contractDto.contractNumber = numberContract;
 
     await this.сompanyRepository.update(contractDto.companyId, {
       jsonData: contractDto,

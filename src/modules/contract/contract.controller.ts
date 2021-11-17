@@ -38,11 +38,14 @@ export class ContractController {
   }
   @Post()
   @HttpCode(HttpStatus.OK)
-  //@Auth(RoleType.USER)
+  @Auth(RoleType.USER)
   async SignedContract(@Body() contractDto: SignedContractDto, @Req() req) {
-    //contractDto.companyId = req.user.company.id;
-    //contractDto.bin = req.user.company.bin;
-    const pdfData = await this.contractService.SignedContract(contractDto);
+    contractDto.companyId = req.user.company.id;
+    contractDto.bin = req.user.company.bin;
+    const date = new Date();
+
+    contractDto.contractDate = date.getUTCDate().toString();
+    await this.contractService.SignedContract(contractDto);
 
     return 'OK';
   }
