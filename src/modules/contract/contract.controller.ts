@@ -42,11 +42,10 @@ export class ContractController {
   async SignedContract(@Body() contractDto: SignedContractDto, @Req() req) {
     contractDto.companyId = req.user.company.id;
     contractDto.bin = req.user.company.bin;
+    contractDto.companyName = req.user.company.name;
     const date = new Date();
-
     contractDto.contractDate = date.getUTCDate().toString();
     await this.contractService.SignedContract(contractDto);
-
     return 'OK';
   }
 

@@ -28,7 +28,20 @@ export class SignedContractDto {
 
   @ApiPropertyOptional()
   @IsString()
-  companyName: string;
+  @IsOptional()
+  companyName?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  website?: string;
+
+  @IsString()
+  @IsOptional()
+  bin?: string;
+
+  @IsOptional()
+  companyId?: string;
 
   @ApiPropertyOptional()
   @IsString()
@@ -60,17 +73,8 @@ export class SignedContractDto {
   @ApiPropertyOptional()
   @IsString()
   bank: string;
-  @ApiPropertyOptional()
-  @IsString()
-  website: string;
+
   @ApiPropertyOptional()
   @IsString()
   phone: string;
-
-  @IsString()
-  @IsOptional()
-  bin?: string;
-
-  @IsOptional()
-  companyId?: string;
 }
