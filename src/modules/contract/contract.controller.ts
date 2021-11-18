@@ -8,11 +8,18 @@ import {
   Query,
   Req,
   Res,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
+import {
+  AnyFilesInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
+import { AssetsRepository } from './assets.repository';
 import { ContractService } from './contract.service';
 import { ContractDto } from './dto/contract.dto';
 import { SignedContractDto } from './dto/signedContract.dto';
@@ -39,13 +46,18 @@ export class ContractController {
   @Post()
   @HttpCode(HttpStatus.OK)
   @Auth(RoleType.USER)
-  async SignedContract(@Body() contractDto: SignedContractDto, @Req() req) {
+  @UseInterceptors(FilesInterceptor('files', 10, { dest: 'assets/' }))
+  async SignedContract(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() contractDto: SignedContractDto,
+    @Req() req,
+  ) {
     contractDto.companyId = req.user.company.id;
     contractDto.bin = req.user.company.bin;
     contractDto.companyName = req.user.company.name;
     const date = new Date();
     contractDto.contractDate = date.getUTCDate().toString();
-    await this.contractService.SignedContract(contractDto);
+    await this.contractService.SignedContract(contractDto, files);
     return { success: 'ok' };
   }
 
@@ -61,5 +73,22 @@ export class ContractController {
       'Content-Disposition': 'attachment; filename=example.pdf',
     });
     res.end(pdfData);
+  }
+
+  @Get('getAssets')
+  @HttpCode(HttpStatus.OK)
+  getAssets(@Query('documentId') documentId: string) {
+    return this.contractService.getAssets(documentId);
+  }
+
+  @Get('downloadAssets')
+  @HttpCode(HttpStatus.OK)
+  async downloadAssets(@Query('assetId') assetId: string, @Res() res) {
+    const rresult = await this.contractService.downloadAssets(assetId);
+    res.set({
+      'Content-Type': rresult.mimeType,
+      'Content-Disposition': `attachment; filename=${rresult.name}`,
+    });
+    res.end(rresult.file);
   }
 }

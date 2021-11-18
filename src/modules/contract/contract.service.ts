@@ -2,11 +2,12 @@ import { BadGatewayException, Injectable, Req } from '@nestjs/common';
 import axios from 'axios';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 // eslint-disable-next-line unicorn/import-style
-import * as path from 'path';
+import { resolve } from 'path';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { CompanyRepository } from '../company/company.repository';
 import { DocumentService } from '../document/document.service';
+import { AssetsRepository } from './assets.repository';
 import type { ContractDto } from './dto/contract.dto';
 import type { SignedContractDto } from './dto/signedContract.dto';
 
@@ -17,6 +18,7 @@ export class ContractService {
     public apiConfigService: ApiConfigService,
     private readonly documentService: DocumentService,
     private readonly сompanyRepository: CompanyRepository,
+    public readonly assetRepository: AssetsRepository,
   ) {}
 
   async GenerateContract(contractDto: ContractDto): Promise<Buffer> {
@@ -30,7 +32,10 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     return data;
   }
 
-  async SignedContract(contractDto: SignedContractDto): Promise<Buffer> {
+  async SignedContract(
+    contractDto: SignedContractDto,
+    files: Express.Multer.File[],
+  ): Promise<Buffer> {
     const resultTemplate = await this.documentService.xmlPutVariables(
       contractDto,
     );
@@ -38,6 +43,18 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     const date = new Date();
     const numberContract = `${date.getMonth()}/${date.getFullYear()}/${docCount}`;
     contractDto.contractNumber = numberContract;
+    const document = await this.documentService.documentRepository.findOne({
+      where: { company: { id: contractDto.companyId } },
+    });
+    for (const file of files) {
+      const asset = this.assetRepository.create({
+        path: file.path,
+        mimeType: file.mimetype,
+        name: file.originalname,
+        document: { id: document.id },
+      });
+      await this.assetRepository.save(asset);
+    }
 
     await this.сompanyRepository.update(contractDto.companyId, {
       jsonData: contractDto,
@@ -62,15 +79,30 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     return data;
   }
 
-  async saveFile(pdfData: Buffer, companyId: string) {
-    const docUrl = path.resolve(
-      __dirname,
-      `../../../contracts/${companyId}.pdf`,
+  getAssets(documentId: string) {
+    return this.assetRepository.findAndCount({
+      where: { document: { id: documentId } },
+    });
+  }
+  async downloadAssets(assetId: string) {
+    const { mimeType, name, path } = await this.assetRepository.findOne(
+      assetId,
+      {
+        select: ['mimeType', 'name', 'path'],
+      },
     );
-    if (existsSync(path.resolve(__dirname, '../../../contracts'))) {
+    const rootProject = resolve(__dirname, `../../../${path}`);
+    const strContent = readFileSync(rootProject);
+
+    return { file: strContent, mimeType, name };
+  }
+
+  async saveFile(pdfData: Buffer, companyId: string) {
+    const docUrl = resolve(__dirname, `../../../contracts/${companyId}.pdf`);
+    if (existsSync(resolve(__dirname, '../../../contracts'))) {
       writeFileSync(docUrl, pdfData);
     } else {
-      mkdirSync(path.resolve(__dirname, '../../../contracts'));
+      mkdirSync(resolve(__dirname, '../../../contracts'));
       writeFileSync(docUrl, pdfData);
     }
     await this.documentService.updateDocumentAsset(companyId, docUrl);
@@ -78,7 +110,7 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
 
   getPdf(companyId: string): Buffer {
     const strContent = readFileSync(
-      path.resolve(__dirname, `../../../contracts/${companyId}.pdf`),
+      resolve(__dirname, `../../../contracts/${companyId}.pdf`),
     );
     return strContent;
   }

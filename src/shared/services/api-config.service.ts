@@ -59,6 +59,9 @@ export class ApiConfigService {
   get fallbackLanguage(): string {
     return this.getString('FALLBACK_LANGUAGE').toLowerCase();
   }
+  get destMulterPath(): string {
+    return this.getString('DEST_PATH').toLowerCase();
+  }
 
   get typeOrmConfig(): TypeOrmModuleOptions {
     let entities = [__dirname + '/../../modules/**/*.entity{.ts,.js}'];

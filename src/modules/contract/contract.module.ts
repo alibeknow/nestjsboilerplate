@@ -6,6 +6,7 @@ import { CompanyRepository } from '../company/company.repository';
 import { DocumentRepository } from '../document/document.repository';
 import { DocumentService } from '../document/document.service';
 import { SignatureRepository } from '../signature/repository/signature.repository';
+import { AssetsRepository } from './assets.repository';
 import { ContractController } from './contract.controller';
 import { ContractService } from './contract.service';
 
@@ -15,6 +16,7 @@ import { ContractService } from './contract.service';
       DocumentRepository,
       CompanyRepository,
       SignatureRepository,
+      AssetsRepository,
     ]),
   ],
   controllers: [ContractController],
