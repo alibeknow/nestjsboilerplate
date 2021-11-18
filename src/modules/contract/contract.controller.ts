@@ -46,7 +46,7 @@ export class ContractController {
     const date = new Date();
     contractDto.contractDate = date.getUTCDate().toString();
     await this.contractService.SignedContract(contractDto);
-    return 'OK';
+    return { success: 'ok' };
   }
 
   @Get()

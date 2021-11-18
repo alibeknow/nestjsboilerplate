@@ -1,4 +1,4 @@
-import { Injectable, Req } from '@nestjs/common';
+import { BadGatewayException, Injectable, Req } from '@nestjs/common';
 import axios from 'axios';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 // eslint-disable-next-line unicorn/import-style
@@ -53,8 +53,12 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
         responseType: 'arraybuffer',
       },
     );
+    try {
+      await this.saveFile(data, contractDto.companyId);
+    } catch (error) {
+      throw new BadGatewayException(error, 'File save Problem');
+    }
 
-    await this.saveFile(data, contractDto.companyId);
     return data;
   }
 
