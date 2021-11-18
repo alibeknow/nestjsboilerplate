@@ -32,7 +32,7 @@ export class DocumentController {
     return documents;
   }
   @Auth(RoleType.ADMIN)
-  @Post('declineDocument')
+  @Post('decline')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
     type: 'string',
