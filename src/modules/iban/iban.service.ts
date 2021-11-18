@@ -32,7 +32,6 @@ export class IbanService {
     const headers = {
       'Content-Type': 'application/json',
     };
-    ibanAccountDto.xin = '850613400090';
     const searchResult = await this.searchAccountByBin(ibanAccountDto.xin);
 
     if (!searchResult || searchResult.totalElements <= 0) {
@@ -44,8 +43,6 @@ export class IbanService {
             headers,
           },
         );
-
-        ibanAccountDto.xin = '140241014416';
         const company = await this.companyRepository.findOne({
           bin: ibanAccountDto.xin,
         });
@@ -63,7 +60,7 @@ export class IbanService {
         Logger.error(error);
       }
     }
-    console.log(searchResult);
+
     return searchResult;
   }
 
