@@ -32,8 +32,10 @@ export class IbanService {
     const headers = {
       'Content-Type': 'application/json',
     };
+    ibanAccountDto.xin = '850613400090';
     const searchResult = await this.searchAccountByBin(ibanAccountDto.xin);
-    if (searchResult.totalElements <= 0) {
+
+    if (!searchResult || searchResult.totalElements <= 0) {
       try {
         const { data } = await axios.post<ICreateIbanAccount>(
           `${this.url}/create?token=${this.secret}`,
@@ -42,6 +44,8 @@ export class IbanService {
             headers,
           },
         );
+
+        ibanAccountDto.xin = '140241014416';
         const company = await this.companyRepository.findOne({
           bin: ibanAccountDto.xin,
         });
@@ -59,6 +63,7 @@ export class IbanService {
         Logger.error(error);
       }
     }
+    console.log(searchResult);
     return searchResult;
   }
 

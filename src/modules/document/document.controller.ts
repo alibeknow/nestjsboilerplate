@@ -11,6 +11,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
+import { SignatureRepository } from '../signature/repository/signature.repository';
 import { DocumentService } from './document.service';
 import { DeclineDocument } from './dto/delcine-document.dto';
 import { DocumentDto } from './dto/document-dto';
@@ -32,7 +33,7 @@ export class DocumentController {
     );
     return documents;
   }
-  //@Auth(RoleType.ADMIN)
+  @Auth(RoleType.ADMIN)
   @Post('decline')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({

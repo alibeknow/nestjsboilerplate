@@ -42,6 +42,12 @@ export class SignatureService {
     return signatureEntity;
   }
 
+  async deleteSignaturesByDoc(docId: string) {
+    return this.signatureRepository.delete({
+      document: { id: docId },
+    });
+  }
+
   async getSignatureByDocumentId(documentId: string) {
     const queryBuilder =
       this.signatureRepository.createQueryBuilder('signature');

@@ -9,6 +9,8 @@ import { resolve } from 'path';
 
 import { CompanyRepository } from '../company/company.repository';
 import type { SignedContractDto } from '../contract/dto/signedContract.dto';
+import { SignatureRepository } from '../signature/repository/signature.repository';
+import { SignatureService } from '../signature/signature.service';
 import { Status } from './../../common/constants/status';
 import { DocumentRepository } from './document.repository';
 import type { DeclineDocument } from './dto/delcine-document.dto';
@@ -19,6 +21,7 @@ export class DocumentService {
   constructor(
     public readonly documentRepository: DocumentRepository,
     public readonly companyRepository: CompanyRepository,
+    public readonly signature: SignatureRepository,
   ) {}
 
   async updateDocument(companyId: string, body: string) {
@@ -50,6 +53,9 @@ export class DocumentService {
     });
     document.status = Status.DECLINE;
     document.comments = decline.comments;
+    await this.signature.delete({
+      document: { id: document.id },
+    });
     const response = await this.documentRepository.save(document);
     return response;
   }

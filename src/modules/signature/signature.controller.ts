@@ -131,8 +131,11 @@ export class SignatureController {
         fio: subject.commonName,
         name: 'clientSignature',
       });
-      const { jsonData } = await this.companyService.getByBin('140241014416');
+      const { jsonData } = await this.companyService.getByBin(companyId);
       const jsonParsed = jsonData;
+      const date = new Date();
+      const expireDate = new Date();
+      expireDate.setFullYear(2099);
       const data = await this.ibanService.createIbanAccount({
         address: jsonParsed.legalAddress,
         companyName: jsonParsed.companyName,
@@ -140,8 +143,10 @@ export class SignatureController {
         email: jsonParsed.email,
         mobileNumber: jsonParsed.contractNumber,
         contractNumber: jsonParsed.contractNumber,
+        registrationDate: date.toISOString(),
+        expirationDate: expireDate.toISOString(),
       });
-
+      console.log(data);
       return changedDoc;
     }
     throw new BadRequestException('Пожалуйста используйте верную подпись');

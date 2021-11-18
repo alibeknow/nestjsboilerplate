@@ -21,4 +21,8 @@ export class IbanAccountServiceDto {
   address = '';
   @IsString()
   contractNumber = '№135/20 от 11.07.2021';
+  @IsString()
+  registrationDate: string;
+  @IsString()
+  expirationDate: string;
 }
