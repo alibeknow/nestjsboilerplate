@@ -52,9 +52,10 @@ export class DocumentService {
     await this.documentRepository.save(document);
     return 'OK';
   }
-  async getDocs(company): Promise<DocumentDto[] | DocumentDto> {
+  async getDocs(companyId: string): Promise<DocumentDto[] | DocumentDto> {
     const documents = await this.documentRepository.find({
-      where: { company },
+      where: { company: { id: companyId } },
+      relations: ['company'],
     });
     if (documents.length <= 0) {
       const contract = this.getTemplate();
@@ -62,7 +63,7 @@ export class DocumentService {
         {
           name: 'Документ на подпись',
           body: contract,
-          company,
+          company: { id: companyId },
         },
       ]);
       await this.documentRepository.save(document);

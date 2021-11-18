@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 
 import { Status } from '../../../common/constants/status';
 export class DeclineDocument {
@@ -8,7 +8,6 @@ export class DeclineDocument {
   status: Status;
   @IsString()
   bin: string;
-
   @IsString()
   comments: string;
 }

@@ -1,7 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
+import { CompanyDto } from '../../company/dto/company-dto';
 import type { DocumentEntity } from '../document.entity';
 
 export class DocumentDto extends AbstractDto {
@@ -21,6 +22,10 @@ export class DocumentDto extends AbstractDto {
   @IsBoolean()
   isActive: boolean;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  company?: CompanyDto;
+
   constructor(
     document: DocumentEntity,
     options?: Partial<{ isActive: boolean }>,
@@ -30,5 +35,6 @@ export class DocumentDto extends AbstractDto {
     this.status = document.status;
     this.body = document.body;
     this.isActive = options?.isActive;
+    this.company = document.company;
   }
 }

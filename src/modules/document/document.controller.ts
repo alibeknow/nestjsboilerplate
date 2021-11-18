@@ -27,12 +27,12 @@ export class DocumentController {
   })
   async getFilteredDocs(@Req() request): Promise<DocumentDto[] | DocumentDto> {
     const documents = await this.documentService.getDocs(
-      request.user.company.id,
+      request.user.company.id as string,
     );
     return documents;
   }
   @Auth(RoleType.ADMIN)
-  @Post()
+  @Post('declineDocument')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
     type: 'string',
