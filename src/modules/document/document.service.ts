@@ -41,6 +41,7 @@ export class DocumentService {
 
   async declineDocument(decline: DeclineDocument) {
     const document = await this.documentRepository.findOne({
+      relations: ['company'],
       where: {
         company: {
           bin: decline.bin,
@@ -49,8 +50,8 @@ export class DocumentService {
     });
     document.status = Status.DECLINE;
     document.comments = decline.comments;
-    await this.documentRepository.save(document);
-    return 'OK';
+    const response = await this.documentRepository.save(document);
+    return response;
   }
   async getDocs(companyId: string): Promise<DocumentDto[] | DocumentDto> {
     const documents = await this.documentRepository.find({

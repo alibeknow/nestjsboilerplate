@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -31,14 +32,14 @@ export class DocumentController {
     );
     return documents;
   }
-  @Auth(RoleType.ADMIN)
+  //@Auth(RoleType.ADMIN)
   @Post('decline')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
     type: 'string',
     description: 'Decline Document',
   })
-  declineContract(decline: DeclineDocument) {
+  declineContract(@Body() decline: DeclineDocument) {
     return this.documentService.declineDocument(decline);
   }
 }
