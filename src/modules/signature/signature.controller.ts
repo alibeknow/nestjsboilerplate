@@ -146,7 +146,6 @@ export class SignatureController {
         registrationDate: date.toISOString(),
         expirationDate: expireDate.toISOString(),
       });
-
       return { changes: changedDoc, account: data };
     }
     throw new BadRequestException('Пожалуйста используйте верную подпись');

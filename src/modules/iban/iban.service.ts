@@ -54,7 +54,13 @@ export class IbanService {
         iban.isActive = true;
         company.accounts = [iban];
         await this.companyRepository.save(company);
-
+        const accountEntity = this.accountRepository.create({
+          iban: data.answer.accountNumber,
+          isMain: true,
+          name: date.toISOString(),
+          company: { id: company.id },
+        });
+        await this.accountRepository.save(accountEntity);
         return data;
       } catch (error) {
         Logger.error(error);
