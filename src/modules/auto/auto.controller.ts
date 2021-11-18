@@ -58,7 +58,7 @@ export class AutoController {
   async deleteAutoAccount(
     @Body() autoDto: AutoArray,
     @Req() req: any,
-  ): Promise<ISearchAccountResponse> {
+  ): Promise<any> {
     const signatureData = await this.signatureService.verifySignature(
       autoDto.signature,
     );
