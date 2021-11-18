@@ -19,6 +19,9 @@ export class DocumentDto extends AbstractDto {
   body: string;
 
   @ApiPropertyOptional()
+  @IsString()
+  asset: string;
+  @ApiPropertyOptional()
   @IsBoolean()
   isActive: boolean;
 
@@ -34,6 +37,7 @@ export class DocumentDto extends AbstractDto {
     this.name = document.name;
     this.status = document.status;
     this.body = document.body;
+    this.asset = document.asset;
     this.isActive = options?.isActive;
     this.company = document.company;
   }
