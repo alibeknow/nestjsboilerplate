@@ -9,7 +9,7 @@ import { resolve } from 'path';
 
 import { CompanyRepository } from '../company/company.repository';
 import type { SignedContractDto } from '../contract/dto/signedContract.dto';
-import type { Status } from './../../common/constants/status';
+import { Status } from './../../common/constants/status';
 import { DocumentRepository } from './document.repository';
 import type { DeclineDocument } from './dto/delcine-document.dto';
 import type { DocumentDto } from './dto/document-dto';
@@ -47,7 +47,7 @@ export class DocumentService {
         },
       },
     });
-    document.status = decline.status;
+    document.status = Status.DECLINE;
     document.comments = decline.comments;
     await this.documentRepository.save(document);
     return 'OK';
