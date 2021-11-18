@@ -4,25 +4,32 @@ import { IsOptional, IsString, IsUUID } from 'class-validator';
 export class SignedContractDto {
   @ApiPropertyOptional()
   @IsString()
-  contractNumber: string;
+  @IsOptional()
+  contractNumber?: string;
   @ApiPropertyOptional()
   @IsString()
-  contractDate: string;
+  @IsOptional()
+  contractDate?: string;
 
   @ApiPropertyOptional()
   @IsString()
+  @IsOptional()
   operatorPosition?: string;
 
   @ApiPropertyOptional()
   @IsString()
-  operatorFio: string;
+  @IsOptional()
+  operatorFio?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  operatorDoc?: string;
 
   @ApiPropertyOptional()
   @IsString()
   companyName: string;
-  @ApiPropertyOptional()
-  @IsString()
-  operatorDoc: string;
+
   @ApiPropertyOptional()
   @IsString()
   userPosition: string;
