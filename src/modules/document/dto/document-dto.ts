@@ -32,7 +32,7 @@ export class DocumentDto extends AbstractDto {
 
   @ApiPropertyOptional()
   @IsBoolean()
-  isUpdated: boolean;
+  enableResign: boolean;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -47,6 +47,7 @@ export class DocumentDto extends AbstractDto {
   ) {
     super(document);
     this.name = document.name;
+    this.enableResign = document.enableResign;
     this.status = document.status;
     this.body = document.body;
     this.asset = document.asset;
