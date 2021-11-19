@@ -51,7 +51,7 @@ export class DocumentService {
         },
       },
     });
-    document.isUpdated = true;
+    document.enableResign = true;
     document.status = Status.DECLINE;
     document.comments = decline.comments;
     await this.signature.delete({
@@ -80,15 +80,15 @@ export class DocumentService {
     }
     return documents.toDtos();
   }
-  changeStatus(status: Status, companyId, isUpdated?: boolean) {
-    if (isUpdated !== undefined) {
+  changeStatus(status: Status, companyId, enableResign?: boolean) {
+    if (enableResign !== undefined) {
       return this.documentRepository.update(
         {
           company: companyId,
         },
         {
           status,
-          isUpdated,
+          enableResign,
         },
       );
     }
