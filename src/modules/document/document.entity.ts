@@ -35,7 +35,7 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
   @OneToMany((type) => AssetsEntity, (assets) => assets.document, {
     cascade: ['insert', 'update'],
   })
-  assets: SignatureEntity[];
+  assets: AssetsEntity[];
 
   dtoClass = DocumentDto;
 }

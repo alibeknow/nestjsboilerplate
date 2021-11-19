@@ -95,10 +95,7 @@ export class SignatureController {
       });
       return changedDoc;
     }
-    return BadRequestException.createBody({
-      message: 'Пожалуйста используйте верную подпись',
-      statusCode: 416,
-    });
+    throw new BadRequestException('Пожалуйста используйте верную подпись');
   }
 
   @Auth(RoleType.ADMIN)

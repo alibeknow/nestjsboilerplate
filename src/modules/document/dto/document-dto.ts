@@ -3,6 +3,7 @@ import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import { CompanyDto } from '../../company/dto/company-dto';
+import type { AssetsDto } from '../../contract/dto/assets.dto';
 import type { DocumentEntity } from '../document.entity';
 
 export class DocumentDto extends AbstractDto {
@@ -21,6 +22,10 @@ export class DocumentDto extends AbstractDto {
   @ApiPropertyOptional()
   @IsString()
   asset: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  comments: string;
   @ApiPropertyOptional()
   @IsBoolean()
   isActive: boolean;
@@ -29,6 +34,9 @@ export class DocumentDto extends AbstractDto {
   @IsOptional()
   company?: CompanyDto;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  assets?: AssetsDto[];
   constructor(
     document: DocumentEntity,
     options?: Partial<{ isActive: boolean }>,
@@ -38,7 +46,9 @@ export class DocumentDto extends AbstractDto {
     this.status = document.status;
     this.body = document.body;
     this.asset = document.asset;
+    this.assets = document.assets;
     this.isActive = options?.isActive;
     this.company = document.company;
+    this.comments = document.comments;
   }
 }

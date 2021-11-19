@@ -62,7 +62,8 @@ export class DocumentService {
   async getDocs(companyId: string): Promise<DocumentDto[] | DocumentDto> {
     const documents = await this.documentRepository.find({
       where: { company: { id: companyId } },
-      relations: ['company'],
+      select: ['id', 'asset', 'assets', 'body', 'comments', 'name', 'status'],
+      relations: ['company', 'assets'],
     });
     if (documents.length <= 0) {
       const contract = this.getTemplate();
