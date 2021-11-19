@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import axios from 'axios';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
@@ -63,7 +68,7 @@ export class IbanService {
         await this.accountRepository.save(accountEntity);
         return data;
       } catch (error) {
-        Logger.error(error);
+        throw new BadRequestException(error, 'could create account');
       }
     }
 

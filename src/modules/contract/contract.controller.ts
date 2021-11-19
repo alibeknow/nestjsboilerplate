@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import {
   AnyFilesInterceptor,
+  FileInterceptor,
   FilesInterceptor,
 } from '@nestjs/platform-express';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -46,9 +47,9 @@ export class ContractController {
   @Post()
   @HttpCode(HttpStatus.OK)
   @Auth(RoleType.USER)
-  @UseInterceptors(FilesInterceptor('files', 10, { dest: 'assets/' }))
+  @UseInterceptors(AnyFilesInterceptor({ dest: 'uploads/' }))
   async SignedContract(
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles() files: Express.Multer.File,
     @Body() contractDto: SignedContractDto,
     @Req() req,
   ) {

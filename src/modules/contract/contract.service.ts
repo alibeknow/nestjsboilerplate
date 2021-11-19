@@ -34,7 +34,7 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
 
   async SignedContract(
     contractDto: SignedContractDto,
-    files: Express.Multer.File[],
+    file: Express.Multer.File,
   ): Promise<Buffer> {
     const resultTemplate = await this.documentService.xmlPutVariables(
       contractDto,
@@ -46,13 +46,16 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     const document = await this.documentService.documentRepository.findOne({
       where: { company: { id: contractDto.companyId } },
     });
-    for (const file of files) {
-      const asset = this.assetRepository.create({
-        path: file.path,
-        mimeType: file.mimetype,
-        name: file.originalname,
+
+    if (file) {
+      const params = {
+        path: file[0].path,
+        mimeType: file[0].mimetype,
+        name: file[0].originalname,
         document: { id: document.id },
-      });
+      };
+
+      const asset = this.assetRepository.create(params);
       await this.assetRepository.save(asset);
     }
 

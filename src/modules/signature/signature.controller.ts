@@ -1,4 +1,5 @@
 import {
+  BadGatewayException,
   BadRequestException,
   Body,
   Controller,
@@ -133,17 +134,24 @@ export class SignatureController {
       const date = new Date();
       const expireDate = new Date();
       expireDate.setFullYear(2099);
-      const data = await this.ibanService.createIbanAccount({
+      const params = {
         address: jsonParsed.legalAddress,
         companyName: jsonParsed.companyName,
         xin: jsonParsed.bin,
         email: jsonParsed.email,
-        mobileNumber: jsonParsed.contractNumber,
+        mobileNumber: jsonParsed.phone,
         contractNumber: jsonParsed.contractNumber,
         registrationDate: date.toISOString(),
         expirationDate: expireDate.toISOString(),
-      });
-      return { changes: changedDoc, account: data };
+      };
+      try {
+        const data = await this.ibanService.createIbanAccount(params);
+        return { changes: changedDoc, account: data };
+      } catch {
+        throw new BadGatewayException(
+          `Ошибка сервиса ${JSON.stringify(params)}`,
+        );
+      }
     }
     throw new BadRequestException('Пожалуйста используйте верную подпись');
   }
