@@ -31,6 +31,10 @@ export class DocumentDto extends AbstractDto {
   isActive: boolean;
 
   @ApiPropertyOptional()
+  @IsBoolean()
+  isUpdated: boolean;
+
+  @ApiPropertyOptional()
   @IsOptional()
   company?: CompanyDto;
 

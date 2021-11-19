@@ -51,6 +51,7 @@ export class DocumentService {
         },
       },
     });
+    document.isUpdated = true;
     document.status = Status.DECLINE;
     document.comments = decline.comments;
     await this.signature.delete({
@@ -79,7 +80,18 @@ export class DocumentService {
     }
     return documents.toDtos();
   }
-  changeStatus(status: Status, companyId) {
+  changeStatus(status: Status, companyId, isUpdated?: boolean) {
+    if (isUpdated !== undefined) {
+      return this.documentRepository.update(
+        {
+          company: companyId,
+        },
+        {
+          status,
+          isUpdated,
+        },
+      );
+    }
     return this.documentRepository.update(
       {
         company: companyId,

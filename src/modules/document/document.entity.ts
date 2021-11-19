@@ -22,6 +22,9 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
   @Column({ type: 'text', nullable: true })
   comments: string;
 
+  @Column({ type: 'boolean', nullable: true })
+  isUpdated: boolean;
+
   @Column({ nullable: true })
   asset: string;
 

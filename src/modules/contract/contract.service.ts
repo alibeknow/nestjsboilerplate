@@ -47,7 +47,7 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
       where: { company: { id: contractDto.companyId } },
     });
 
-    if (file) {
+    if (file[0]) {
       const params = {
         path: file[0].path,
         mimeType: file[0].mimetype,
