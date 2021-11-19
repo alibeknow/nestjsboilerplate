@@ -136,7 +136,7 @@ export class SignatureController {
       expireDate.setFullYear(2099);
       const params = {
         address: jsonParsed.legalAddress,
-        companyName: jsonParsed.companyName,
+        companyName: jsonParsed.companyName.replace('\\\\', '\\'),
         xin: jsonParsed.bin,
         email: jsonParsed.email,
         mobileNumber: jsonParsed.phone,
