@@ -54,18 +54,18 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     });
 
     if (file[0]) {
-      const params = {
-        path: file[0].path,
-        mimeType: file[0].mimetype,
-        name: file[0].originalname,
-        document: { id: document.id },
-      };
       const assets = await this.getAssets(document.id);
       for (const assetVariable of assets[0]) {
         if (existsSync(assetVariable.path)) {
           unlinkSync(assetVariable.path);
         }
       }
+      const params = {
+        path: file[0].path,
+        mimeType: file[0].mimetype,
+        name: file[0].originalname,
+        document: { id: document.id },
+      };
       await this.assetRepository.delete({ document: { id: document.id } });
       const asset = this.assetRepository.create(params);
       await this.assetRepository.save(asset);
