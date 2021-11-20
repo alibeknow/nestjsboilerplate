@@ -23,7 +23,7 @@ export class CompanyController {
   constructor(readonly companyService: CompanyService) {}
   @Get()
   @HttpCode(HttpStatus.OK)
-  @Auth(RoleType.ADMIN)
+  @Auth([RoleType.ADMIN])
   @ApiQuery({ enum: Status, name: 'status' })
   getAllCompanies(
     @Query(new ValidationPipe({ transform: true }))

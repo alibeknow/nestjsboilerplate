@@ -57,7 +57,7 @@ export class SignatureController {
     return signatures;
   }
 
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @Post('document')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(LoggerInterceptor)
@@ -105,7 +105,7 @@ export class SignatureController {
     throw new BadRequestException('Пожалуйста используйте верную подпись');
   }
 
-  @Auth(RoleType.ADMIN)
+  @Auth([RoleType.ADMIN])
   @UseInterceptors(LoggerInterceptor)
   @Post('operator')
   @HttpCode(HttpStatus.OK)

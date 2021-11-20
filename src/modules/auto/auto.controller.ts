@@ -30,7 +30,7 @@ export class AutoController {
     public readonly utilsService: UtilsService,
   ) {}
   @Post()
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
@@ -55,7 +55,7 @@ export class AutoController {
     }
   }
   @Delete()
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   async deleteAutoAccount(
     @Body() autoDto: AutoArray,
@@ -78,7 +78,7 @@ export class AutoController {
     }
   }
   @Post('getList')
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   listAuto(@Body() autoList: AutoListDto) {
     return this.autoService.getListAutoAccount(autoList);

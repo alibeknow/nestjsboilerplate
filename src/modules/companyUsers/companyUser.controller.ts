@@ -25,7 +25,7 @@ export class CompanyUserController {
   ) {}
 
   @Get()
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
@@ -40,7 +40,7 @@ export class CompanyUserController {
   }
 
   @Get(':id')
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,

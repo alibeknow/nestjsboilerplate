@@ -20,7 +20,7 @@ import { DocumentDto } from './dto/document-dto';
 @ApiTags('documents')
 export class DocumentController {
   constructor(public readonly documentService: DocumentService) {}
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @Post()
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
@@ -33,7 +33,7 @@ export class DocumentController {
     );
     return documents;
   }
-  @Auth(RoleType.ADMIN)
+  @Auth([RoleType.ADMIN])
   @Post('decline')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({

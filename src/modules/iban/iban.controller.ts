@@ -23,7 +23,7 @@ import type { ISearchAccountResponse } from './interfaces/ISearchAccountResponse
 export class IbanController {
   constructor(public readonly ibanService: IbanService) {}
   @Post()
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
@@ -35,27 +35,27 @@ export class IbanController {
     return this.ibanService.createIbanAccount(ibanAccountDto);
   }
   @Get()
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   searchBin(@Req() req): Promise<ISearchAccountResponse> {
     const bin = req.user.company.bin as string;
     return this.ibanService.searchAccountByBin(bin);
   }
   @Post('setMain')
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.ACCEPTED)
   setMain(@Body() setMain: SetMainDto, @Req() req) {
     setMain.companyId = req.user.company.id;
     return this.ibanService.setMainAccount(setMain);
   }
   @Post('create')
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.ACCEPTED)
   createAccounts(@Body() accounts: ArrayAccounts, @Req() req) {
     return this.ibanService.addAccounts(accounts, req);
   }
   @Get('getmain')
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   getMainAccount(@Req() req) {
     const companyId = req.user.company.id as string;

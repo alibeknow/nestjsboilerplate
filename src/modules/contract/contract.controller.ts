@@ -11,16 +11,11 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  AnyFilesInterceptor,
-  FileInterceptor,
-  FilesInterceptor,
-} from '@nestjs/platform-express';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
-import { AssetsRepository } from './assets.repository';
 import { ContractService } from './contract.service';
 import { ContractDto } from './dto/contract.dto';
 import { SignedContractDto } from './dto/signedContract.dto';
@@ -31,7 +26,7 @@ export class ContractController {
 
   @Post('generate')
   @HttpCode(HttpStatus.OK)
-  //@Auth(RoleType.ADMIN)
+  @Auth([RoleType.ADMIN, RoleType.USER])
   @ApiOkResponse({
     type: ContractDto,
     description: 'Document info with access token',
@@ -46,7 +41,7 @@ export class ContractController {
   }
   @Post()
   @HttpCode(HttpStatus.OK)
-  @Auth(RoleType.USER)
+  @Auth([RoleType.USER, RoleType.ADMIN])
   @UseInterceptors(AnyFilesInterceptor({ dest: 'uploads/' }))
   async SignedContract(
     @UploadedFiles() files: Express.Multer.File,
@@ -64,10 +59,14 @@ export class ContractController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @Auth(RoleType.USER)
-  downloadContract(@Req() req, @Res() res) {
-    const companyId: string =
-      req.user?.company?.id || 'adb21fb4-0446-4ebf-9a67-78344357362a';
+  @Auth([RoleType.USER, RoleType.ADMIN])
+  downloadContract(
+    @Query('companyid') companyid: string,
+    @Req() req,
+    @Res() res,
+  ) {
+    const companyId: string = companyid || req.user?.company?.id;
+
     const pdfData = this.contractService.getPdf(companyId);
     res.set({
       'Content-Type': 'application/pdf',
@@ -78,11 +77,13 @@ export class ContractController {
 
   @Get('getAssets')
   @HttpCode(HttpStatus.OK)
+  @Auth([RoleType.USER, RoleType.ADMIN])
   getAssets(@Query('documentId') documentId: string) {
     return this.contractService.getAssets(documentId);
   }
 
   @Get('downloadAssets')
+  @Auth([RoleType.USER, RoleType.ADMIN])
   @HttpCode(HttpStatus.OK)
   async downloadAssets(@Query('assetId') assetId: string, @Res() res) {
     const rresult = await this.contractService.downloadAssets(assetId);
