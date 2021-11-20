@@ -56,10 +56,14 @@ export class AuthService {
       const {
         subject: { organization, commonName, lastName, iin },
       } = signatureData;
+      // eslint-disable-next-line unicorn/consistent-destructuring
+      if (!signatureData.subject.organization) {
+        signatureData.subject.organization = `ИП ${lastName} ${commonName}`;
+      }
       if (!user) {
         const paraCompany: CreateCompanyDto = {
           bin,
-          name: organization,
+          name: signatureData.subject.organization,
           companyType,
         };
         companyEntity = await this.companyService.findOrCreate(paraCompany);
