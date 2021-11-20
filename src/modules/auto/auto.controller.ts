@@ -14,6 +14,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
 import { NotValidCertException } from '../../exceptions/bad-request-ncanode';
+import { UtilsService } from '../../shared/services/utils.service';
 import type { ISearchAccountResponse } from '../iban/interfaces/ISearchAccountResponse';
 import { SignatureService } from '../signature/signature.service';
 import { AutoService } from './auto.service';
@@ -26,6 +27,7 @@ export class AutoController {
   constructor(
     public readonly autoService: AutoService,
     public readonly signatureService: SignatureService,
+    public readonly utilsService: UtilsService,
   ) {}
   @Post()
   @Auth(RoleType.USER)
@@ -39,12 +41,12 @@ export class AutoController {
     const signatureData = await this.signatureService.verifySignature(
       autoDto.signature,
     );
-    if (
-      signatureData.valid &&
-      signatureData.subject.bin &&
-      signatureData.subject.bin === req.user.company.bin &&
-      signatureData.subject.iin === req.user.idn
-    ) {
+    const isValid = this.utilsService.validateSignature(signatureData, {
+      bin: req.user.company.bin,
+      idn: req.user.idn,
+      companyType: req.user.company.company_type,
+    });
+    if (isValid) {
       return this.autoService.addAutoAccount(autoDto);
     } else {
       throw new NotValidCertException(
@@ -62,12 +64,12 @@ export class AutoController {
     const signatureData = await this.signatureService.verifySignature(
       autoDto.signature,
     );
-    if (
-      signatureData.valid &&
-      signatureData.subject.bin &&
-      signatureData.subject.bin === req.user.company.bin &&
-      signatureData.subject.iin === req.user.idn
-    ) {
+    const isValid = this.utilsService.validateSignature(signatureData, {
+      bin: req.user.company.bin,
+      idn: req.user.idn,
+      companyType: req.user.company.company_type,
+    });
+    if (isValid) {
       return this.autoService.deleteAutoAccount(autoDto);
     } else {
       throw new NotValidCertException(

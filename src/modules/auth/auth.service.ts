@@ -5,6 +5,7 @@ import { NotValidCertException } from '../../exceptions/bad-request-ncanode';
 import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
 import { UtilsProvider } from '../../providers/utils.provider';
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import { UtilsService } from '../../shared/services/utils.service';
 import { CompanyService } from '../company/company.service';
 import type { CreateCompanyDto } from '../company/dto/createCompany.dto';
 import { IbanService } from '../iban/iban.service';
@@ -25,6 +26,7 @@ export class AuthService {
     public readonly companyService: CompanyService,
     public readonly signatureService: SignatureService,
     public readonly ibanService: IbanService,
+    public readonly utilsService: UtilsService,
   ) {}
 
   async createToken(user: UserEntity | UserDto): Promise<TokenPayloadDto> {
@@ -43,12 +45,11 @@ export class AuthService {
       signedXml,
     );
     let companyEntity;
-    if (
-      signatureData.valid &&
-      signatureData.subject.bin &&
-      signatureData.subject.bin === bin &&
-      signatureData.subject.iin === idn
-    ) {
+    const isValidate = this.utilsService.validateSignature(
+      signatureData,
+      signatureDto,
+    );
+    if (isValidate) {
       let user = await this.userService.findOne({
         idn: signatureData.subject.iin,
       });

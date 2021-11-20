@@ -19,6 +19,7 @@ import { RoleType } from '../../common/constants/role-type';
 import { Status } from '../../common/constants/status';
 import { Auth } from '../../decorators/http.decorators';
 import { LoggerInterceptor } from '../../interceptors/logger-interceptor.service';
+import { UtilsService } from '../../shared/services/utils.service';
 import { CompanyService } from '../company/company.service';
 import { ContractService } from '../contract/contract.service';
 import { DocumentService } from '../document/document.service';
@@ -37,6 +38,7 @@ export class SignatureController {
     public readonly ibanService: IbanService,
     public readonly mailService: MailService,
     public readonly companyService: CompanyService,
+    public readonly utilsService: UtilsService,
   ) {}
 
   @Get()
@@ -69,11 +71,15 @@ export class SignatureController {
     const { valid, subject } = await this.signatureService.verifySignature(
       signatureData,
     );
-    if (
-      subject.bin === request.user.company.bin &&
-      subject.iin === request.user.idn &&
-      valid
-    ) {
+    const isValid = this.utilsService.validateSignature(
+      { valid, subject },
+      {
+        bin: request.user.company.bin,
+        idn: request.user.idn,
+        companyType: request.user.company.company_type,
+      },
+    );
+    if (isValid) {
       const {
         params: { xml },
       } = signatureData;
