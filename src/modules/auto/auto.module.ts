@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import { UtilsService } from '../../shared/services/utils.service';
 import { AutoController } from '../auto/auto.controller';
 import { CompanyRepository } from '../company/company.repository';
 import { AccountRepository } from '../iban/repository/account.repository';
@@ -15,6 +16,6 @@ import { AutoService } from './auto.service';
     TypeOrmModule.forFeature([SignatureRepository, AccountRepository]),
   ],
   controllers: [AutoController],
-  providers: [ApiConfigService, AutoService, SignatureService],
+  providers: [ApiConfigService, AutoService, SignatureService, UtilsService],
 })
 export class AutoModule {}

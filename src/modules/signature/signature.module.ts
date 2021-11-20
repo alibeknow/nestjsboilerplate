@@ -2,6 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
+import { UtilsService } from '../../shared/services/utils.service';
 import { CompanyRepository } from '../company/company.repository';
 import { CompanyService } from '../company/company.service';
 import { ContractService } from '../contract/contract.service';
@@ -31,6 +32,7 @@ import { SignatureService } from './signature.service';
     MailService,
     IbanService,
     CompanyService,
+    UtilsService,
   ],
   exports: [SignatureService],
 })
