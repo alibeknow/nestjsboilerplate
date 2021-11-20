@@ -76,7 +76,7 @@ export class SignatureController {
       {
         bin: request.user.company.bin,
         idn: request.user.idn,
-        companyType: request.user.company.company_type,
+        companyType: request.user.company.companyType,
       },
     );
     if (isValid) {
@@ -86,7 +86,7 @@ export class SignatureController {
       const changedDoc = await this.documentService.changeStatus(
         Status.SIGNED,
         companyId,
-        false
+        false,
       );
 
       const document = await this.documentService.getDocs(companyId);
@@ -129,7 +129,7 @@ export class SignatureController {
       const changedDoc = await this.documentService.changeStatus(
         Status.APPROVED,
         companyId,
-        false
+        false,
       );
       await this.signatureService.createSignature({
         body: xml,
