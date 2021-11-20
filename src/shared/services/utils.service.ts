@@ -13,9 +13,7 @@ export class UtilsService {
   ) {
     const { idn, companyType, bin } = signatureDto;
     if (companyType === CompanyType.IE) {
-      return signatureData.valid &&
-        signatureData.subject.iin === idn &&
-        !signatureData.subject.bin
+      return signatureData.valid && signatureData.subject.iin === idn
         ? true
         : false;
     }
