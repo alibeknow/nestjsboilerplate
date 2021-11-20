@@ -1,6 +1,12 @@
 import { BadGatewayException, Injectable, Req } from '@nestjs/common';
 import axios from 'axios';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs';
 // eslint-disable-next-line unicorn/import-style
 import { resolve } from 'path';
 
@@ -54,8 +60,13 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
         name: file[0].originalname,
         document: { id: document.id },
       };
-      // Удалить предыдущий архив если такой был;
-      this.assetRepository.delete({document: { id: document.id }});
+      const assets = await this.getAssets(document.id);
+      for (const assetVariable of assets[0]) {
+        if (existsSync(assetVariable.path)) {
+          unlinkSync(assetVariable.path);
+        }
+      }
+      await this.assetRepository.delete({ document: { id: document.id } });
       const asset = this.assetRepository.create(params);
       await this.assetRepository.save(asset);
     }
