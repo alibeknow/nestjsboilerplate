@@ -63,7 +63,16 @@ export class DocumentService {
   async getDocs(companyId: string): Promise<DocumentDto[] | DocumentDto> {
     const documents = await this.documentRepository.find({
       where: { company: { id: companyId } },
-      select: ['id', 'asset', 'assets', 'body', 'comments', 'name', 'status'],
+      select: [
+        'id',
+        'asset',
+        'assets',
+        'body',
+        'comments',
+        'name',
+        'status',
+        'enableResign',
+      ],
       relations: ['company', 'assets'],
     });
     if (documents.length <= 0) {
