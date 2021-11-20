@@ -54,7 +54,8 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
         name: file[0].originalname,
         document: { id: document.id },
       };
-
+      // Удалить предыдущий архив если такой был;
+      this.assetRepository.delete({document: { id: document.id }});
       const asset = this.assetRepository.create(params);
       await this.assetRepository.save(asset);
     }

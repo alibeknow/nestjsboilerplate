@@ -86,6 +86,7 @@ export class SignatureController {
       const changedDoc = await this.documentService.changeStatus(
         Status.SIGNED,
         companyId,
+        false
       );
 
       const document = await this.documentService.getDocs(companyId);
@@ -128,6 +129,7 @@ export class SignatureController {
       const changedDoc = await this.documentService.changeStatus(
         Status.APPROVED,
         companyId,
+        false
       );
       await this.signatureService.createSignature({
         body: xml,

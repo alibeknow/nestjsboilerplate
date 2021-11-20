@@ -29,6 +29,7 @@ export class DocumentService {
       where: { company: { id: companyId } },
     });
     document.body = body;
+    document.enableResign = true;
     const updatedvalues = await this.documentRepository.save(document);
     return updatedvalues;
   }
@@ -51,7 +52,7 @@ export class DocumentService {
         },
       },
     });
-    document.enableResign = true;
+    document.enableResign = false;
     document.status = Status.DECLINE;
     document.comments = decline.comments;
     await this.signature.delete({

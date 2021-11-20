@@ -2,4 +2,4 @@
 10.0.125.13 ansible_user=root
 
 [msw-appserv09.kaztoll.kz]
-10.0.124.89 ansible_user=root
+10.0.89.44 ansible_user=root
