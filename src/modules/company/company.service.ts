@@ -28,13 +28,13 @@ export class CompanyService {
           '"documents"."status" in (:status)',
           { status },
         )
-        .innerJoinAndSelect('company.documents.assets', 'assets')
+        .leftJoinAndSelect('documents.assets', 'assets')
         .paginate(pageOptionsDto);
       return { data: items, meta: pageMetaDto };
     } else {
       const { items, pageMetaDto } = await queryBuilder
         .innerJoinAndSelect('company.documents', 'documents')
-        .innerJoinAndSelect('company.documents.assets', 'assets')
+        .leftJoinAndSelect('documents.assets', 'assets')
         .paginate(pageOptionsDto);
 
       return { data: items, meta: pageMetaDto };
