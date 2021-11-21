@@ -52,7 +52,6 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     const document = await this.documentService.documentRepository.findOne({
       where: { company: { id: contractDto.companyId } },
     });
-
     if (file[0]) {
       const assets = await this.getAssets(document.id);
       for (const assetVariable of assets[0]) {
@@ -63,21 +62,23 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
       const params = {
         path: file[0].path,
         mimeType: file[0].mimetype,
-        name: file[0].originalname,
+        name: file[0].filename,
         document: { id: document.id },
       };
       await this.assetRepository.delete({ document: { id: document.id } });
       const asset = this.assetRepository.create(params);
-      await this.assetRepository.save(asset);
+      const resulter = await this.assetRepository.save(asset, { data: true });
     }
 
     await this.сompanyRepository.update(contractDto.companyId, {
       jsonData: contractDto,
     });
-    await this.documentService.updateDocument(
-      contractDto.companyId,
-      resultTemplate,
-    );
+
+    document.body = resultTemplate;
+
+    document.enableResign = true;
+    await this.documentService.documentRepository.save(document);
+
     const { data } = await axios.post<Buffer>(
       `${this.url}api/pdf/template`,
       contractDto,

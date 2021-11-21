@@ -13,6 +13,9 @@ import {
 } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+// eslint-disable-next-line unicorn/import-style
+import { extname } from 'path';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
@@ -42,7 +45,22 @@ export class ContractController {
   @Post()
   @HttpCode(HttpStatus.OK)
   @Auth([RoleType.USER, RoleType.ADMIN])
-  @UseInterceptors(AnyFilesInterceptor({ dest: 'uploads/' }))
+  @UseInterceptors(
+    AnyFilesInterceptor({
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          // Generating a 32 random chars long string
+          const randomName = Array.from({ length: 32 })
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          //Calling the callback passing the random name generated with the original extension name
+          cb(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
   async SignedContract(
     @UploadedFiles() files: Express.Multer.File,
     @Body() contractDto: SignedContractDto,

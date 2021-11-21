@@ -28,6 +28,7 @@ export class DocumentService {
     const document = await this.documentRepository.findOne({
       where: { company: { id: companyId } },
     });
+
     document.body = body;
     document.enableResign = true;
     const updatedvalues = await this.documentRepository.save(document);
