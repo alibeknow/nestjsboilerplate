@@ -13,6 +13,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
 import { AccountDto } from './dto/account-entity.dto';
+import { AccountFillpageDto } from './dto/accountfill.dto';
 import { ArrayAccounts } from './dto/accounts.array.dto';
 import { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import { SetMainDto } from './dto/setMain.dto';
@@ -60,5 +61,11 @@ export class IbanController {
   getMainAccount(@Req() req) {
     const companyId = req.user.company.id as string;
     return this.ibanService.getMainAccount(companyId);
+  }
+  @Get('getDeposit')
+  @Auth([RoleType.USER])
+  @HttpCode(HttpStatus.OK)
+  getFillAccount(fillAccount: AccountFillpageDto) {
+    return this.ibanService.fillAccount(fillAccount);
   }
 }

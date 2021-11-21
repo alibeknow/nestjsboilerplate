@@ -10,6 +10,7 @@ import { ApiConfigService } from '../../shared/services/api-config.service';
 import type { CompanyEntity } from '../company/company.entity';
 import { CompanyRepository } from '../company/company.repository';
 import type { AccountDto } from './dto/account-entity.dto';
+import type { AccountFillpageDto } from './dto/accountfill.dto';
 import type { ArrayAccounts } from './dto/accounts.array.dto';
 import type { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import type { SetMainDto } from './dto/setMain.dto';
@@ -117,6 +118,12 @@ export class IbanService {
       { isMain: true },
     );
     return affected;
+  }
+  async fillAccount(accountFill: AccountFillpageDto) {
+    const { data } = await axios.get<ISearchAccountResponse>(
+      `${this.url}/api/legal-account/deposit-entries?token=${this.secret}&xin=${accountFill.accountNumber}&page=${accountFill.page}&size=${accountFill.size}`,
+    );
+    return data;
   }
 
   async searchAccountByBin(bin: string): Promise<ISearchAccountResponse> {
