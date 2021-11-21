@@ -121,7 +121,7 @@ export class IbanService {
   }
   async fillAccount(accountFill: AccountFillpageDto) {
     const { data } = await axios.get<ISearchAccountResponse>(
-      `${this.url}/api/legal-account/deposit-entries?token=${this.secret}&xin=${accountFill.accountNumber}&page=${accountFill.page}&size=${accountFill.size}`,
+      `${this.url}/deposit-entries?token=${this.secret}&accountNumber=${accountFill.accountNumber}&page=${accountFill.page}&size=${accountFill.size}`,
     );
     return data;
   }

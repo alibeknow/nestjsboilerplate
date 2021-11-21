@@ -62,10 +62,10 @@ export class IbanController {
     const companyId = req.user.company.id as string;
     return this.ibanService.getMainAccount(companyId);
   }
-  @Get('getDeposit')
+  @Post('getDeposit')
   @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
-  getFillAccount(fillAccount: AccountFillpageDto) {
+  getFillAccount(@Body() fillAccount: AccountFillpageDto) {
     return this.ibanService.fillAccount(fillAccount);
   }
 }
