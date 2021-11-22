@@ -6,8 +6,9 @@ COPY package.json yarn.lock package-lock.json ./
 
 RUN npm install
 RUN mkdir /usr/src/app/contracts
+RUN mkdir /usr/src/app/logs
 #RUN npm run build:prod
-CMD npm run start:dev 
+CMD npm run start:dev >> /usr/src/app/logs/kaztoll-enterprise-back.logs
 EXPOSE 3000
 
 
