@@ -56,7 +56,7 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
       contractDto,
     );
     const date = new Date();
-    const numberContract = `${document.docNumber + 436}/${date
+    const numberContract = `${document.docNumber + 435}/${date
       .getFullYear()
       .toString()
       .slice(
