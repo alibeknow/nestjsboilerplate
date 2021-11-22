@@ -74,6 +74,8 @@ export class DocumentService {
         'name',
         'status',
         'enableResign',
+        'dateSign',
+        'contractNumber',
       ],
       relations: ['company', 'assets'],
     });
@@ -91,7 +93,12 @@ export class DocumentService {
     }
     return documents.toDtos();
   }
-  changeStatus(status: Status, companyId, enableResign?: boolean) {
+  changeStatus(
+    status: Status,
+    companyId,
+    enableResign?: boolean,
+    contractNumber?: string,
+  ) {
     if (enableResign !== undefined) {
       return this.documentRepository.update(
         {
@@ -100,6 +107,8 @@ export class DocumentService {
         {
           status,
           enableResign,
+          contractNumber,
+          dateSign: new Date().toISOString(),
         },
       );
     }

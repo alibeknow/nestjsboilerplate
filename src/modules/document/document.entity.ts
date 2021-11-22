@@ -18,6 +18,11 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
   isActive: boolean;
   @Column({ type: 'text', nullable: false })
   body: string;
+  @Column({ nullable: true })
+  contractNumber: string;
+
+  @Column({ nullable: true, type: 'timestamp' })
+  dateSign: Date;
 
   @Column({ type: 'text', nullable: true })
   comments: string;

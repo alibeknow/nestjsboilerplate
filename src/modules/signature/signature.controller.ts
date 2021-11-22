@@ -126,10 +126,12 @@ export class SignatureController {
       const {
         params: { xml },
       } = signatureData;
+      const { jsonData } = await this.companyService.getByBin(companyId);
       const changedDoc = await this.documentService.changeStatus(
         Status.APPROVED,
         companyId,
         false,
+        jsonData.contractNumber,
       );
       await this.signatureService.createSignature({
         body: xml,
@@ -137,18 +139,17 @@ export class SignatureController {
         fio: subject.commonName,
         name: 'clientSignature',
       });
-      const { jsonData } = await this.companyService.getByBin(companyId);
-      const jsonParsed = jsonData;
+
       const date = new Date();
       const expireDate = new Date();
       expireDate.setFullYear(2099);
       const params = {
-        address: jsonParsed.legalAddress,
+        address: jsonData.legalAddress,
         companyName: jsonParsed.companyName.replace('\\\\', '\\'),
-        xin: jsonParsed.bin,
-        email: jsonParsed.email,
-        mobileNumber: jsonParsed.phone,
-        contractNumber: jsonParsed.contractNumber,
+        xin: jsonData.bin,
+        email: jsonData.email,
+        mobileNumber: jsonData.phone,
+        contractNumber: jsonData.contractNumber,
         registrationDate: date.toISOString(),
         expirationDate: expireDate.toISOString(),
       };
