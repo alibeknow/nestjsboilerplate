@@ -75,7 +75,7 @@ export class AuthService {
           firstName: fullName[1],
           idn: iin,
           email,
-          company: { id: companyEntity.id },
+          company: companyEntity,
         });
       }
       return user;

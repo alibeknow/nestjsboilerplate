@@ -72,6 +72,7 @@ export class AuthController {
   ): Promise<LoginPayloadDto> {
     const createdUser = await this.authService.validateUser(userRegisterDto);
     const token = await this.authService.createToken(createdUser);
+    console.log(createdUser.company);
     return new LoginPayloadDto(
       createdUser.toDto(),
       token,
