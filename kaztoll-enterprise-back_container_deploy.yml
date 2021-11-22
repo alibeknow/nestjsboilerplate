@@ -33,7 +33,7 @@
        volumes:
        - /var/lib/containers/storage/volumes/kaztoll-enterprise-back-uploads/_data:/usr/src/app/uploads
        - /var/lib/containers/storage/volumes/kaztoll-enterprise-back-contracts/_data:/usr/src/app/contracts
-       - /var/lib/containers/storage/volumes/kaztoll-enterprise-back/_data:/usr/src/app
+       - /var/lib/containers/storage/volumes/kaztoll-enterprise-back/_data:/usr/src/app/logs
        ports:
          - "3000:3000"
        env:
