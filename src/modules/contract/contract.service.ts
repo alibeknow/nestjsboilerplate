@@ -12,6 +12,7 @@ import { resolve } from 'path';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { CompanyRepository } from '../company/company.repository';
+import { CompanyUserService } from '../companyUsers/companyUser.service';
 import { DocumentService } from '../document/document.service';
 import { AssetsRepository } from './assets.repository';
 import type { ContractDto } from './dto/contract.dto';
@@ -25,6 +26,7 @@ export class ContractService {
     private readonly documentService: DocumentService,
     private readonly сompanyRepository: CompanyRepository,
     public readonly assetRepository: AssetsRepository,
+    public readonly companyUserService: CompanyUserService,
   ) {}
 
   async GenerateContract(contractDto: ContractDto): Promise<Buffer> {
@@ -42,12 +44,17 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     contractDto: SignedContractDto,
     file: Express.Multer.File,
   ): Promise<Buffer> {
+    const companyUser =
+      await this.companyUserService.companyUserRepository.findOneOrFail();
+    contractDto.operatorDoc = companyUser.operatorDoc;
+    contractDto.operatorFio = `${companyUser.lastName} ${companyUser.firstName} ${companyUser.middleName}`;
+    contractDto.operatorPosition = companyUser.position;
     const resultTemplate = await this.documentService.xmlPutVariables(
       contractDto,
     );
     const docCount = await this.documentService.documentRepository.count();
     const date = new Date();
-    const numberContract = `${docCount + 436}/${date.getMonth()}/${date
+    const numberContract = `${docCount + 436}/${date
       .getFullYear()
       .toString()
       .slice(
@@ -72,7 +79,7 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
       };
       await this.assetRepository.delete({ document: { id: document.id } });
       const asset = this.assetRepository.create(params);
-      const resulter = await this.assetRepository.save(asset, { data: true });
+      await this.assetRepository.save(asset);
     }
 
     await this.сompanyRepository.update(contractDto.companyId, {

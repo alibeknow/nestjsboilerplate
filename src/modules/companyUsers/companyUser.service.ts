@@ -29,6 +29,13 @@ export class CompanyUserService {
     return this.companyUserRepository.save(user, { data: true });
   }
 
+  async updatEuser(userRegisterDto: CompanyUsersDto) {
+    return this.companyUserRepository.update(
+      userRegisterDto.id,
+      userRegisterDto,
+    );
+  }
+
   async getUsers(
     pageOptionsDto: UsersPageOptionsDto,
   ): Promise<PageDto<CompanyUsersDto>> {
