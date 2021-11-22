@@ -70,7 +70,7 @@ export class ContractController {
     contractDto.bin = req.user.company.bin;
     contractDto.companyName = req.user.company.name;
     const date = new Date();
-    contractDto.contractDate = `${date.getDay()}.${date.getMonth()}.${date.getFullYear()}г.`;
+    contractDto.contractDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}г.`;
     await this.contractService.SignedContract(contractDto, files);
     return { success: 'ok' };
   }

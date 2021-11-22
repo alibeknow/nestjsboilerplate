@@ -61,7 +61,7 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
       .toString()
       .slice(
         -2,
-      )} от ${date.getDay()}.${date.getMonth()}.${date.getFullYear()}г.`;
+      )} от ${date.getDate()}.${date.getMonth()}.${date.getFullYear()}г.`;
     contractDto.contractNumber = numberContract;
 
     if (file[0]) {
