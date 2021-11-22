@@ -59,9 +59,9 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     const numberContract = `${document.docNumber + 435}/${date
       .getFullYear()
       .toString()
-      .slice(
-        -2,
-      )} от ${date.getDate()}.${date.getMonth()}.${date.getFullYear()}г.`;
+      .slice(-2)} от ${date.getDate()}.${
+      date.getMonth() + 1
+    }.${date.getFullYear()}г.`;
     contractDto.contractNumber = numberContract;
 
     if (file[0]) {
