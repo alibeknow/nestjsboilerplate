@@ -47,10 +47,12 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     );
     const docCount = await this.documentService.documentRepository.count();
     const date = new Date();
-    const numberContract = `${date.getMonth()}/${date
+    const numberContract = `${docCount + 436}/${date.getMonth()}/${date
       .getFullYear()
       .toString()
-      .slice(-2)}/${docCount}`;
+      .slice(
+        -2,
+      )} от ${date.getDay()}.${date.getMonth()}.${date.getFullYear()}г.`;
     contractDto.contractNumber = numberContract;
     const document = await this.documentService.documentRepository.findOne({
       where: { company: { id: contractDto.companyId } },
