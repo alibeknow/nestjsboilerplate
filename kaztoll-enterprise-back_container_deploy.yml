@@ -9,16 +9,16 @@
        name: kaztoll-enterprise-back
      register: result
 
-   - name: Stop a container kaztoll-enterprise-back
-     containers.podman.podman_container:
-       name: kaztoll-enterprise-back
-       state: stopped
+#   - name: Stop a container kaztoll-enterprise-back
+#     containers.podman.podman_container:
+#       name: kaztoll-enterprise-back
+#       state: stopped
 #     when: result.exists
 
-   - name: Remove container
-     containers.podman.podman_container:
-       name: kaztoll-enterprise-back
-       state: absent
+#   - name: Remove container
+#     containers.podman.podman_container:
+#       name: kaztoll-enterprise-back
+#       state: absent
 #     when: result.exists
 
    - name: kaztoll-enterprise-back image remove
