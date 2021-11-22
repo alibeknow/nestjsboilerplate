@@ -5,6 +5,7 @@ COPY . /usr/src/app
 COPY package.json yarn.lock package-lock.json ./
 
 RUN npm install
+RUN mkdir /usr/src/app/contracts
 #RUN npm run build:prod
 CMD npm run start:dev 
 EXPOSE 3000
