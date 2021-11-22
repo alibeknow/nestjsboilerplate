@@ -59,6 +59,7 @@ export class CompanyUserController {
     type: CompanyUsersDto,
   })
   getUser(@UUIDParam('id') userId: string): Promise<CompanyUsersDto> {
+    console.log(userId);
     return this.companyUserService.getUser(userId);
   }
 }

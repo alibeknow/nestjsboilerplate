@@ -40,12 +40,7 @@ export class CompanyUserService {
   }
 
   async getUser(userId: string): Promise<CompanyUsersDto> {
-    const queryBuilder =
-      this.companyUserRepository.createQueryBuilder('companyUser');
-
-    queryBuilder.where('user.id = :userId', { userId });
-
-    const companyUserEntity = await queryBuilder.getOne();
+    const companyUserEntity = await this.companyUserRepository.findOne(userId);
 
     return companyUserEntity.toDto();
   }
