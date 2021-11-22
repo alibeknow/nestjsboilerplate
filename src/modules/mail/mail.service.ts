@@ -6,6 +6,7 @@ import { resolve } from 'path';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import type { SendEmail } from './dto/sendmail.dto';
+import { EmailTemplate } from './dto/sendmail.dto';
 import type { IMailResponse } from './interface/ImailResponse';
 @Injectable()
 export class MailService {
@@ -16,7 +17,7 @@ export class MailService {
   async sendMail(sendEmail: SendEmail): Promise<string> {
     let content = '';
     switch (sendEmail.content) {
-      case 'SIGNED':
+      case EmailTemplate.SIGNED:
         {
           content = readFileSync(
             resolve(__dirname, './templates/signed.template.html'),
@@ -24,10 +25,35 @@ export class MailService {
           ).toString();
         }
         break;
-      case 'SIGNEDOPERATOR':
+      case EmailTemplate.SIGNEDOPERATOR:
         {
           content = readFileSync(
             resolve(__dirname, './templates/signedoperator.template.html'),
+            'utf8',
+          ).toString();
+        }
+        break;
+      case EmailTemplate.ADDVEHICLE:
+        {
+          content = readFileSync(
+            resolve(__dirname, './templates/addVehicle.template.html'),
+            'utf8',
+          ).toString();
+        }
+        break;
+      case EmailTemplate.REGISTRATION:
+        {
+          content = readFileSync(
+            resolve(__dirname, './templates/registation.template.html'),
+            'utf8',
+          ).toString();
+        }
+        break;
+
+      case EmailTemplate.SIGNEDREJECTED:
+        {
+          content = readFileSync(
+            resolve(__dirname, './templates/declineContract.template.html'),
             'utf8',
           ).toString();
         }

@@ -3,10 +3,10 @@ import type { FindConditions } from 'typeorm';
 
 import type { PageDto } from '../../common/dto/page.dto';
 import { ValidatorService } from '../../shared/services/validator.service';
-import type { UserRegisterDto } from '../auth/dto/UserRegisterDto';
 import type { CompanyUsersEntity } from './companyUser.entity';
 import { CompanyUserRepository } from './companyUser.repository';
 import type { CompanyUsersDto } from './dto/companyUsers.dto';
+import type { CompanyUsersDto2 } from './dto/companyUsers2.dto';
 import type { UsersPageOptionsDto } from './dto/users-page-options.dto';
 @Injectable()
 export class CompanyUserService {
@@ -24,17 +24,16 @@ export class CompanyUserService {
     return this.companyUserRepository.findOne(findData);
   }
 
-  async createUser(
-    userRegisterDto: UserRegisterDto,
-  ): Promise<CompanyUsersEntity> {
+  createUser(userRegisterDto: CompanyUsersDto2): Promise<CompanyUsersEntity> {
     const user = this.companyUserRepository.create(userRegisterDto);
-    return this.companyUserRepository.save(user);
+    return this.companyUserRepository.save(user, { data: true });
   }
 
   async getUsers(
     pageOptionsDto: UsersPageOptionsDto,
   ): Promise<PageDto<CompanyUsersDto>> {
-    const queryBuilder = this.companyUserRepository.createQueryBuilder('user');
+    const queryBuilder =
+      this.companyUserRepository.createQueryBuilder('companyUser');
     const { items, pageMetaDto } = await queryBuilder.paginate(pageOptionsDto);
 
     return items.toPageDto(pageMetaDto);

@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
+  Post,
   Query,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,18 +16,27 @@ import { Auth, UUIDParam } from '../../decorators/http.decorators';
 import { TranslationService } from '../../shared/services/translation.service';
 import { CompanyUserService } from './companyUser.service';
 import { CompanyUsersDto } from './dto/companyUsers.dto';
+import { CompanyUsersDto2 } from './dto/companyUsers2.dto';
 import { UsersPageOptionsDto } from './dto/users-page-options.dto';
 
-@Controller('users')
-@ApiTags('users')
+@Controller('companyUsers')
+@ApiTags('companyUsers')
 export class CompanyUserController {
-  constructor(
-    private companyUserService: CompanyUserService,
-    private readonly translationService: TranslationService,
-  ) {}
+  constructor(private companyUserService: CompanyUserService) {}
+  @Post()
+  @Auth([RoleType.ADMIN])
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get users list',
+    type: CompanyUsersDto,
+  })
+  addCompanyUsers(@Body() cUser: CompanyUsersDto2) {
+    return this.companyUserService.createUser(cUser);
+  }
 
-  @Get()
-  @Auth([RoleType.USER])
+  @Get('all')
+  @Auth([RoleType.ADMIN])
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
@@ -40,7 +51,7 @@ export class CompanyUserController {
   }
 
   @Get(':id')
-  @Auth([RoleType.USER])
+  @Auth([RoleType.ADMIN])
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
