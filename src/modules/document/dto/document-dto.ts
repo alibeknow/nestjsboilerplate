@@ -1,5 +1,11 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import { CompanyDto } from '../../company/dto/company-dto';
@@ -39,6 +45,9 @@ export class DocumentDto extends AbstractDto {
   dateSign: Date;
   @IsString()
   contractNumber: string;
+  @IsNumber()
+  @IsOptional()
+  docNumber?: number;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -63,5 +72,6 @@ export class DocumentDto extends AbstractDto {
     this.isActive = options?.isActive;
     this.company = document.company;
     this.comments = document.comments;
+    this.docNumber = document.docNumber;
   }
 }

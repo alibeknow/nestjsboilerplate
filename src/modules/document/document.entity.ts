@@ -29,7 +29,8 @@ export class DocumentEntity extends AbstractEntity<DocumentDto> {
 
   @Column({ type: 'boolean', nullable: true, default: false })
   enableResign: boolean;
-
+  @Column({ type: 'integer', generated: 'increment' })
+  docNumber: number;
   @Column({ nullable: true })
   asset: string;
 

@@ -76,6 +76,7 @@ export class DocumentService {
         'enableResign',
         'dateSign',
         'contractNumber',
+        'docNumber',
       ],
       relations: ['company', 'assets'],
     });

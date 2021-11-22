@@ -49,21 +49,21 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     contractDto.operatorDoc = companyUser.operatorDoc;
     contractDto.operatorFio = `${companyUser.lastName} ${companyUser.firstName} ${companyUser.middleName}`;
     contractDto.operatorPosition = companyUser.position;
+    const document = await this.documentService.documentRepository.findOne({
+      where: { company: { id: contractDto.companyId } },
+    });
     const resultTemplate = await this.documentService.xmlPutVariables(
       contractDto,
     );
-    const docCount = await this.documentService.documentRepository.count();
     const date = new Date();
-    const numberContract = `${docCount + 436}/${date
+    const numberContract = `${document.docNumber + 436}/${date
       .getFullYear()
       .toString()
       .slice(
         -2,
       )} от ${date.getDay()}.${date.getMonth()}.${date.getFullYear()}г.`;
     contractDto.contractNumber = numberContract;
-    const document = await this.documentService.documentRepository.findOne({
-      where: { company: { id: contractDto.companyId } },
-    });
+
     if (file[0]) {
       const assets = await this.getAssets(document.id);
       for (const assetVariable of assets[0]) {
