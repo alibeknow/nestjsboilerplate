@@ -47,7 +47,10 @@ ${contractDto.operatorPosition}&operatorFio=${contractDto.operatorFio}&companyNa
     );
     const docCount = await this.documentService.documentRepository.count();
     const date = new Date();
-    const numberContract = `${date.getMonth()}/${date.getFullYear()}/${docCount}`;
+    const numberContract = `${date.getMonth()}/${date
+      .getFullYear()
+      .toString()
+      .slice(-2)}/${docCount}`;
     contractDto.contractNumber = numberContract;
     const document = await this.documentService.documentRepository.findOne({
       where: { company: { id: contractDto.companyId } },
