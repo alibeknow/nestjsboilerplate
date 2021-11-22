@@ -31,8 +31,8 @@
        name: kaztoll-enterprise-back
        image: registry.k10.kaztoll.kz/kaztoll-enterprise-back
        volumes:
-       - /var/lib/containers/storage/volumes/kaztoll-enterprise-back_uploads/_data:/usr/src/app/uploads
-       - /var/lib/containers/storage/volumes/kaztoll-enterprise-back_contracts/_data:/usr/src/app/contracts
+       - /var/lib/containers/storage/volumes/kaztoll-enterprise-back-uploads/_data:/usr/src/app/uploads
+       - /var/lib/containers/storage/volumes/kaztoll-enterprise-back-contracts/_data:/usr/src/app/contracts
        ports:
          - "3000:3000"
        env:
