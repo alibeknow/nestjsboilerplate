@@ -29,6 +29,7 @@ export class CompanyService {
           { status },
         )
         .leftJoinAndSelect('documents.assets', 'assets')
+        .orderBy('documents.createdAt', 'DESC')
         .paginate(pageOptionsDto);
       return { data: items, meta: pageMetaDto };
     } else {
