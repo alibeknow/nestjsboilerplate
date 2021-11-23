@@ -50,6 +50,8 @@
         LEGAL_ACCOUNT_URL="http://10.0.124.84:8096/api/legal-account"
         LEGAL_ACCOUNT_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
         SIGNATURE_VERIFICATION_URL="http://10.0.89.16:14579"
+        MAIL_URL="http://10.0.124.83:8070/api/notification"
+        CONTRACT_URL="http://10.0.89.10:8099/"
        network:
          - bridge0
        ip: 192.168.89.10
