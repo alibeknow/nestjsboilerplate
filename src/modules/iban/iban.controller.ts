@@ -35,6 +35,7 @@ export class IbanController {
     ibanAccountDto.xin = req.user.company.bin as string;
     return this.ibanService.createIbanAccount(ibanAccountDto);
   }
+
   @Get()
   @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
@@ -42,6 +43,17 @@ export class IbanController {
     const bin = req.user.company.bin as string;
     return this.ibanService.searchAccountByBin(bin);
   }
+
+  @Get('detail')
+  @Auth([RoleType.USER])
+  @HttpCode(HttpStatus.OK)
+  searchAccountNumber(
+      @Query('accountNumber') accountNumber: string,
+      @Req() req
+  ): Promise<ISearchAccountResponse> {
+    return this.ibanService.searchAccountNumber(accountNumber);
+  }
+
   @Post('setMain')
   @Auth([RoleType.USER])
   @HttpCode(HttpStatus.ACCEPTED)
