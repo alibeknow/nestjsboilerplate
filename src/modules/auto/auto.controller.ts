@@ -8,12 +8,14 @@ import {
   Post,
   Query,
   Req,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
 import { NotValidCertException } from '../../exceptions/bad-request-ncanode';
+import { LoggerInterceptor } from '../../interceptors/logger-interceptor.service';
 import { UtilsService } from '../../shared/services/utils.service';
 import type { ISearchAccountResponse } from '../iban/interfaces/ISearchAccountResponse';
 import { SignatureService } from '../signature/signature.service';
@@ -32,6 +34,7 @@ export class AutoController {
   @Post()
   @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
+  @UseInterceptors(LoggerInterceptor)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Create auto in external service',
@@ -55,6 +58,7 @@ export class AutoController {
     }
   }
   @Delete()
+  @UseInterceptors(LoggerInterceptor)
   @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   async deleteAutoAccount(
