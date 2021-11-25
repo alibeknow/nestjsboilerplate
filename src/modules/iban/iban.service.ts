@@ -132,6 +132,14 @@ export class IbanService {
     );
     return data;
   }
+
+  async searchAccountNumber(accountNumber: string): Promise<ISearchAccountResponse> {
+    const { data } = await axios.get<ISearchAccountResponse>(
+        `${this.url}/searchByAccountNumber?token=${this.secret}&accountNumber=${accountNumber}`,
+    );
+    return data;
+  }
+
   async addAccounts(account: ArrayAccounts, req) {
     for (let index = 0; index < account.accounts.length; index++) {
       account.accounts[index].company.id = req.user.company.id;
