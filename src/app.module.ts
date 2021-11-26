@@ -4,15 +4,13 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { I18nJsonParser, I18nModule } from 'nestjs-i18n';
-import path from 'path';
 
 import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
 import { AutoModule } from './modules/auto/auto.module';
 import { CompanyUserModule } from './modules/companyUsers/companyUser.module';
 import { ContractModule } from './modules/contract/contract.module';
+import { DatabaseModule } from './modules/dbModule/db.module';
 import { DocumentModule } from './modules/document/document.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
 import { IbanModule } from './modules/iban/iban.module';
@@ -20,8 +18,6 @@ import { LoggerModule } from './modules/logger/logger.module';
 import { SignatureModule } from './modules/signature/signature.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
-import { SharedModule } from './shared/shared.module';
-
 @Module({
   imports: [
     CacheModule.register({ isGlobal: true }),
@@ -32,13 +28,7 @@ import { SharedModule } from './shared/shared.module';
       }),
       inject: [ApiConfigService],
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [SharedModule],
-      useFactory: (configService: ApiConfigService) =>
-        configService.typeOrmConfig,
-
-      inject: [ApiConfigService],
-    }),
+    DatabaseModule,
     // I18nModule.forRootAsync({
     //   useFactory: (configService: ApiConfigService) => ({
     //     fallbackLanguage: configService.fallbackLanguage,
