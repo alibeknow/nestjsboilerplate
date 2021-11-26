@@ -35,6 +35,7 @@ import { SharedModule } from './shared/shared.module';
       imports: [SharedModule],
       useFactory: (configService: ApiConfigService) =>
         configService.typeOrmConfig,
+
       inject: [ApiConfigService],
     }),
     I18nModule.forRootAsync({

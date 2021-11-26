@@ -103,6 +103,12 @@ export class ApiConfigService {
       migrationsRun: true,
       logging: this.getBoolean('ENABLE_ORMLOGS', this.isDevelopment),
       namingStrategy: new SnakeNamingStrategy(),
+      retryAttempts: 5,
+      retryDelay: 300,
+      extra: {
+        max: 30,
+        connectionTimeoutMillis: 1000,
+      },
     };
   }
 
