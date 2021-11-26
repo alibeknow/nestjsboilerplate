@@ -1,8 +1,8 @@
 ---
  - name: kaztoll-enterprise-back docker container deploy
-   hosts: msw-appserv09.kaztoll.kz 
+   hosts: msw-appserv09.kaztoll.kz
    become: yes
-   
+
    tasks:
    - name: Get infos on container
      containers.podman.podman_container_info:
@@ -44,7 +44,7 @@
         DB_DATABASE="kaztoll_enterprise"
         JWT_SECRET_KEY="rxPhglGJWPlOW596"
         JWT_EXPIRATION_TIME="7200"
-        ENABLE_ORMLOGS="true"
+        ENABLE_ORMLOGS="false"
         ENABLE_DOCUMENTATION="true"
         PORT="3000"
         LEGAL_ACCOUNT_URL="http://10.0.124.84:8096/api/legal-account"
