@@ -13,7 +13,6 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RoleType } from '../../common/constants/role-type';
 import { PageDto } from '../../common/dto/page.dto';
 import { Auth, UUIDParam } from '../../decorators/http.decorators';
-import { TranslationService } from '../../shared/services/translation.service';
 import { CompanyUserService } from './companyUser.service';
 import { CompanyUsersDto } from './dto/companyUsers.dto';
 import { CompanyUsersDto2 } from './dto/companyUsers2.dto';

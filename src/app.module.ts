@@ -38,18 +38,18 @@ import { SharedModule } from './shared/shared.module';
 
       inject: [ApiConfigService],
     }),
-    I18nModule.forRootAsync({
-      useFactory: (configService: ApiConfigService) => ({
-        fallbackLanguage: configService.fallbackLanguage,
-        parserOptions: {
-          path: path.join(__dirname, '/i18n/'),
-          watch: configService.isDevelopment,
-        },
-      }),
-      imports: [SharedModule],
-      parser: I18nJsonParser,
-      inject: [ApiConfigService],
-    }),
+    // I18nModule.forRootAsync({
+    //   useFactory: (configService: ApiConfigService) => ({
+    //     fallbackLanguage: configService.fallbackLanguage,
+    //     parserOptions: {
+    //       path: path.join(__dirname, '/i18n/'),
+    //       watch: configService.isDevelopment,
+    //     },
+    //   }),
+    //   imports: [SharedModule],
+    //   parser: I18nJsonParser,
+    //   inject: [ApiConfigService],
+    // }),
     HealthCheckerModule,
     AuthModule,
     UserModule,
