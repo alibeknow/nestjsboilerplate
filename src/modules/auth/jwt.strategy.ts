@@ -30,12 +30,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
     let user = await this.cacheManager.get(userId);
-
+    if (user) {
+      user = JSON.parse(user as string);
+    }
     if (!user) {
       user = await this.userService.findOne(userId);
       await this.cacheManager.set(userId, JSON.stringify(user));
     }
-    user = JSON.parse(user as string);
 
     if (!user) {
       throw new UnauthorizedException();
