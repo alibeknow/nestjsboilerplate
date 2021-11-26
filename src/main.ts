@@ -40,7 +40,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   app.use(
     RateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100, // limit each IP to 100 requests per windowMs
+      max: 999_999_999, // limit each IP to 100 requests per windowMs
     }),
   );
   app.use(compression());
