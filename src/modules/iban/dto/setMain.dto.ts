@@ -24,7 +24,6 @@ export class SetMainDto {
   companyName: string;
   @ApiProperty()
   @IsString()
-  @IsMobilePhone()
   mobileNumber: string;
   @ApiProperty()
   @IsString()
