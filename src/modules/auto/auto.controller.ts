@@ -47,7 +47,7 @@ export class AutoController {
     const isValid = this.utilsService.validateSignature(signatureData, {
       bin: req.user.company.bin,
       idn: req.user.idn,
-      companyType: req.user.company.company_type,
+      companyType: req.user.company.companyType,
     });
     if (isValid) {
       return this.autoService.addAutoAccount(autoDto);
@@ -71,7 +71,7 @@ export class AutoController {
     const isValid = this.utilsService.validateSignature(signatureData, {
       bin: req.user.company.bin,
       idn: req.user.idn,
-      companyType: req.user.company.company_type,
+      companyType: req.user.company.companyType,
     });
     if (isValid) {
       return this.autoService.deleteAutoAccount(autoDto);
