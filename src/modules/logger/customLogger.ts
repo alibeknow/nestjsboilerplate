@@ -27,21 +27,9 @@ export class CustomLogger extends ConsoleLogger {
 
   async error(message: string, stack?: string, context?: string) {
     Reflect.apply(super.error, this, [message, stack, context]);
-
-    await this.logsService.createLog({
-      message,
-      context,
-      level: 'error',
-    });
   }
   async warn(message: string, context?: string) {
     Reflect.apply(super.warn, this, [message, context]);
-
-    await this.logsService.createLog({
-      message,
-      context,
-      level: 'warn',
-    });
   }
 
   log(message: any, ...optionalParams: any[]) {}

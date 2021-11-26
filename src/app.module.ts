@@ -1,7 +1,7 @@
 import './boilerplate.polyfill';
 
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -24,6 +24,7 @@ import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
+    CacheModule.register({ isGlobal: true }),
     MulterModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ApiConfigService) => ({
