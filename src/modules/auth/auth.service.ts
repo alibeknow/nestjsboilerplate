@@ -51,6 +51,7 @@ export class AuthService {
     );
     if (isValidate) {
       let user = await this.userService.findOne({
+        company: { companyType },
         idn: signatureData.subject.iin,
       });
       const {
