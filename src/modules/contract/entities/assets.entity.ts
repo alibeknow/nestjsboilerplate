@@ -1,8 +1,9 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
-import { AbstractEntity } from '../../common/abstract.entity';
-import { DocumentEntity } from './../document/document.entity';
-import { AssetsDto } from './dto/assets.dto';
+import { AbstractEntity } from '../../../common/abstract.entity';
+import { AssetsDto } from '../dto/assets.dto';
+import { DocumentEntity } from './document.entity';
+
 @Entity({ name: 'assets' })
 export class AssetsEntity extends AbstractEntity<AssetsDto> {
   @Column({ nullable: true })

@@ -1,28 +1,28 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { UtilsService } from '../../shared/services/utils.service';
 import { CompanyRepository } from '../company/company.repository';
 import { CompanyService } from '../company/company.service';
-import { ContractService } from '../contract/contract.service';
-import { DocumentModule } from '../document/document.module';
-import { IbanModule } from '../iban/iban.module';
-import { IbanService } from '../iban/iban.service';
-import { AccountRepository } from '../iban/repository/account.repository';
+import { ContractModule } from '../contract/contract.module';
+import { DocumentService } from '../contract/document.service';
+import { DocumentRepository } from '../contract/repository/document.repository';
 import { MailService } from '../mail/mail.service';
+import { AccountRepository } from '../restFrontApi/repository/account.repository';
+import { RestFrontApiService } from './../restFrontApi/restfront.service';
 import { SignatureRepository } from './repository/signature.repository';
 import { SignatureController } from './signature.controller';
 import { SignatureService } from './signature.service';
 
 @Module({
   imports: [
-    DocumentModule,
-    IbanModule,
+    ContractModule,
     TypeOrmModule.forFeature([
       SignatureRepository,
       CompanyRepository,
       AccountRepository,
+      DocumentRepository,
     ]),
   ],
   controllers: [SignatureController],
@@ -30,9 +30,10 @@ import { SignatureService } from './signature.service';
     SignatureService,
     ApiConfigService,
     MailService,
-    IbanService,
     CompanyService,
     UtilsService,
+    DocumentService,
+    RestFrontApiService,
   ],
   exports: [SignatureService],
 })

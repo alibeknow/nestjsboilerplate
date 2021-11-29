@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { AbstractEntity } from '../../../common/abstract.entity';
-import { DocumentEntity } from '../../document/document.entity';
+import { DocumentEntity } from '../../contract/entities/document.entity';
 import { SignatureDocumentDto } from './../dto/signatureDocument.dto';
 
 @Entity({ name: 'signature' })

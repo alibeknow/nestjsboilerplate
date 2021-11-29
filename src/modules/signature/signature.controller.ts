@@ -21,11 +21,10 @@ import { Auth } from '../../decorators/http.decorators';
 import { LoggerInterceptor } from '../../interceptors/logger-interceptor.service';
 import { UtilsService } from '../../shared/services/utils.service';
 import { CompanyService } from '../company/company.service';
-import { ContractService } from '../contract/contract.service';
-import { DocumentService } from '../document/document.service';
-import { IbanService } from '../iban/iban.service';
+import { DocumentService } from '../contract/document.service';
 import { EmailTemplate } from '../mail/dto/sendmail.dto';
 import { MailService } from '../mail/mail.service';
+import { RestFrontApiService } from '../restFrontApi/restfront.service';
 import { SignatureDto } from './dto/signatureDto';
 import { SignatureService } from './signature.service';
 
@@ -35,7 +34,7 @@ export class SignatureController {
   constructor(
     public readonly signatureService: SignatureService,
     public readonly documentService: DocumentService,
-    public readonly ibanService: IbanService,
+    public readonly restFrontApiService: RestFrontApiService,
     public readonly mailService: MailService,
     public readonly companyService: CompanyService,
     public readonly utilsService: UtilsService,
@@ -154,7 +153,7 @@ export class SignatureController {
         expirationDate: expireDate.toISOString(),
       };
       try {
-        const data = await this.ibanService.createIbanAccount(params);
+        const data = await this.restFrontApiService.createIbanAccount(params);
         return { changes: changedDoc, account: data };
       } catch {
         throw new BadGatewayException(

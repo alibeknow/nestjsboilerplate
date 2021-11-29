@@ -1,11 +1,11 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
-import { AbstractEntity } from '../../common/abstract.entity';
-import { Status } from '../../common/constants/status';
-import { CompanyEntity } from '../company/company.entity';
-import { AssetsEntity } from '../contract/assets.entity';
-import { SignatureEntity } from '../signature/repository/signatureDocument.entity';
-import { DocumentDto } from './dto/document-dto';
+import { AbstractEntity } from '../../../common/abstract.entity';
+import { Status } from '../../../common/constants/status';
+import { CompanyEntity } from '../../company/company.entity';
+import { SignatureEntity } from '../../signature/repository/signatureDocument.entity';
+import { DocumentDto } from '../dto/document-dto';
+import { AssetsEntity } from './assets.entity';
 
 @Entity({ name: 'documents' })
 export class DocumentEntity extends AbstractEntity<DocumentDto> {

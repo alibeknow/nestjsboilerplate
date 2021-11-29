@@ -9,8 +9,8 @@ import {
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import { CompanyDto } from '../../company/dto/company-dto';
-import type { AssetsDto } from '../../contract/dto/assets.dto';
-import type { DocumentEntity } from '../document.entity';
+import type { DocumentEntity } from '../entities/document.entity';
+import type { AssetsDto } from './assets.dto';
 
 export class DocumentDto extends AbstractDto {
   @ApiPropertyOptional()

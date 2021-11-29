@@ -2,8 +2,9 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
-import type { AssetsEntity } from '../assets.entity';
-import { DocumentDto } from './../../document/dto/document-dto';
+import type { AssetsEntity } from '../entities/assets.entity';
+import { DocumentDto } from './document-dto';
+
 export class AssetsDto extends AbstractDto {
   @ApiPropertyOptional()
   @IsString()

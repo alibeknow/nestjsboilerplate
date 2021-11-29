@@ -13,10 +13,10 @@ import { resolve } from 'path';
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { CompanyRepository } from '../company/company.repository';
 import { CompanyUserService } from '../companyUsers/companyUser.service';
-import { DocumentService } from '../document/document.service';
-import { AssetsRepository } from './assets.repository';
+import { DocumentService } from './document.service';
 import type { ContractDto } from './dto/contract.dto';
 import type { SignedContractDto } from './dto/signedContract.dto';
+import { AssetsRepository } from './repository/assets.repository';
 
 @Injectable()
 export class ContractService {

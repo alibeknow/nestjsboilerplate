@@ -3,19 +3,17 @@ import { Injectable } from '@nestjs/common';
 import * as fxp from 'fast-xml-parser';
 import { readFileSync } from 'fs';
 import * as he from 'he';
-import { result } from 'lodash';
 // eslint-disable-next-line unicorn/import-style
 import { resolve } from 'path';
 
+import { Status } from '../../common/constants/status';
 import { CompanyRepository } from '../company/company.repository';
-import type { SignedContractDto } from '../contract/dto/signedContract.dto';
 import { SignatureRepository } from '../signature/repository/signature.repository';
-import { SignatureService } from '../signature/signature.service';
-import { Status } from './../../common/constants/status';
-import { DocumentRepository } from './document.repository';
 import type { DeclineDocument } from './dto/delcine-document.dto';
 import type { DocumentDto } from './dto/document-dto';
+import type { SignedContractDto } from './dto/signedContract.dto';
 import type { IContract } from './interface/IContract';
+import { DocumentRepository } from './repository/document.repository';
 @Injectable()
 export class DocumentService {
   constructor(

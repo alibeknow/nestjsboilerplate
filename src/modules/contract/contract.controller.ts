@@ -20,14 +20,20 @@ import { extname } from 'path';
 import { RoleType } from '../../common/constants/role-type';
 import { Auth } from '../../decorators/http.decorators';
 import { ContractService } from './contract.service';
+import { DocumentService } from './document.service';
 import { ContractDto } from './dto/contract.dto';
+import { DeclineDocument } from './dto/delcine-document.dto';
+import { DocumentDto } from './dto/document-dto';
 import { SignedContractDto } from './dto/signedContract.dto';
-@Controller('contract')
+@Controller()
 @ApiTags('contract')
 export class ContractController {
-  constructor(public readonly contractService: ContractService) {}
+  constructor(
+    public readonly contractService: ContractService,
+    public readonly documentService: DocumentService,
+  ) {}
 
-  @Post('generate')
+  @Post('contract/generate')
   @HttpCode(HttpStatus.OK)
   @Auth([RoleType.ADMIN, RoleType.USER])
   @ApiOkResponse({
@@ -42,7 +48,7 @@ export class ContractController {
     });
     res.end(pdfData);
   }
-  @Post()
+  @Post('contract')
   @HttpCode(HttpStatus.OK)
   @Auth([RoleType.USER, RoleType.ADMIN])
   @UseInterceptors(
@@ -77,7 +83,7 @@ export class ContractController {
     return { success: 'ok' };
   }
 
-  @Get()
+  @Get('contract')
   @HttpCode(HttpStatus.OK)
   @Auth([RoleType.USER, RoleType.ADMIN])
   downloadContract(
@@ -95,14 +101,14 @@ export class ContractController {
     res.end(pdfData);
   }
 
-  @Get('getAssets')
+  @Get('contract/getAssets')
   @HttpCode(HttpStatus.OK)
   @Auth([RoleType.USER, RoleType.ADMIN])
   getAssets(@Query('documentId') documentId: string) {
     return this.contractService.getAssets(documentId);
   }
 
-  @Get('downloadAssets')
+  @Get('contract/downloadAssets')
   @Auth([RoleType.USER, RoleType.ADMIN])
   @HttpCode(HttpStatus.OK)
   async downloadAssets(@Query('assetId') assetId: string, @Res() res) {
@@ -112,5 +118,30 @@ export class ContractController {
       'Content-Disposition': `attachment; filename=${rresult.name}`,
     });
     res.end(rresult.file);
+  }
+
+  @Auth([RoleType.USER])
+  @Post('documents')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    type: DocumentDto,
+    description: 'Document info with access token',
+  })
+  async getFilteredDocs(@Req() request): Promise<DocumentDto[] | DocumentDto> {
+    const documents = await this.documentService.getDocs(
+      request.user.company.id as string,
+    );
+    return documents;
+  }
+
+  @Auth([RoleType.ADMIN])
+  @Post('documents/decline')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    type: 'string',
+    description: 'Decline Document',
+  })
+  declineContract(@Body() decline: DeclineDocument) {
+    return this.documentService.declineDocument(decline);
   }
 }

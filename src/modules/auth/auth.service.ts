@@ -8,7 +8,6 @@ import { ApiConfigService } from '../../shared/services/api-config.service';
 import { UtilsService } from '../../shared/services/utils.service';
 import { CompanyService } from '../company/company.service';
 import type { CreateCompanyDto } from '../company/dto/createCompany.dto';
-import { IbanService } from '../iban/iban.service';
 import type { SignatureDto } from '../signature/dto/signatureDto';
 import { SignatureService } from '../signature/signature.service';
 import type { UserDto } from '../user/dto/user-dto';
@@ -25,7 +24,6 @@ export class AuthService {
     public readonly userService: UserService,
     public readonly companyService: CompanyService,
     public readonly signatureService: SignatureService,
-    public readonly ibanService: IbanService,
     public readonly utilsService: UtilsService,
   ) {}
 
@@ -57,7 +55,6 @@ export class AuthService {
         subject: { organization, commonName, lastName, iin },
       } = signatureData;
       // eslint-disable-next-line unicorn/consistent-destructuring
-
       if (!signatureData.subject.organization) {
         signatureData.subject.organization = `ИП  ${commonName} ${lastName}`;
       }

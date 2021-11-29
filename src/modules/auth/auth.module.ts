@@ -5,7 +5,6 @@ import { PassportModule } from '@nestjs/passport';
 import { ApiConfigService } from '../../shared/services/api-config.service';
 import { UtilsService } from '../../shared/services/utils.service';
 import { CompanyModule } from '../company/company.module';
-import { IbanModule } from '../iban/iban.module';
 import { SignatureModule } from '../signature/signature.module';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
@@ -16,7 +15,6 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     SignatureModule,
     CompanyModule,
-    IbanModule,
     forwardRef(() => UserModule),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({

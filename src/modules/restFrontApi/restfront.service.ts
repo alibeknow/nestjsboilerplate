@@ -12,6 +12,8 @@ import { CompanyRepository } from '../company/company.repository';
 import type { AccountDto } from './dto/account-entity.dto';
 import type { AccountFillpageDto } from './dto/accountfill.dto';
 import type { ArrayAccounts } from './dto/accounts.array.dto';
+import type { AutoArray } from './dto/autoArray.dto';
+import type { AutoListDto } from './dto/autoList.dto';
 import type { IbanAccountServiceDto } from './dto/ibanAccountService.dto';
 import type { SetMainDto } from './dto/setMain.dto';
 import type { ICreateIbanAccount } from './interfaces/ICreateIbanAccount';
@@ -20,7 +22,7 @@ import { AccountEntity } from './repository/account.entity';
 import { AccountRepository } from './repository/account.repository';
 
 @Injectable()
-export class IbanService {
+export class RestFrontApiService {
   url: string;
   secret: string;
   constructor(
@@ -133,14 +135,17 @@ export class IbanService {
     return data;
   }
 
-  async searchAccountNumber(accountNumber: string): Promise<ISearchAccountResponse> {
+  async searchAccountNumber(
+    accountNumber: string,
+  ): Promise<ISearchAccountResponse> {
     const { data } = await axios.get<ISearchAccountResponse>(
-        `${this.url}/searchByAccountNumber?token=${this.secret}&accountNumber=${accountNumber}`,
+      `${this.url}/searchByAccountNumber?token=${this.secret}&accountNumber=${accountNumber}`,
     );
     return data;
   }
 
   async addAccounts(account: ArrayAccounts, req) {
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let index = 0; index < account.accounts.length; index++) {
       account.accounts[index].company.id = req.user.company.id;
     }
@@ -150,5 +155,62 @@ export class IbanService {
       .values(account.accounts)
       .execute();
     return accounts;
+  }
+
+  async addAutoAccount(autoDto: Omit<AutoArray, 'signature'>) {
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      const vehicles = autoDto.vehicles;
+      const result = [];
+      for (const vehicle of vehicles) {
+        const { data } = await axios.post(
+          `${this.url}/add-vehicle?token=${this.secret}`,
+          vehicle,
+          {
+            headers,
+          },
+        );
+        result.push(data);
+      }
+      return result;
+    } catch (error) {
+      Logger.error(error);
+    }
+  }
+
+  async deleteAutoAccount(autoDto: Omit<AutoArray, 'signature'>) {
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      const vehicles = autoDto.vehicles;
+      const result = [];
+      for (const vehicle of vehicles) {
+        const { data } = await axios.post(
+          `${this.url}/remove-vehicle?token=${this.secret}`,
+          vehicle,
+          {
+            headers,
+          },
+        );
+        result.push(data);
+      }
+      return result;
+    } catch (error) {
+      Logger.error(error);
+    }
+  }
+
+  async getListAutoAccount(autoDto: AutoListDto) {
+    try {
+      const { data } = await axios.get(
+        `${this.url}/vehicle-list?token=${this.secret}&accountNumber=${autoDto.accountNumber}&page=${autoDto.page}&size=${autoDto.size}`,
+      );
+      return data;
+    } catch (error) {
+      Logger.error(error);
+    }
   }
 }
