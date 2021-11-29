@@ -3,7 +3,7 @@ import type {
   ExecutionContext,
   NestInterceptor,
 } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 
 import { LogsService } from '../modules/logger/logs.service';
@@ -18,6 +18,7 @@ export class LoggerInterceptor implements NestInterceptor {
           data,
           url: request.url,
           method: request.method,
+          request: { body: request.body, query: request.query },
         };
         await this.logsService.createLog({
           user_id: request.user.id || null,
