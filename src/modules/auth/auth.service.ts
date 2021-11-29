@@ -49,19 +49,21 @@ export class AuthService {
     );
     if (isValidate) {
       let user = await this.userService.findOne({
+        company: { companyType },
         idn: signatureData.subject.iin,
       });
-      const {
+
+      let {
         subject: { organization, commonName, lastName, iin },
       } = signatureData;
       // eslint-disable-next-line unicorn/consistent-destructuring
-      if (!signatureData.subject.organization) {
-        signatureData.subject.organization = `ИП  ${commonName} ${lastName}`;
+      if (!organization) {
+        organization = `ИП  ${commonName} ${lastName}`;
       }
       if (!user) {
         const paraCompany: CreateCompanyDto = {
           bin,
-          name: signatureData.subject.organization,
+          name: organization,
           companyType,
         };
         companyEntity = await this.companyService.findOrCreate(paraCompany);

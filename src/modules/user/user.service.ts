@@ -20,7 +20,9 @@ export class UserService {
    * Find single user
    */
   findOne(findData: FindConditions<UserEntity>): Promise<UserEntity> {
-    return this.userRepository.findOne(findData);
+    return this.userRepository.findOne(findData, {
+      relations: ['company'],
+    });
   }
   async findByUsernameOrEmail(
     options: Partial<{ username: string; email: string }>,
