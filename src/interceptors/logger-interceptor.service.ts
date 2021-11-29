@@ -18,7 +18,11 @@ export class LoggerInterceptor implements NestInterceptor {
           data,
           url: request.url,
           method: request.method,
-          request: { body: request.body, query: request.query },
+          request: {
+            body: request.body,
+            query: request.query,
+            param: request.param,
+          },
         };
         await this.logsService.createLog({
           user_id: request.user.id || null,
